@@ -10,7 +10,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import util.Enum.CustomerTypeEnum;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-23T15:23:07")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-23T22:35:37")
 @StaticMetamodel(CustomerEntity.class)
 public class CustomerEntity_ { 
 

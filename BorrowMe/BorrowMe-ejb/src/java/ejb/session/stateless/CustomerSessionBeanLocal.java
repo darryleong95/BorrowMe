@@ -5,7 +5,9 @@
  */
 package ejb.session.stateless;
 
+import entity.CustomerEntity;
 import javax.ejb.Local;
+import util.exception.CustomerExistException;
 
 /**
  *
@@ -13,5 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustomerSessionBeanLocal {
+
+    public CustomerEntity createCustomer(CustomerEntity customer) throws CustomerExistException;
     
 }

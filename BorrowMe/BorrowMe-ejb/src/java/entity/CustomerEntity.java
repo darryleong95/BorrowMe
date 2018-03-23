@@ -14,7 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import util.Enum.CustomerTypeEnum;
+import util.enumeration.CustomerTypeEnum;
 
 /**
  *
@@ -44,21 +44,17 @@ public class CustomerEntity implements Serializable {
     @Column(nullable = false)
     private CustomerTypeEnum customerType;
     //private boolean isSuspended; --> lol seriously KIV
-    
-    @OneToMany(mappedBy = "customerEntity")
-    private List<AddressEntity> addressList;
-    
+
     @OneToMany(mappedBy = "customerEntity")
     private List<RequestEntity> requestList;
-        
+
     @OneToMany(mappedBy = "customerEntity")
     private List<ItemEntity> itemList;
-    
+
     @OneToMany(mappedBy = "customerEntity")
     private List<FeedbackEntity> feedbackList;
 
     public CustomerEntity() {
-        addressList = new ArrayList<>();
         requestList = new ArrayList<>();
         itemList = new ArrayList<>();
         feedbackList = new ArrayList<>();
@@ -74,14 +70,6 @@ public class CustomerEntity implements Serializable {
         this.contactNo = contactNo;
         this.email = email;
         this.customerType = CustomerTypeEnum.ORDINARY; //default ORDINARY until subscribed
-    }
- 
-    public List<AddressEntity> getAddressList() {
-        return addressList;
-    }
-
-    public void setAddressList(List<AddressEntity> addressList) {
-        this.addressList = addressList;
     }
 
     public List<RequestEntity> getRequestList() {
@@ -171,7 +159,7 @@ public class CustomerEntity implements Serializable {
     public void setCustomerType(CustomerTypeEnum customerType) {
         this.customerType = customerType;
     }
-    
+
     public Long getcustomerId() {
         return customerId;
     }
@@ -204,5 +192,5 @@ public class CustomerEntity implements Serializable {
     public String toString() {
         return "entity.CustomerEntity[ id=" + customerId + " ]";
     }
-    
+
 }
