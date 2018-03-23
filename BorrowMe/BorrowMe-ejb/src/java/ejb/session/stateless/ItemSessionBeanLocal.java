@@ -5,13 +5,18 @@
  */
 package ejb.session.stateless;
 
-import javax.ejb.Local;
+import entity.ItemEntity;
+import java.util.List;
+import util.exception.InvalidItemException;
 
-/**
- *
- * @author User
- */
-@Local
 public interface ItemSessionBeanLocal {
-    
+    public ItemEntity createItem(ItemEntity itemEntity);
+
+    public ItemEntity updateItem(ItemEntity itemEntity);
+
+    public void deleteBid(Long itemId) throws InvalidItemException;
+
+    public List<ItemEntity> retrieveItemList();
+
+    public ItemEntity retrieveItemById(Long itemId) throws InvalidItemException;
 }

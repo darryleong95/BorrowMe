@@ -26,6 +26,7 @@ public class ItemSessionBean implements ItemSessionBeanLocal {
     @PersistenceContext(unitName = "BorrowMe-ejbPU")
     private EntityManager em;
 
+    @Override
     public ItemEntity createItem(ItemEntity itemEntity){
         em.persist(itemEntity);
         em.flush();
@@ -33,11 +34,13 @@ public class ItemSessionBean implements ItemSessionBeanLocal {
         return itemEntity;
     }
     
+    @Override
     public ItemEntity updateItem(ItemEntity itemEntity){
         em.merge(itemEntity);
         return itemEntity;
     }
     
+    @Override
     public void deleteBid(Long itemId) throws InvalidItemException {
         ItemEntity itemEntity = em.find(ItemEntity.class, itemId);
         try {
@@ -47,11 +50,13 @@ public class ItemSessionBean implements ItemSessionBeanLocal {
         }
     }
     
+    @Override
     public List<ItemEntity> retrieveItemList(){
         Query query = em.createQuery("SELECT s FROM ItemEntity s");
         return query.getResultList();
     }
     
+    @Override
     public ItemEntity retrieveItemById(Long itemId) throws InvalidItemException{
         ItemEntity itemEntity = em.find(ItemEntity.class, itemId);
         if(itemEntity != null){
