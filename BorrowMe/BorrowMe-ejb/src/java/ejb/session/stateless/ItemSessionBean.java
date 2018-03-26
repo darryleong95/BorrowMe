@@ -35,13 +35,27 @@ public class ItemSessionBean implements ItemSessionBeanLocal {
     }
     
     @Override
-    public ItemEntity updateItem(ItemEntity itemEntity){
-        em.merge(itemEntity);
-        return itemEntity;
+    public ItemEntity updateItem(ItemEntity itemEntity) throws InvalidItemException{
+        if(itemEntity.getItemId() != null)
+        {
+            ItemEntity itemToUpdate = retrieveItemById(itemEntity.getItemId());           
+            itemToUpdate.setCategory(itemEntity.getCategory());
+            itemToUpdate.setCostPerDay(itemEntity.getCostPerDay());
+            itemToUpdate.setCustomerEntity(itemEntity.getCustomerEntity());
+            itemToUpdate.setItemAvailable(itemEntity.getItemAvailable());
+            itemToUpdate.setItemDescription(itemEntity.getItemDescription());
+            itemToUpdate.setItemTitle(itemEntity.getItemTitle());
+            em.flush();
+            return retrieveItemById(itemEntity.getItemId());
+        }
+        else
+        {
+            throw new InvalidItemException("ID not provided for book to be updated");
+        }
     }
     
     @Override
-    public void deleteBid(Long itemId) throws InvalidItemException {
+    public void deleteItem(Long itemId) throws InvalidItemException {
         ItemEntity itemEntity = em.find(ItemEntity.class, itemId);
         try {
             em.remove(itemEntity);
