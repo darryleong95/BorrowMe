@@ -12,9 +12,9 @@ import util.exception.InvalidItemException;
 public interface ItemSessionBeanLocal {
     public ItemEntity createItem(ItemEntity itemEntity);
 
-    public ItemEntity updateItem(ItemEntity itemEntity);
+    public ItemEntity updateItem(ItemEntity itemEntity) throws InvalidItemException;
 
-    public void deleteBid(Long itemId) throws InvalidItemException;
+    public void deleteItem(Long itemId) throws InvalidItemException;
 
     public List<ItemEntity> retrieveItemList();
 
