@@ -53,12 +53,17 @@ public class ItemSessionBean implements ItemSessionBeanLocal {
     @Override
     public List<ItemEntity> retrieveItemList(){
         Query query = em.createQuery("SELECT s FROM ItemEntity s");
-        return query.getResultList();
+        List<ItemEntity> items = query.getResultList();
+        for(ItemEntity item : items) {
+            item.getFeedbackList().size();
+        }
+        return items;
     }
     
     @Override
     public ItemEntity retrieveItemById(Long itemId) throws InvalidItemException{
         ItemEntity itemEntity = em.find(ItemEntity.class, itemId);
+        itemEntity.getFeedbackList().size();
         if(itemEntity != null){
             return itemEntity;
         } 
