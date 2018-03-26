@@ -22,12 +22,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.JAXBElement;
 import util.exception.InvalidItemException;
-import ws.restful.datamodel.CreateItemReq;
-import ws.restful.datamodel.CreateItemRsp;
-import ws.restful.datamodel.ErrorRsp;
-import ws.restful.datamodel.RetrieveAllItemsRsp;
-import ws.restful.datamodel.RetrieveItemRsp;
-import ws.restful.datamodel.UpdateItemReq;
+import ws.restful.datamodel.Item.CreateItemReq;
+import ws.restful.datamodel.Item.CreateItemRsp;
+import ws.restful.datamodel.Item.ErrorRsp;
+import ws.restful.datamodel.Item.RetrieveAllItemsRsp;
+import ws.restful.datamodel.Item.RetrieveItemRsp;
+import ws.restful.datamodel.Item.UpdateItemReq;
 
 @Path("Item") //demarcate the URI to identify resource
 

@@ -16,11 +16,13 @@ public class ApplicationConfig extends Application
         addRestResourceClasses(resources);
         return resources;
     }
-
-    
     
     private void addRestResourceClasses(Set<Class<?>> resources)
     {
+        resources.add(ws.restful.CustomerResource.class);
+        resources.add(ws.restful.FeedbackResource.class);
         resources.add(ws.restful.ItemResource.class);
-    }    
+        resources.add(ws.restful.PaymentResource.class);
+    }   
+  
 }
