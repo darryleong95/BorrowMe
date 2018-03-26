@@ -1,4 +1,4 @@
-package ws.restful.datamodel;
+package ws.restful.datamodel.Item;
 
 import entity.ItemEntity;
 import java.util.List;

@@ -1,31 +1,33 @@
-package ws.restful.datamodel;
+package ws.restful.datamodel.Item;
 
 import entity.ItemEntity;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 
-@XmlType(name = "retrieveItemRsp", propOrder = {
+@XmlRootElement
+@XmlType(name = "updateItemReq", propOrder = {
     "item"
 })
 
-public class RetrieveItemRsp
-{    
+public class UpdateItemReq 
+{
     private ItemEntity item;
 
     
     
-    public RetrieveItemRsp()
+    public UpdateItemReq() 
     {
     }
 
     
     
-    public RetrieveItemRsp(ItemEntity item)
+    public UpdateItemReq(ItemEntity item)
     {
         this.item = item;
     }
-
+    
     
     
     public ItemEntity getItem() {

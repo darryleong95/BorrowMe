@@ -1,4 +1,4 @@
-package ws.restful.datamodel;
+package ws.restful.datamodel.Item;
 
 import entity.ItemEntity;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -7,27 +7,27 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlRootElement
-@XmlType(name = "updateItemReq", propOrder = {
+@XmlType(name = "createItemReq", propOrder = {
     "item"
 })
 
-public class UpdateItemReq 
-{
+public class CreateItemReq
+{    
     private ItemEntity item;
 
     
     
-    public UpdateItemReq() 
+    public CreateItemReq()
     {
     }
 
     
     
-    public UpdateItemReq(ItemEntity item)
+    public CreateItemReq(ItemEntity item)
     {
         this.item = item;
     }
-    
+
     
     
     public ItemEntity getItem() {
