@@ -12,7 +12,7 @@ import util.exception.InvalidItemException;
 public interface ItemSessionBeanLocal {
     public ItemEntity createItem(ItemEntity itemEntity);
 
-    public ItemEntity updateItem(ItemEntity itemEntity) throws InvalidItemException;
+    public ItemEntity updateItem(ItemEntity itemEntity);
 
     public void deleteItem(Long itemId) throws InvalidItemException;
 
