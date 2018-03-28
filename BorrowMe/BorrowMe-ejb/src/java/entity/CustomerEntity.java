@@ -51,9 +51,10 @@ public class CustomerEntity implements Serializable {
     @OneToMany(mappedBy = "customerEntity")
     private List<ItemEntity> itemList;
 
+    //List of feedback of a lender
     @OneToMany(mappedBy = "customerEntity")
     private List<FeedbackEntity> feedbackList;
-
+    
     public CustomerEntity() {
         requestList = new ArrayList<>();
         itemList = new ArrayList<>();
