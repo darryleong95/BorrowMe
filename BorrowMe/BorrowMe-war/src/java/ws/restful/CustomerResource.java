@@ -1,5 +1,6 @@
 package ws.restful;
 //POJO CLASS
+
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import entity.CustomerEntity;
 import java.util.logging.Level;
@@ -21,79 +22,59 @@ import ws.restful.datamodel.Customer.CreateCustomerRsp;
 import ws.restful.datamodel.Customer.UpdateCustomerReq;
 import ws.restful.datamodel.Item.ErrorRsp;
 
-
 @Path("Customer") //demarcate the URI to identify resource
 
-public class CustomerResource
-{
+public class CustomerResource {
 
     CustomerSessionBeanLocal customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
     @Context
     private UriInfo context;
-    
-    
- 
-    public CustomerResource() 
-    {
+
+    public CustomerResource() {
         customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
     }
-    
-    
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createCustomer(JAXBElement<CreateCustomerReq> jaxbCreateCustomerReq)
-    {
-        if((jaxbCreateCustomerReq != null) && (jaxbCreateCustomerReq.getValue() != null))
-        {
-            try
-            {
+    public Response createCustomer(JAXBElement<CreateCustomerReq> jaxbCreateCustomerReq) {
+        if ((jaxbCreateCustomerReq != null) && (jaxbCreateCustomerReq.getValue() != null)) {
+            try {
                 CreateCustomerReq createCustomerReq = jaxbCreateCustomerReq.getValue();
-                
+
                 CustomerEntity customerEntity = customerSessionBeanLocal.createCustomer(createCustomerReq.getCustomer());
                 CreateCustomerRsp createCustomerRsp = new CreateCustomerRsp(customerEntity);
-                
+
                 return Response.status(Response.Status.OK).entity(createCustomerRsp).build();
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
-        }
-        else
-        {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create customer request");
-            
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
-    
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCustomer(JAXBElement<UpdateCustomerReq> jaxbUpdateCustomerReq)
-    {
-        if((jaxbUpdateCustomerReq != null) && (jaxbUpdateCustomerReq.getValue() != null))
-        {
+    public Response updateCustomer(JAXBElement<UpdateCustomerReq> jaxbUpdateCustomerReq) {
+        if ((jaxbUpdateCustomerReq != null) && (jaxbUpdateCustomerReq.getValue() != null)) {
             UpdateCustomerReq updateCustomerReq = jaxbUpdateCustomerReq.getValue();
 
             customerSessionBeanLocal.updateCustomer(updateCustomerReq.getCustomer());
 
             return Response.status(Response.Status.OK).build();
-            
-        }
-        else
-        {
+
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid update customer request");
-            
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-      
 
     private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
         try {
