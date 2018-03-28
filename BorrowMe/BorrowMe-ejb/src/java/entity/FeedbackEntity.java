@@ -24,12 +24,18 @@ public class FeedbackEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedbackId;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer itemRating;
-    @Column(nullable = false)
-    private Integer customerRating;
-    @Column(length = 1000, nullable = false) // 1000 is a aribiturary number. feel free to change
-    private String review;
+    @Column(nullable = true)
+    private Integer borrowerReviewLenderRating;
+    @Column(nullable = true)
+    private Integer lenderReviewBorrowerRating;
+    @Column(length = 1000, nullable = true) // 1000 is a aribiturary number. feel free to change
+    private String itemReview;
+    @Column(length = 1000, nullable = true) // 1000 is a aribiturary number. feel free to change
+    private String lenderReviewBorrower;
+    @Column(length = 1000, nullable = true) // 1000 is a aribiturary number. feel free to change
+    private String borrowerReviewLender;
     
     @ManyToOne
     private ItemEntity itemEntity;
@@ -40,11 +46,14 @@ public class FeedbackEntity implements Serializable {
     public FeedbackEntity() {
     }
 
-    public FeedbackEntity(Long feedbackId, Integer itemRating, Integer customerRating, String review, ItemEntity itemEntity, CustomerEntity customerEntity) {
+    public FeedbackEntity(Long feedbackId, Integer itemRating, Integer borrowerReviewLenderRating, Integer lenderReviewBorrowerRating, String borrowerReviewLender, String lenderReviewBorrower, String itemReview, ItemEntity itemEntity, CustomerEntity customerEntity) {
         this.feedbackId = feedbackId;
         this.itemRating = itemRating;
-        this.customerRating = customerRating;
-        this.review = review;
+        this.borrowerReviewLenderRating = borrowerReviewLenderRating;
+        this.lenderReviewBorrowerRating = lenderReviewBorrowerRating;
+        this.itemReview = itemReview;
+        this.borrowerReviewLender = borrowerReviewLender;
+        this.lenderReviewBorrower = lenderReviewBorrower;
         this.itemEntity = itemEntity;
         this.customerEntity = customerEntity;
     }
@@ -57,20 +66,44 @@ public class FeedbackEntity implements Serializable {
         this.itemRating = itemRating;
     }
 
-    public Integer getCustomerRating() {
-        return customerRating;
+    public Integer getBorrowerReviewLenderRating() {
+        return borrowerReviewLenderRating;
     }
 
-    public void setCustomerRating(Integer customerRating) {
-        this.customerRating = customerRating;
+    public void setBorrowerReviewLenderRating(Integer borrowerReviewLenderRating) {
+        this.borrowerReviewLenderRating = borrowerReviewLenderRating;
+    }
+    
+    public Integer getLenderReviewBorrowerRating() {
+        return lenderReviewBorrowerRating;
     }
 
-    public String getReview() {
-        return review;
+    public void setLenderReviewBorrowerRating(Integer lenderReviewBorrowerRating) {
+        this.lenderReviewBorrowerRating = lenderReviewBorrowerRating;
     }
 
-    public void setReview(String review) {
-        this.review = review;
+    public String getItemReview() {
+        return itemReview;
+    }
+
+    public void setItemReview(String itemReview) {
+        this.itemReview = itemReview;
+    }
+    
+    public String getBorrowerReviewLender() {
+        return borrowerReviewLender;
+    }
+
+    public void setBorrowerReviewLender(String borrowerReviewLender) {
+        this.borrowerReviewLender = borrowerReviewLender;
+    }
+    
+    public String getLenderReviewBorrower() {
+        return lenderReviewBorrower;
+    }
+
+    public void setLenderReviewBorrower(String lenderReviewBorrower) {
+        this.lenderReviewBorrower = lenderReviewBorrower;
     }
 
     public ItemEntity getItemEntity() {

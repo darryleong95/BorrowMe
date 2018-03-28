@@ -37,6 +37,33 @@ public class FeedbackSessionBean implements FeedbackSessionBeanLocal {
         FeedbackEntity feedbackEntity = em.find(FeedbackEntity.class, feedbackId);
         em.remove(feedbackEntity);
     }
+    
+    @Override
+    public void removeItemFeedback(Long feedbackId){
+        //remove feeback + rating
+        FeedbackEntity feedbackEntity = em.find(FeedbackEntity.class, feedbackId);
+        feedbackEntity.setItemRating(null);
+        feedbackEntity.setItemReview(null);
+        updateFeedback(feedbackEntity);
+    }
+    
+    @Override
+    public void removeLenderReviewBorrowerFeedback(Long feedbackId){
+        //remove feeback + rating
+        FeedbackEntity feedbackEntity = em.find(FeedbackEntity.class, feedbackId);
+        feedbackEntity.setLenderReviewBorrowerRating(null);
+        feedbackEntity.setLenderReviewBorrower(null);
+        updateFeedback(feedbackEntity);
+    }
+    
+    @Override
+    public void removeBorrowerReviewLenderFeedback(Long feedbackId){
+        //remove feeback + rating
+        FeedbackEntity feedbackEntity = em.find(FeedbackEntity.class, feedbackId);
+        feedbackEntity.setBorrowerReviewLenderRating(null);
+        feedbackEntity.setBorrowerReviewLender(null);
+        updateFeedback(feedbackEntity);
+    }
 
 
     @Override
