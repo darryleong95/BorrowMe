@@ -19,7 +19,7 @@ import javax.xml.bind.JAXBElement;
 import ws.restful.datamodel.Request.CreateRequestReq;
 import ws.restful.datamodel.Request.CreateRequestRsp;
 import ws.restful.datamodel.Request.UpdateRequestReq;
-import ws.restful.datamodel.Item.ErrorRsp;
+import ws.restful.datamodel.Listing.ErrorRsp;
 
 
 @Path("Request") //demarcate the URI to identify resource

@@ -20,7 +20,7 @@ public interface FeedbackSessionBeanLocal {
 
     public FeedbackEntity retrieveFeedbackById(Long feedbackEntityId) throws FeedbackNotFoundException;
 
-    public void removeItemFeedback(Long feedbackId);
+    public void removeListingFeedback(Long feedbackId);
 
     public void removeLenderReviewBorrowerFeedback(Long feedbackId);
 

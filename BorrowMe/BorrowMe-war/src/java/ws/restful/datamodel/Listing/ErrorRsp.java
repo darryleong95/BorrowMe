@@ -1,4 +1,4 @@
-package ws.restful.datamodel.Item;
+package ws.restful.datamodel.Listing;
 
 import javax.xml.bind.annotation.XmlType;
 

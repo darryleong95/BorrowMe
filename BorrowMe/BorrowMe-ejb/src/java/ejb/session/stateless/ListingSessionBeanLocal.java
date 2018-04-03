@@ -5,18 +5,18 @@
  */
 package ejb.session.stateless;
 
-import entity.ItemEntity;
+import entity.ListingEntity;
 import java.util.List;
-import util.exception.InvalidItemException;
+import util.exception.InvalidListingException;
 
-public interface ItemSessionBeanLocal {
-    public ItemEntity createItem(ItemEntity itemEntity);
+public interface ListingSessionBeanLocal {
+    public ListingEntity createListing(ListingEntity listingEntity);
 
-    public ItemEntity updateItem(ItemEntity itemEntity);
+    public ListingEntity updateListing(ListingEntity listingEntity);
 
-    public void deleteItem(Long itemId) throws InvalidItemException;
+    public void deleteListing(Long listingId) throws InvalidListingException;
 
-    public List<ItemEntity> retrieveItemList();
+    public List<ListingEntity> retrieveListingList();
 
-    public ItemEntity retrieveItemById(Long itemId) throws InvalidItemException;
+    public ListingEntity retrieveListingById(Long listingId) throws InvalidListingException;
 }

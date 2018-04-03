@@ -1,6 +1,6 @@
-package ws.restful.datamodel.Item;
+package ws.restful.datamodel.Listing;
 
-import entity.ItemEntity;
+import entity.ListingEntity;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -8,34 +8,34 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlRootElement
-@XmlType(name = "retrieveAllItemsRsp", propOrder = {
-    "items"
+@XmlType(name = "retrieveAllListingsRsp", propOrder = {
+    "listings"
 })
 
-public class RetrieveAllItemsRsp
+public class RetrieveAllListingsRsp
 {   
-    private List<ItemEntity> items;
+    private List<ListingEntity> listings;
 
     
     
-    public RetrieveAllItemsRsp()
+    public RetrieveAllListingsRsp()
     {
     }
 
     
     
-    public RetrieveAllItemsRsp(List<ItemEntity> items)
+    public RetrieveAllListingsRsp(List<ListingEntity> listings)
     {
-        this.items = items;
+        this.listings = listings;
     }
 
     
     
-    public List<ItemEntity> getItems() {
-        return items;
+    public List<ListingEntity> getListings() {
+        return listings;
     }
 
-    public void setItems(List<ItemEntity> items) {
-        this.items = items;
+    public void setListings(List<ListingEntity> listings) {
+        this.listings = listings;
     }
 }

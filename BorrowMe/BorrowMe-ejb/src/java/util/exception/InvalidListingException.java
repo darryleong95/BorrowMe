@@ -1,10 +1,10 @@
 package util.exception;
 
-public class InvalidItemException extends Exception{
-     public InvalidItemException() {
+public class InvalidListingException extends Exception{
+     public InvalidListingException() {
     }
     
-   public InvalidItemException(String msg){
+   public InvalidListingException(String msg){
        super(msg);
    }
 }

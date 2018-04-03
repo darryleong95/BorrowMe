@@ -22,7 +22,7 @@ import javax.xml.bind.JAXBElement;
 import ws.restful.datamodel.Feedback.CreateFeedbackReq;
 import ws.restful.datamodel.Feedback.CreateFeedbackRsp;
 import ws.restful.datamodel.Feedback.UpdateFeedbackReq;
-import ws.restful.datamodel.Item.ErrorRsp;
+import ws.restful.datamodel.Listing.ErrorRsp;
 
 
 @Path("Feedback") //demarcate the URI to identify resource

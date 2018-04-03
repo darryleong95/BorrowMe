@@ -1,7 +1,6 @@
 package ws.restful;
 //POJO CLASS
-import ejb.session.stateless.ItemSessionBeanLocal;
-import entity.ItemEntity;
+import entity.ListingEntity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -21,45 +20,46 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.JAXBElement;
-import util.exception.InvalidItemException;
-import ws.restful.datamodel.Item.CreateItemReq;
-import ws.restful.datamodel.Item.CreateItemRsp;
-import ws.restful.datamodel.Item.ErrorRsp;
-import ws.restful.datamodel.Item.RetrieveAllItemsRsp;
-import ws.restful.datamodel.Item.RetrieveItemRsp;
-import ws.restful.datamodel.Item.UpdateItemReq;
+import util.exception.InvalidListingException;
+import ws.restful.datamodel.Listing.CreateListingReq;
+import ws.restful.datamodel.Listing.CreateListingRsp;
+import ws.restful.datamodel.Listing.ErrorRsp;
+import ws.restful.datamodel.Listing.RetrieveAllListingsRsp;
+import ws.restful.datamodel.Listing.RetrieveListingRsp;
+import ws.restful.datamodel.Listing.UpdateListingReq;
+import ejb.session.stateless.ListingSessionBeanLocal;
 
-@Path("Item") //demarcate the URI to identify resource
+@Path("Listing") //demarcate the URI to identify resource
 
-public class ItemResource
+public class ListingResource
 {
 
-    ItemSessionBeanLocal itemSessionBeanLocal = lookupItemSessionBeanLocal();
+    ListingSessionBeanLocal listingSessionBeanLocal = lookupListingSessionBeanLocal();
     @Context
     private UriInfo context;
     
     
  
-    public ItemResource() 
+    public ListingResource() 
     {
-        itemSessionBeanLocal = lookupItemSessionBeanLocal();
+        listingSessionBeanLocal = lookupListingSessionBeanLocal();
     }
 
     
     
-    @Path("retrieveAllItems") //-> has to specify the method because there are 2 GET Methods
+    @Path("retrieveAllListings") //-> has to specify the method because there are 2 GET Methods
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllItems()
+    public Response retrieveAllListings()
     {
         try
         {
-            RetrieveAllItemsRsp retrieveAllItemsRsp = new RetrieveAllItemsRsp(itemSessionBeanLocal.retrieveItemList());
-            //RetrieveAllItemsRsp -> basically is a trivial class, its to wrap object up such that when the JSON Obj goes back to the JS side, the JSON string will be nicely formatted 
-            //List<Item>
+            RetrieveAllListingsRsp retrieveAllListingsRsp = new RetrieveAllListingsRsp(listingSessionBeanLocal.retrieveListingList());
+            //RetrieveAllListingsRsp -> basically is a trivial class, its to wrap object up such that when the JSON Obj goes back to the JS side, the JSON string will be nicely formatted 
+            //List<Listing>
             //Java class NOT and Entity class
             //In order for the JAXB to understand how to convert this to a JSON/XML,have to annotate with XMLRootElement.
-            return Response.status(Status.OK).entity(retrieveAllItemsRsp).build();
+            return Response.status(Status.OK).entity(retrieveAllListingsRsp).build();
         }
         catch(Exception ex)
         {
@@ -71,18 +71,18 @@ public class ItemResource
     
     
     
-    @Path("retrieveItem/{id}")
+    @Path("retrieveListing/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveItem(@PathParam("id") Long id)
+    public Response retrieveListing(@PathParam("id") Long id)
     {
         try
         {
-            RetrieveItemRsp retrieveItemRsp = new RetrieveItemRsp(itemSessionBeanLocal.retrieveItemById(id));
+            RetrieveListingRsp retrieveListingRsp = new RetrieveListingRsp(listingSessionBeanLocal.retrieveListingById(id));
             
-            return Response.status(Status.OK).entity(retrieveItemRsp).build();
+            return Response.status(Status.OK).entity(retrieveListingRsp).build();
         }
-        catch(InvalidItemException ex)
+        catch(InvalidListingException ex)
         {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             
@@ -101,18 +101,18 @@ public class ItemResource
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createItem(JAXBElement<CreateItemReq> jaxbCreateItemReq)
+    public Response createListing(JAXBElement<CreateListingReq> jaxbCreateListingReq)
     {
-        if((jaxbCreateItemReq != null) && (jaxbCreateItemReq.getValue() != null))
+        if((jaxbCreateListingReq != null) && (jaxbCreateListingReq.getValue() != null))
         {
             try
             {
-                CreateItemReq createItemReq = jaxbCreateItemReq.getValue();
+                CreateListingReq createListingReq = jaxbCreateListingReq.getValue();
                 
-                ItemEntity itemEntity = itemSessionBeanLocal.createItem(createItemReq.getItem());
-                CreateItemRsp createItemRsp = new CreateItemRsp(itemEntity);
+                ListingEntity listingEntity = listingSessionBeanLocal.createListing(createListingReq.getListing());
+                CreateListingRsp createListingRsp = new CreateListingRsp(listingEntity);
                 
-                return Response.status(Response.Status.OK).entity(createItemRsp).build();
+                return Response.status(Response.Status.OK).entity(createListingRsp).build();
             }
             catch(Exception ex)
             {
@@ -123,7 +123,7 @@ public class ItemResource
         }
         else
         {
-            ErrorRsp errorRsp = new ErrorRsp("Invalid create item request");
+            ErrorRsp errorRsp = new ErrorRsp("Invalid create listing request");
             
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
@@ -134,20 +134,20 @@ public class ItemResource
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateItem(JAXBElement<UpdateItemReq> jaxbUpdateItemReq)
+    public Response updateListing(JAXBElement<UpdateListingReq> jaxbUpdateListingReq)
     {
-        if((jaxbUpdateItemReq != null) && (jaxbUpdateItemReq.getValue() != null))
+        if((jaxbUpdateListingReq != null) && (jaxbUpdateListingReq.getValue() != null))
         {
-            UpdateItemReq updateItemReq = jaxbUpdateItemReq.getValue();
+            UpdateListingReq updateListingReq = jaxbUpdateListingReq.getValue();
 
-            itemSessionBeanLocal.updateItem(updateItemReq.getItem());
+            listingSessionBeanLocal.updateListing(updateListingReq.getListing());
 
             return Response.status(Response.Status.OK).build();
             
         }
         else
         {
-            ErrorRsp errorRsp = new ErrorRsp("Invalid update item request");
+            ErrorRsp errorRsp = new ErrorRsp("Invalid update listing request");
             
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
@@ -157,17 +157,17 @@ public class ItemResource
     
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteItem(@QueryParam("id") Long id) throws InvalidItemException //@QueryParam used instead of @Path -- identified with a ? in the URI
+    public Response deleteListing(@QueryParam("id") Long id) throws InvalidListingException //@QueryParam used instead of @Path -- identified with a ? in the URI
     {
-        itemSessionBeanLocal.deleteItem(id);
+        listingSessionBeanLocal.deleteListing(id);
 
         return Response.status(Status.OK).build();
     }
 
-    private ItemSessionBeanLocal lookupItemSessionBeanLocal() {
+    private ListingSessionBeanLocal lookupListingSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (ItemSessionBeanLocal) c.lookup("java:global/BorrowMe/BorrowMe-ejb/ItemSessionBean!ejb.session.stateless.ItemSessionBeanLocal");
+            return (ListingSessionBeanLocal) c.lookup("java:global/BorrowMe/BorrowMe-ejb/ListingSessionBean!ejb.session.stateless.ListingSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

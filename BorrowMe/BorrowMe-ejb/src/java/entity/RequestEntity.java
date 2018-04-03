@@ -41,7 +41,7 @@ public class RequestEntity implements Serializable {
 
     
     @ManyToOne
-    private ItemEntity itemEntity;
+    private ListingEntity listingEntity;
 
     @ManyToOne
     private CustomerEntity customerEntity;
@@ -53,7 +53,7 @@ public class RequestEntity implements Serializable {
     public RequestEntity() {
     }
 
-    public RequestEntity(Long requestId, Date startDate, Date endDate, Integer noOfDays, Boolean payment, Boolean accepted, Boolean overdue, ItemEntity itemEntity, CustomerEntity customerEntity) {
+    public RequestEntity(Long requestId, Date startDate, Date endDate, Integer noOfDays, Boolean payment, Boolean accepted, Boolean overdue, ListingEntity listingEntity, CustomerEntity customerEntity) {
         this.requestId = requestId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -61,16 +61,16 @@ public class RequestEntity implements Serializable {
         this.payment = false; //defauly false
         this.accepted = false; //default false
         this.overdue = false; //default false
-        this.itemEntity = itemEntity;
+        this.listingEntity = listingEntity;
         this.customerEntity = customerEntity;
     }
     
-    public ItemEntity getItemEntity() {
-        return itemEntity;
+    public ListingEntity getItemEntity() {
+        return listingEntity;
     }
 
-    public void setItemEntity(ItemEntity itemEntity) {
-        this.itemEntity = itemEntity;
+    public void setItemEntity(ListingEntity listingEntity) {
+        this.listingEntity = listingEntity;
     }
 
     public CustomerEntity getCustomerEntity() {

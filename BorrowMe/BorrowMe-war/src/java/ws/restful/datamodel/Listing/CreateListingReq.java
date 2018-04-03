@@ -1,40 +1,40 @@
-package ws.restful.datamodel.Item;
+package ws.restful.datamodel.Listing;
 
-import entity.ItemEntity;
+import entity.ListingEntity;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 
 @XmlRootElement
-@XmlType(name = "createItemReq", propOrder = {
-    "item"
+@XmlType(name = "createListingReq", propOrder = {
+    "listing"
 })
 
-public class CreateItemReq
+public class CreateListingReq
 {    
-    private ItemEntity item;
+    private ListingEntity listing;
 
     
     
-    public CreateItemReq()
+    public CreateListingReq()
     {
     }
 
     
     
-    public CreateItemReq(ItemEntity item)
+    public CreateListingReq(ListingEntity listing)
     {
-        this.item = item;
+        this.listing = listing;
     }
 
     
     
-    public ItemEntity getItem() {
-        return item;
+    public ListingEntity getListing() {
+        return listing;
     }
 
-    public void setItem(ItemEntity item) {
-        this.item = item;
+    public void setListing(ListingEntity listing) {
+        this.listing = listing;
     }
 }

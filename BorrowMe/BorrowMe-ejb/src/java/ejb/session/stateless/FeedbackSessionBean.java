@@ -39,11 +39,11 @@ public class FeedbackSessionBean implements FeedbackSessionBeanLocal {
     }
     
     @Override
-    public void removeItemFeedback(Long feedbackId){
+    public void removeListingFeedback(Long feedbackId){
         //remove feeback + rating
         FeedbackEntity feedbackEntity = em.find(FeedbackEntity.class, feedbackId);
-        feedbackEntity.setItemRating(null);
-        feedbackEntity.setItemReview(null);
+        feedbackEntity.setListingRating(null);
+        feedbackEntity.setListingReview(null);
         updateFeedback(feedbackEntity);
     }
     

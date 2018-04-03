@@ -1,38 +1,38 @@
-package ws.restful.datamodel.Item;
+package ws.restful.datamodel.Listing;
 
-import entity.ItemEntity;
+import entity.ListingEntity;
 import javax.xml.bind.annotation.XmlType;
 
 
 
-@XmlType(name = "retrieveItemRsp", propOrder = {
-    "item"
+@XmlType(name = "retrieveListingRsp", propOrder = {
+    "listing"
 })
 
-public class RetrieveItemRsp
+public class RetrieveListingRsp
 {    
-    private ItemEntity item;
+    private ListingEntity listing;
 
     
     
-    public RetrieveItemRsp()
+    public RetrieveListingRsp()
     {
     }
 
     
     
-    public RetrieveItemRsp(ItemEntity item)
+    public RetrieveListingRsp(ListingEntity listing)
     {
-        this.item = item;
+        this.listing = listing;
     }
 
     
     
-    public ItemEntity getItem() {
-        return item;
+    public ListingEntity getListing() {
+        return listing;
     }
 
-    public void setItem(ItemEntity item) {
-        this.item = item;
+    public void setListing(ListingEntity listing) {
+        this.listing = listing;
     }
 }

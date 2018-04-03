@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -23,18 +22,18 @@ import javax.persistence.OneToMany;
  * @author User
  */
 @Entity
-public class ItemEntity implements Serializable {
+public class ListingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long itemId;
+    private Long listingId;
     @Column(length = 64, nullable = false)
-    private String itemTitle;
+    private String listingTitle;
     @Column(length = 1000, nullable = true) //I don't think this should be compulsory
-    private String itemDescription;
+    private String listingDescription;
     @Column(nullable = false)
-    private Boolean itemAvailable;
+    private Boolean listingAvailable;
     @Column(nullable = false)
     private Double costPerDay;
     @Column(nullable = false)
@@ -43,22 +42,22 @@ public class ItemEntity implements Serializable {
     @ManyToOne
     private CustomerEntity customerEntity;
     
-    @OneToMany(mappedBy = "itemEntity")
+    @OneToMany(mappedBy = "listingEntity")
     private List<RequestEntity> requestList;
     
-    @OneToMany(mappedBy = "itemEntity")
+    @OneToMany(mappedBy = "listingEntity")
     private List<FeedbackEntity> feedbackList;
 
-    public ItemEntity() {
+    public ListingEntity() {
         feedbackList = new ArrayList<>();
         requestList = new ArrayList<>();
     }
 
-    public ItemEntity(Long itemId, String itemTitle, String itemDescription, Boolean itemAvailable, Double costPerDay, Category category, CustomerEntity customerEntity) {
-        this.itemId = itemId;
-        this.itemTitle = itemTitle;
-        this.itemDescription = itemDescription;
-        this.itemAvailable = true; //default true
+    public ListingEntity(Long listingId, String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, Category category, CustomerEntity customerEntity) {
+        this.listingId = listingId;
+        this.listingTitle = listingTitle;
+        this.listingDescription = listingDescription;
+        this.listingAvailable = true; //default true
         this.costPerDay = costPerDay;
         this.category = category;
         this.customerEntity = customerEntity;
@@ -66,28 +65,28 @@ public class ItemEntity implements Serializable {
 
     
     
-    public String getItemTitle() {
-        return itemTitle;
+    public String getListingTitle() {
+        return listingTitle;
     }
 
-    public void setItemTitle(String itemTitle) {
-        this.itemTitle = itemTitle;
+    public void setListingTitle(String listingTitle) {
+        this.listingTitle = listingTitle;
     }
 
-    public String getItemDescription() {
-        return itemDescription;
+    public String getListingDescription() {
+        return listingDescription;
     }
 
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
+    public void setListingDescription(String listingDescription) {
+        this.listingDescription = listingDescription;
     }
 
-    public Boolean getItemAvailable() {
-        return itemAvailable;
+    public Boolean getListingAvailable() {
+        return listingAvailable;
     }
 
-    public void setItemAvailable(Boolean itemAvailable) {
-        this.itemAvailable = itemAvailable;
+    public void setListingAvailable(Boolean listingAvailable) {
+        this.listingAvailable = listingAvailable;
     }
 
     public Double getCostPerDay() {
@@ -130,29 +129,29 @@ public class ItemEntity implements Serializable {
         this.feedbackList = feedbackList;
     }
 
-    public Long getItemId() {
-        return itemId;
+    public Long getListingId() {
+        return listingId;
     }
 
-    public void setgetItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setListingId(Long listingId) {
+        this.listingId = listingId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (itemId != null ? itemId.hashCode() : 0);
+        hash += (listingId != null ? listingId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ItemEntity)) {
+        if (!(object instanceof ListingEntity)) {
             return false;
         }
-        ItemEntity other = (ItemEntity) object;
-        if ((this.itemId == null && other.itemId != null) || (this.itemId != null && !this.itemId.equals(other.itemId))) {
+        ListingEntity other = (ListingEntity) object;
+        if ((this.listingId == null && other.listingId != null) || (this.listingId != null && !this.listingId.equals(other.listingId))) {
             return false;
         }
         return true;
@@ -160,7 +159,7 @@ public class ItemEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.ItemEntity[ id=" + itemId + " ]";
+        return "entity.ListingEntity[ id=" + listingId + " ]";
     }
     
 }

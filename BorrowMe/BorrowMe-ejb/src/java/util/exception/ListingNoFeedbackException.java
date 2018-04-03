@@ -1,11 +1,11 @@
 package util.exception;
 
-public class ItemNoFeedbackException extends Exception {
+public class ListingNoFeedbackException extends Exception {
 
-    public ItemNoFeedbackException() {
+    public ListingNoFeedbackException() {
     }
 
-    public ItemNoFeedbackException(String msg) {
+    public ListingNoFeedbackException(String msg) {
         super(msg);
     }
 }
