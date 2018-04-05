@@ -11,13 +11,10 @@
             <web-module-libraries>
                 <library dirs="100">
                     <file>${reference.BorrowMe-ejb.dist}</file>
-                </library>
-                <library dirs="200">
-                    <file>${libs.PrimeFaces_6.1.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.primefaces.classpath}</file>
+                    <file>${libs.PrimeFaces_6.1.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

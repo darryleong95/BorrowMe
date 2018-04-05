@@ -1,3 +1,6 @@
 /BorrowMe/BorrowMe-ejb/build/
 /BorrowMe/BorrowMe-ejb/nbproject/private/
 /BorrowMe/nbproject/private/
+/BorrowMe/build/
+/BorrowMe/dist/
+/BorrowMe/BorrowMe-war/dist/
