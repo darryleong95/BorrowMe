@@ -15,66 +15,52 @@ public class FeedbackSessionBean implements FeedbackSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public FeedbackEntity createFeedback(FeedbackEntity feedback) {
+    public Long createFeedback(FeedbackEntity feedback) {
 
         em.persist(feedback);
         em.flush();
         em.refresh(feedback);
 
-        return feedback;
+        return feedback.getFeedbackId();
     }
 
     @Override
-    public FeedbackEntity updateFeedback(FeedbackEntity feedback) {
-
-        em.merge(feedback);
-        return feedback;
-
-    }
-
-    @Override
-    public void deleteFeedback(Long feedbackId) {
-        FeedbackEntity feedbackEntity = em.find(FeedbackEntity.class, feedbackId);
-        em.remove(feedbackEntity);
-    }
-    
-    @Override
-    public void removeListingFeedback(Long feedbackId){
-        //remove feeback + rating
-        FeedbackEntity feedbackEntity = em.find(FeedbackEntity.class, feedbackId);
-        feedbackEntity.setListingRating(null);
-        feedbackEntity.setListingReview(null);
-        updateFeedback(feedbackEntity);
-    }
-    
-    @Override
-    public void removeLenderReviewBorrowerFeedback(Long feedbackId){
-        //remove feeback + rating
-        FeedbackEntity feedbackEntity = em.find(FeedbackEntity.class, feedbackId);
-        feedbackEntity.setLenderReviewBorrowerRating(null);
-        feedbackEntity.setLenderReviewBorrower(null);
-        updateFeedback(feedbackEntity);
-    }
-    
-    @Override
-    public void removeBorrowerReviewLenderFeedback(Long feedbackId){
-        //remove feeback + rating
-        FeedbackEntity feedbackEntity = em.find(FeedbackEntity.class, feedbackId);
-        feedbackEntity.setBorrowerReviewLenderRating(null);
-        feedbackEntity.setBorrowerReviewLender(null);
-        updateFeedback(feedbackEntity);
-    }
-
-
-    @Override
-    public FeedbackEntity retrieveFeedbackById (Long feedbackEntityId) throws FeedbackNotFoundException {
-
-        FeedbackEntity feedback = em.find(FeedbackEntity.class, feedbackEntityId);
-        if (feedback == null) {
-            throw new FeedbackNotFoundException("Feedback not found! \n");
+    public FeedbackEntity updateFeedbackAsBorrower(FeedbackEntity feedback) throws FeedbackNotFoundException {
+        if (feedback.getFeedbackId()!= null) {
+            FeedbackEntity feedbackToUpdate = retrieveFeedback(feedback.getFeedbackId());
+            feedbackToUpdate.setBorrowerReviewLender(feedback.getBorrowerReviewLender());
+            feedbackToUpdate.setBorrowerReviewLenderRating(feedback.getBorrowerReviewLenderRating());
+            feedbackToUpdate.setListingRating(feedback.getListingRating());
+            feedbackToUpdate.setListingReview(feedback.getListingReview());
+            System.out.println("***********************************Check Feedback update***********************************");
+            return retrieveFeedback(feedback.getFeedbackId());
+        } else {
+            throw new FeedbackNotFoundException("ID not provided for feedback to be updated");
         }
-        return feedback;
+    }
+    
+    @Override
+    public FeedbackEntity updateFeedbackAsLender(FeedbackEntity feedback) throws FeedbackNotFoundException {
+        if (feedback.getFeedbackId() != null) {
+            FeedbackEntity feedbackToUpdate = retrieveFeedback(feedback.getFeedbackId());
+            feedbackToUpdate.setLenderReviewBorrower(feedback.getLenderReviewBorrower());
+            feedbackToUpdate.setLenderReviewBorrowerRating(feedback.getLenderReviewBorrowerRating());
+            System.out.println("***********************************Check Feedback update***********************************");
+            return retrieveFeedback(feedback.getFeedbackId());
+        } else {
+            throw new FeedbackNotFoundException("ID not provided for feedback to be updated");
+        }
+    }
+    
+    @Override
+    public FeedbackEntity retrieveFeedback(Long id) throws FeedbackNotFoundException {
+        FeedbackEntity feedback = em.find(FeedbackEntity.class, id);
 
+        if (feedback != null) {
+            return feedback;
+        } else {
+            throw new FeedbackNotFoundException("Feedback " + id + " does not exist");
+        }
     }
 
 }

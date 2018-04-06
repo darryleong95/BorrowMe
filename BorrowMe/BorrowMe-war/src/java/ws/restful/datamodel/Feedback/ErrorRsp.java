@@ -1,6 +1,6 @@
 package ws.restful.datamodel.Feedback;
 
-import ws.restful.datamodel.Feedback.*;
+import ws.restful.datamodel.Customer.*;
 import javax.xml.bind.annotation.XmlType;
 
 

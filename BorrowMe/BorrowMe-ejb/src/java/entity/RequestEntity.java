@@ -14,6 +14,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -27,8 +29,10 @@ public class RequestEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requestId;
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date startDate;
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date endDate;
     @Column(nullable = false)
     private Integer noOfDays;
@@ -38,6 +42,8 @@ public class RequestEntity implements Serializable {
     private Boolean accepted;
     @Column(nullable = false)
     private Boolean overdue;
+    @Column(nullable = false)
+    private String message;
 
     
     @ManyToOne
@@ -65,12 +71,12 @@ public class RequestEntity implements Serializable {
         this.customerEntity = customerEntity;
     }
     
-    public ListingEntity getItemEntity() {
-        return listingEntity;
+    public ListingEntity getListingEntity() {
+        return getListingEntity();
     }
 
-    public void setItemEntity(ListingEntity listingEntity) {
-        this.listingEntity = listingEntity;
+    public void setListingEntity(ListingEntity listingEntity) {
+        this.setListingEntity(listingEntity);
     }
 
     public CustomerEntity getCustomerEntity() {
@@ -118,11 +124,11 @@ public class RequestEntity implements Serializable {
     }
 
     public void setNoOfDays(int noOfDays) {
-        this.noOfDays = noOfDays;
+        this.setNoOfDays((Integer) noOfDays);
     }
 
     public Boolean isPayment() {
-        return payment;
+        return getPayment();
     }
 
     public void setPayment(Boolean payment) {
@@ -130,7 +136,7 @@ public class RequestEntity implements Serializable {
     }
 
     public Boolean isAccepted() {
-        return accepted;
+        return getAccepted();
     }
 
     public void setAccepted(Boolean accepted) {
@@ -138,7 +144,7 @@ public class RequestEntity implements Serializable {
     }
 
     public boolean isOverdue() {
-        return overdue;
+        return getOverdue();
     }
 
     public void setOverdue(Boolean overdue) {
@@ -177,5 +183,47 @@ public class RequestEntity implements Serializable {
     public String toString() {
         return "entity.RequestEntity[ id=" + requestId + " ]";
     }
-    
+
+    /**
+     * @param noOfDays the noOfDays to set
+     */
+    public void setNoOfDays(Integer noOfDays) {
+        this.noOfDays = noOfDays;
+    }
+
+    /**
+     * @return the payment
+     */
+    public Boolean getPayment() {
+        return payment;
+    }
+
+    /**
+     * @return the accepted
+     */
+    public Boolean getAccepted() {
+        return accepted;
+    }
+
+    /**
+     * @return the overdue
+     */
+    public Boolean getOverdue() {
+        return overdue;
+    }
+
+    /**
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * @param message the message to set
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
 }

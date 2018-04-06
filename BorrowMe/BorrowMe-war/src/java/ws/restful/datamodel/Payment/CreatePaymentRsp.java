@@ -1,38 +1,27 @@
 package ws.restful.datamodel.Payment;
 
-import entity.PaymentEntity;
 import javax.xml.bind.annotation.XmlType;
 
-
-
-@XmlType(name = "createBookRsp", propOrder = {
+@XmlType(name = "createPaymentRsp", propOrder = {
     "id"
 })
 
-public class CreatePaymentRsp
-{    
-    private PaymentEntity paymentEntity;
+public class CreatePaymentRsp {
 
-    
-    
-    public CreatePaymentRsp()
-    {
+    private Long id;
+
+    public CreatePaymentRsp() {
     }
 
-    
-    
-    public CreatePaymentRsp(PaymentEntity paymentEntity)
-    {
-        this.paymentEntity = paymentEntity;
+    public CreatePaymentRsp(Long id) {
+        this.id = id;
     }
 
-    
-    
-    public PaymentEntity getPaymentEntity() {
-        return paymentEntity;
+    public Long getId() {
+        return id;
     }
 
-    public void setPaymentEntity(PaymentEntity paymentEntity) {
-        this.paymentEntity = paymentEntity;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -6,47 +6,47 @@
 package ejb.session.stateless;
 
 import entity.PaymentEntity;
-import java.util.List;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import util.exception.InvalidPaymentException;
+import util.exception.CreatePaymentException;
+import util.exception.PaymentNotFoundException;
 
 /**
  *
  * @author User
  */
 @Stateless
-@Local(PaymentSessionBeanLocal.class)
 public class PaymentSessionBean implements PaymentSessionBeanLocal {
 
     @PersistenceContext(unitName = "BorrowMe-ejbPU")
     private EntityManager em;
 
+    //This is supposed to be created upon accepting of request
     @Override
-    public PaymentEntity createPayment(PaymentEntity payment) {
+    public Long createPayment(PaymentEntity payment) throws CreatePaymentException {
         em.persist(payment);
         em.flush();
-        em.refresh(payment);
-        return payment;
+        payment.setStatus(false); //set to false by default
+        return payment.getId();
     }
-    
+
     @Override
-    public List<PaymentEntity> retrievePaymentList(){
-        Query query = em.createQuery("SELECT s FROM PaymentEntity s");
-        return query.getResultList();
-    } 
-    
-    @Override
-    public PaymentEntity retrievePaymentById(Long paymentId)throws InvalidPaymentException{
-        PaymentEntity paymentEntity = em.find(PaymentEntity.class, paymentId);
-        if(paymentEntity != null){
-            return paymentEntity;
-        } 
-        else{
-            throw new InvalidPaymentException("Invalid bid ID");
+    public PaymentEntity retrievePayment(Long id) throws PaymentNotFoundException {
+        PaymentEntity payment = em.find(PaymentEntity.class, id);
+        if (payment != null) {
+            return payment;
+        } else {
+            throw new PaymentNotFoundException("Payment " + id + " does not exist");
         }
     }
+
+    @Override
+    public PaymentEntity makePayment(Long id, Double paymentAmount) throws PaymentNotFoundException {
+        PaymentEntity payment = retrievePayment(id);
+        payment.setTotalAmount(paymentAmount);
+        payment.setStatus(true);
+        return retrievePayment(payment.getId());
+    }
+
 }

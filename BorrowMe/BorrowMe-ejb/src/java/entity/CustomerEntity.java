@@ -13,13 +13,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import util.enumeration.CustomerTypeEnum;
 
-/**
- *
- * @author User
- */
+@NamedQueries({
+    @NamedQuery(name = "selectAllCustomers", query = "SELECT c FROM CustomerEntity c")
+})
+
 @Entity
 public class CustomerEntity implements Serializable {
 
@@ -49,7 +51,7 @@ public class CustomerEntity implements Serializable {
     private List<RequestEntity> requestList;
 
     @OneToMany(mappedBy = "customerEntity")
-    private List<ListingEntity> itemList;
+    private List<ListingEntity> listingList;
 
     //List of feedback of a lender
     @OneToMany(mappedBy = "customerEntity")
@@ -57,12 +59,11 @@ public class CustomerEntity implements Serializable {
     
     public CustomerEntity() {
         requestList = new ArrayList<>();
-        itemList = new ArrayList<>();
+        listingList = new ArrayList<>();
         feedbackList = new ArrayList<>();
     }
 
-    public CustomerEntity(Long customerId, String firstName, String lastName, String username, String password, String identificationNo, String contactNo, String email) {
-        this.customerId = customerId;
+    public CustomerEntity(String firstName, String lastName, String username, String password, String identificationNo, String contactNo, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -81,12 +82,12 @@ public class CustomerEntity implements Serializable {
         this.requestList = requestList;
     }
 
-    public List<ListingEntity> getItemList() {
-        return itemList;
+    public List<ListingEntity> getListingList() {
+        return listingList;
     }
 
-    public void setItemList(List<ListingEntity> itemList) {
-        this.itemList = itemList;
+    public void setListingList(List<ListingEntity> listingList) {
+        this.listingList = listingList;
     }
 
     public List<FeedbackEntity> getFeedbackList() {
@@ -161,13 +162,14 @@ public class CustomerEntity implements Serializable {
         this.customerType = customerType;
     }
 
-    public Long getcustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setcustomerId(Long customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
+
 
     @Override
     public int hashCode() {

@@ -11,40 +11,51 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
  *
  * @author User
  */
+
 @Entity
 public class PaymentEntity implements Serializable {
-
-    @OneToOne(mappedBy = "paymentEntity")
-    private RequestEntity requestEntity;
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentId;
-    @Column(nullable = false)
+    private Long id;
+
+    @Column(nullable = true)
     private Double totalAmount;
+    
+    @Column(nullable = false)
+    private Boolean status;
+    
+    @OneToOne(mappedBy = "paymentEntity")
+    private RequestEntity requestEntity;
+    
+    @ManyToOne
+    private ListingEntity listingEntity;
 
-    public PaymentEntity() {
-    }
-
-    public PaymentEntity(Double totalAmount) {
-        this.totalAmount = totalAmount;
+    public PaymentEntity(){
+        
     }
     
-    public RequestEntity getRequestEntity() {
-        return requestEntity;
+    public PaymentEntity(Double totalAmount, Boolean status){
+        this.totalAmount = totalAmount;
+        this.status = status;
     }
 
-    public void setRequestEntity(RequestEntity requestEntity) {
-        this.requestEntity = requestEntity;
+    public Boolean getStatus(){
+        return status;
     }
-
+    
+    public void setStatus(Boolean status){
+        this.status = status;
+    }
+    
     public Double getTotalAmount() {
         return totalAmount;
     }
@@ -52,30 +63,30 @@ public class PaymentEntity implements Serializable {
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
     }
-
-    public Long getPaymentId() {
-        return paymentId;
+    
+    public Long getId() {
+        return id;
     }
 
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (paymentId != null ? paymentId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the paymentId fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof PaymentEntity)) {
             return false;
         }
         PaymentEntity other = (PaymentEntity) object;
-        if ((this.paymentId == null && other.paymentId != null) || (this.paymentId != null && !this.paymentId.equals(other.paymentId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -83,7 +94,7 @@ public class PaymentEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.PaymentEntity[ id=" + paymentId + " ]";
+        return "entity.Payment[ id=" + id + " ]";
     }
     
 }

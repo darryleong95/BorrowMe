@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.CustomerEntity;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.CustomerExistException;
 import util.exception.CustomerNotFoundException;
@@ -18,14 +19,18 @@ import util.exception.InvalidLoginCredentialException;
 @Local
 public interface CustomerSessionBeanLocal {
 
-    public CustomerEntity createCustomer(CustomerEntity customer) throws CustomerExistException;
+    public Long createCustomer(CustomerEntity customer) throws CustomerExistException;
 
     public CustomerEntity retrieveCustomerByUsername(String username) throws CustomerNotFoundException;
 
-    public void updateCustomer(CustomerEntity customer);
+    public CustomerEntity updateCustomer(CustomerEntity customer) throws CustomerNotFoundException;
 
     public CustomerEntity retrieveCustomerByCustomerId(Long custId) throws CustomerNotFoundException;
 
     public CustomerEntity customerLogin(String username, String password) throws InvalidLoginCredentialException;
+
+    public List<CustomerEntity> retrieveAllCustomers();
+
+    public Boolean doLogin(String username, String password) throws CustomerNotFoundException;
     
 }

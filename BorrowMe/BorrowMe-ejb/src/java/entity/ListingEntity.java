@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Locale.Category;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,6 +39,7 @@ public class ListingEntity implements Serializable {
     @Column(nullable = false)
     private Double costPerDay;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Category category;
     
     @ManyToOne
@@ -47,6 +50,9 @@ public class ListingEntity implements Serializable {
     
     @OneToMany(mappedBy = "listingEntity")
     private List<FeedbackEntity> feedbackList;
+    
+    @OneToMany(mappedBy = "listingEntity")
+    private List<PaymentEntity> paymentEntitys;
 
     public ListingEntity() {
         feedbackList = new ArrayList<>();
@@ -160,6 +166,20 @@ public class ListingEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.ListingEntity[ id=" + listingId + " ]";
+    }
+
+    /**
+     * @return the paymentEntitys
+     */
+    public List<PaymentEntity> getPaymentEntitys() {
+        return paymentEntitys;
+    }
+
+    /**
+     * @param paymentEntitys the paymentEntitys to set
+     */
+    public void setPaymentEntitys(List<PaymentEntity> paymentEntitys) {
+        this.paymentEntitys = paymentEntitys;
     }
     
 }
