@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.CustomerEntity;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,7 +32,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public CustomerEntity createCustomer(CustomerEntity customer) throws CustomerExistException {
+    public Long createCustomer(CustomerEntity customer) throws CustomerExistException {
         try {
             em.persist(customer);
             em.flush();
@@ -41,12 +42,30 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
                 throw new CustomerExistException("Customer with same Identification number already exists!\n");
             }
         }
-        return customer;
+        return customer.getCustomerId();
     }
 
     @Override
-    public void updateCustomer(CustomerEntity customer) {
-        em.merge(customer);
+    public List<CustomerEntity> retrieveAllCustomers() {
+        Query query = em.createNamedQuery("selectAllCustomers");
+        return query.getResultList();
+    }
+    
+    @Override
+    public CustomerEntity updateCustomer(CustomerEntity customer) throws CustomerNotFoundException {
+        if (customer.getCustomerId()!= null) {
+            CustomerEntity customerToUpdate = retrieveCustomerByCustomerId((Long) customer.getCustomerId());
+            customerToUpdate.setContactNo(customer.getContactNo());
+            customerToUpdate.setFirstName(customer.getFirstName());
+            customerToUpdate.setLastName(customer.getLastName());
+            customerToUpdate.setPassword(customer.getPassword());
+            customerToUpdate.setUsername(customer.getUsername());
+            customerToUpdate.setIdentificationNo(customer.getIdentificationNo());
+            System.out.println("***********************************Check***********************************");
+            return retrieveCustomerByCustomerId((Long) customer.getCustomerId());
+        } else {
+            throw new CustomerNotFoundException("ID not provided for customer to be updated");
+        }
     }
 
     @Override
@@ -82,6 +101,22 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             }
         } catch (CustomerNotFoundException ex) {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+        }
+    }
+    
+    @Override
+    public Boolean doLogin(String username, String password) throws CustomerNotFoundException {
+        try {
+            CustomerEntity customer = retrieveCustomerByUsername(username);
+            System.out.println("PRINTS THIS");
+            if (customer.getPassword().equals(password)) {
+                System.out.println("CAME THROUGH");
+                return true;
+            } else {
+                return false;
+            }
+        } catch (CustomerNotFoundException ex) {
+            throw new CustomerNotFoundException("Customer Username " + username + " does not exist!");
         }
     }
     

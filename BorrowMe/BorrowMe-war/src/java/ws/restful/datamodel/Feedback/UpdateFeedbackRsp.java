@@ -1,19 +1,19 @@
-package ws.restful.datamodel.Customer;
+package ws.restful.datamodel.Feedback;
 
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(name = "createCustomerRsp", propOrder = {
+@XmlType(name = "createFeedbackRsp", propOrder = {
     "id"
 })
 
-public class CreateCustomerRsp {
+public class UpdateFeedbackRsp {
 
     private Long id;
 
-    public CreateCustomerRsp() {
+    public UpdateFeedbackRsp() {
     }
 
-    public CreateCustomerRsp(Long id) {
+    public UpdateFeedbackRsp(Long id) {
         this.id = id;
     }
 

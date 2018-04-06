@@ -14,21 +14,15 @@ import javax.xml.bind.annotation.XmlType;
 public class UpdateCustomerReq 
 {
     private CustomerEntity customer;
-
-    
     
     public UpdateCustomerReq() 
     {
     }
-
-    
-    
+ 
     public UpdateCustomerReq(CustomerEntity customer)
     {
         this.customer = customer;
     }
-    
-    
     
     public CustomerEntity getCustomer() {
         return customer;

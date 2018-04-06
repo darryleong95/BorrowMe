@@ -6,15 +6,17 @@
 package ejb.session.stateless;
 
 import entity.PaymentEntity;
-import java.util.List;
-import util.exception.InvalidPaymentException;
+import javax.ejb.Local;
+import util.exception.CreatePaymentException;
+import util.exception.PaymentNotFoundException;
 
+@Local
 public interface PaymentSessionBeanLocal {
 
-    public PaymentEntity createPayment(PaymentEntity payment);
+    public PaymentEntity retrievePayment(Long id) throws PaymentNotFoundException;
 
-    public List<PaymentEntity> retrievePaymentList();
+    public PaymentEntity makePayment(Long id, Double paymentAmount) throws PaymentNotFoundException;
 
-    public PaymentEntity retrievePaymentById(Long paymentId) throws InvalidPaymentException;
-    
+    public Long createPayment(PaymentEntity payment) throws CreatePaymentException;
 }
+    

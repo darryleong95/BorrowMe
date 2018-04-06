@@ -21,14 +21,10 @@ public class CreatePaymentReq
     {
     }
 
-    
-    
     public CreatePaymentReq(PaymentEntity payment)
     {
         this.payment = payment;
     }
-
-    
     
     public PaymentEntity getPayment() {
         return payment;

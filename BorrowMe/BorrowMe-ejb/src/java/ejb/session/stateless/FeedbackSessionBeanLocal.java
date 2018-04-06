@@ -12,18 +12,12 @@ import util.exception.FeedbackNotFoundException;
 @Local
 public interface FeedbackSessionBeanLocal {
 
-    public FeedbackEntity createFeedback(FeedbackEntity feedback);
+    public Long createFeedback(FeedbackEntity feedback);
 
-    public FeedbackEntity updateFeedback(FeedbackEntity feedback);
+    public FeedbackEntity updateFeedbackAsBorrower(FeedbackEntity feedback) throws FeedbackNotFoundException;
+    
+    public FeedbackEntity updateFeedbackAsLender(FeedbackEntity feedback) throws FeedbackNotFoundException;
 
-    public void deleteFeedback(Long feedbackId);
-
-    public FeedbackEntity retrieveFeedbackById(Long feedbackEntityId) throws FeedbackNotFoundException;
-
-    public void removeListingFeedback(Long feedbackId);
-
-    public void removeLenderReviewBorrowerFeedback(Long feedbackId);
-
-    public void removeBorrowerReviewLenderFeedback(Long feedbackId);
+    public FeedbackEntity retrieveFeedback(Long id) throws FeedbackNotFoundException;
     
 }
