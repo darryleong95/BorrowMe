@@ -16,10 +16,17 @@
 
     <ui:define name="content">
 
+        <h:form>
+            <p:menubar>
+                <p:menuitem value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon="ui-icon-plusthick" />
+            </p:menubar>
+            <br/>
+        </h:form> 
 
-        <h:form id="form">
-            <p:dataGrid var="listing" value="#{viewAllListingsManagedBean.listings}" columns="3" layout="grid"
-                        rows="12" paginator="true" id="listing"
+
+        <h:form id="formAllListings">
+            <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewAllListingsManagedBean.listings}" var="listing" columns="3" layout="grid"
+                        rows="12" paginator="true"
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         rowsPerPageTemplate="6,12,16">
 
@@ -31,224 +38,85 @@
                     <h:panelGrid columns="1" style="width:100%">
 
                         <h:outputText value="#{listing.title}" />
-                        
+
                     </h:panelGrid>
                 </p:panel>
 
             </p:dataGrid>
         </h:form>
 
-
-
-
-
-
         <h:form id="formCreateNewListing">
-            <p:panel header="Create New Listing" toggleable="true" collapsed="true">
-                <p:messages id="messagesCreateNewListing" />
+
+            <p:dialog id="dialogCreateNewListing" widgetVar="dialogCreateNewListing" header="Add New Listing" closable="true">
+
+                <p:messages id="messagesCreateNewListing" redisplay="false" />
 
                 <p:panelGrid>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="listingTitle" value="Listing Title: " />
+                            <p:outputLabel for="title" value="Title: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="listingTitle" value="#{listingManagedBean.newListing.listingTitle}" maxlength="64" required="true" requiredMessage="Title is required" />
+                            <p:inputText id="title" value="#{viewAllListingsManagedBean.newListing.listingTitle}" required="true" requiredMessage="Name is required" />
                         </p:column>
                         <p:column>
-                            <p:message for="listingTitle"/>
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="listingDescription" value="Listing Description: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="listingDescription" value="#{listingManagedBean.newListing.listingDescription}" maxlength="1000" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="listingDescription"/>
+                            <p:message for="title" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="listingAvailable" value="Listing Available: " />
+                            <p:outputLabel for="description" value="Description:" />
                         </p:column>
                         <p:column>
-                            <p:selectBooleanButton id="listingAvailable" value="#{listingManagedBean.newListing.listingAvailable}" onLabel="Yes" offLabel="No"/>
+                            <p:inputText id="description" value="#{viewAllListingsManagedBean.newListing.listingDescription}" required="true" requiredMessage="Description is required" />
                         </p:column>
                         <p:column>
-                            <p:message for="listingAvailable"/>
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="costPerDay" value="Cost Per Day: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="costPerDay" value="#{listingManagedBean.newListing.costPerDay}"  required="true" requiredMessage="Cost Per Day is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="costPerDay"/>
+                            <p:message for="description" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="category" value="Category: " />
+                            <p:outputLabel for="cost" value="Cost (per day):" />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="category" value="#{listingManagedBean.newListing.category}" required="true" requiredMessage="Category is required" converter="categoryConverter">
-                                <f:selectItem itemValue="#{null}" itemLabel="[Select One Category]" noSelectionOption="true"/>
-                                <f:selectItems value="#{listingManagedBean.categoryEnum}" />
+                            <p:inputNumber id="cost" value="#{viewAllListingsManagedBean.newListing.costPerDay}" required="true" requiredMessage="Cost is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="cost" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="category" value="Category:" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="category" value="#{viewAllListingsManagedBean.newListing.category}" required="true" style="width:150px">
+                                <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{viewAllListingsManagedBean.categoryEnums}" />
                             </p:selectOneMenu>
                         </p:column>
                         <p:column>
-                            <p:message for="category"/>
+                            <p:message for="category" />
                         </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <h:form id="formListingPictureUpload" enctype="multipart/form-data">
+                            <p:panel header="Image Upload">
+                                <p:messages autoUpdate="true" redisplay="false" />
+                                <p:fileUpload fileUploadListener="#{viewAllListingsManagedBean.handleFileUpload}" />
+                            </p:panel>
+                        </h:form>
                     </p:row>
 
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton id="createNewListing" value="Save" icon="ui-icon-disk" update="@form formDataTable:dataTableListings" actionListener="#{listingManagedBean.saveNewListing}" />
-                        </p:column>
-                    </p:row>
-
-                </p:panelGrid>
-            </p:panel>
-
-        </h:form>
-
-        <h:form id="formDataTable">
-            <p:messages id="messages" redisplay="false" closable="true" />
-            <p:dataTable id="dataTableListings" widgetVar="dataTableListings" value="#{listingManagedBean.listings}" var="listing" rowKey="#{listing.listingId}" rowIndexVar="row"
-                         filteredValue="#{listingManagedBean.filteredListings}"
-                         rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
-
-                <f:facet name="header">
-                    <p:outputPanel style="text-align: right;">
-                        <h:outputText value="Search all fields:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('dataTableListing').filter()" style="width:300px" placeholder="Enter keyword"/>
-                    </p:outputPanel>
-                </f:facet>
-
-                <p:column headerText="Listing ID" sortBy="#{listing.listingId}" filterBy="#{listing.listingId}" filterMatchMode="contains">
-                    <h:outputText value="#{listing.listingId}" />
-                </p:column>
-
-                <p:column headerText="Listing Title" sortBy="#{listing.listingTitle}" filterBy="#{listing.listingTitle}" filterMatchMode="contains">
-                    <h:outputText value="#{listing.listingTitle}" />
-                </p:column>
-
-                <p:column headerText="Listing Description" sortBy="#{listing.listingDescription}" filterBy="#{listing.listingDescription}" filterMatchMode="contains">
-                    <h:outputText value="#{listing.listingDescription}" />
-                </p:column>
-
-                <p:column headerText="Listing Availabile" sortBy="#{listing.listingAvailable}" filterBy="#{listing.listingAvailable}" filterMatchMode="contains">
-                    <h:outputText value="#{listing.listingAvailable}" />
-                </p:column>
-
-                <p:column headerText="Cost per Day" sortBy="#{listing.costPerDay}" filterBy="#{listing.costPerDay}" filterMatchMode="contains">
-                    <h:outputText value="#{listing.costPerDay}" />
-                </p:column>
-
-                <p:column headerText="Category" sortBy="#{listing.category}" filterBy="#{listing.category}" filterMatchMode="contains">
-                    <f:facet name="filter">
-                        <p:selectOneMenu onchange="PF('dataTableListings').filter()">
-                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
-                            <f:selectItems value="#{listingManagedBean.categoryEnum}"/>
-                        </p:selectOneMenu>
-                    </f:facet>
-
-                    <h:outputText value="#{listing.category}"/>
-                </p:column>
-
-                <p:column headerText="Action" >
-                    <p:commandButton update="formViewListing" oncomplete="PF('dialogViewListing').show()" icon="ui-icon-document" title="View">
-                        <f:setPropertyActionListener value="#{listing}" target="#{listingManagedBean.selectedListingToView}" />
-                    </p:commandButton>
-                    <p:commandButton update="formUpdateListing" oncomplete="PF('dialogUpdateListing').show()" icon="ui-icon-pencil" title="Update">
-                        <f:setPropertyActionListener value="#{listing}" target="#{listingManagedBean.selectedListingToUpdate}" />
-                    </p:commandButton>
-                    <p:commandButton icon="ui-icon-trash" actionListener="#{listingManagedBean.deleteListing}" update="formDataTable:dataTableListings formDataListing:messages">
-                        <f:attribute name="listingToDelete" value="#{listing}" />
-                        <p:confirm header="Confirmation" message="Are you sure you want to delete #{listing.listingTitle} (Listing ID: #{listing.listingId})}?" icon="ui-icon-alert" />
-                    </p:commandButton>
-
-                </p:column>
-
-                <f:facet name="footer">
-                    <h:outputText value="Total records is #{listingManagedBean.listings.size()}" />
-                </f:facet>
-
-            </p:dataTable>
-
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-            </p:confirmDialog>
-
-        </h:form>
-
-        <h:form id="formViewListing">
-            <p:dialog id="dialogViewListing" widgetVar="dialogViewListing" header="View Listing" closable="true">
-                <p:panelGrid>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="listingId" value="Listing ID: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText id="listingId" value="#{listingManagedBean.selectedListingToView.listingId}" />
-                        </p:column>                 
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="listingTitle" value="Listing Title: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText id="listingTitle" value="#{listingManagedBean.selectedListingToView.listingTitle}" />
-                        </p:column>               
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="listingDescription" value="Listing Description: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText id="listingDescription" value="#{listingManagedBean.selectedListingToView.listingDescription}" />
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="listingAvailable" value="Listing Available: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText id="listingAvailable" value="#{listingManagedBean.selectedListingToView.listingAvailable}" />
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="costPerDay" value="Cost per Day: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText id="costPerDay" value="#{listingManagedBean.selectedListingToView.costPerDay}" />
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="category" value="Category: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText id="category" value="#{listingManagedBean.selectedListingToView.category}" />
+                            <p:commandButton type="reset" value="Clear" />&nbsp;
+                            <p:commandButton value="Add New Listing" update="@form formAllListings:dataGridAllListings" actionListener="#{viewAllListingsManagedBean.createNewListing}" oncomplete="PF('dialogCreateNewListing').show();" />
                         </p:column>
                     </p:row>
 
@@ -258,88 +126,9 @@
 
         </h:form>
 
-        <h:form id="formUpdateListing">
 
-            <p:dialog id="dialogUpdateListing" widgetVar="dialogUpdateListing" header="Update Listing" closable="true">
 
-                <p:messages id="messagesUpdateListing" redisplay="false" />
 
-                <p:panelGrid>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="listingTitle" value="Listing Title: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="listingTitle" value="#{listingManagedBean.selectedListingToUpdate.listingTitle}" maxlength="64" required="true" requiredMessage="Title is required"  />
-                        </p:column>
-                        <p:column>
-                            <p:message for="listingTitle" />
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="listingDescription" value="Listing Description: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="listingDescription" value="#{listingManagedBean.newListing.listingDescription}" maxlength="1000" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="listingDescription"/>
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="listingAvailable" value="Listing Available: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectBooleanButton id="listingAvailable" value="#{listingManagedBean.newListing.listingAvailable}" onLabel="Yes" offLabel="No"/>
-                        </p:column>
-                        <p:column>
-                            <p:message for="listingAvailable"/>
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="costPerDay" value="Cost Per Day: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="costPerDay" value="#{listingManagedBean.newListing.costPerDay}"  required="true" requiredMessage="Cost Per Day is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="costPerDay"/>
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="category" value="Category: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="category" value="#{listingManagedBean.newListing.category}" required="true" requiredMessage="Category is required" converter="categoryConverter">
-                                <f:selectItem itemValue="#{null}" itemLabel="[Select One Category]" noSelectionOption="true"/>
-                                <f:selectItems value="#{listingManagedBean.categoryEnum}" />
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:message for="category"/>
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column colspan="3">
-                            <p:commandButton id="updateBook" value="Save" icon="ui-icon-disk" update="@form formDataTable:dataTableListings" actionListener="#{listingManagedBean.saveListing}" oncomplete="PF('dialogUpdateListing').show();" />
-                        </p:column>
-                    </p:row>
-
-                </p:panelGrid>
-
-            </p:dialog>
-
-        </h:form>
 
     </ui:define>
 

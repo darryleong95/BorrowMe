@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package jsf.managedbean;
 
 import ejb.session.stateless.ListingSessionBeanLocal;
@@ -21,15 +17,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import util.enumeration.CategoryEnum;
+import util.exception.CreateListingException;
 import util.exception.InvalidListingException;
 
-/**
- *
- * @author katrina
- */
 @Named(value = "listingManagedBean")
 @SessionScoped
 public class ListingManagedBean implements Serializable {
+    
+    //NOT GOING TO BE USED ANYMORE
+    //GOING TO BE RETRANSITIONED TO VIEW ALL LISTINGS MANAGED BEAN
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
@@ -39,7 +35,7 @@ public class ListingManagedBean implements Serializable {
     private ListingEntity selectedListingToUpdate;
     private List<ListingEntity> listings;
     private List<ListingEntity> filteredListings;
-    
+
     private List<SelectItem> categoryEnum;
 
     /**
@@ -59,39 +55,39 @@ public class ListingManagedBean implements Serializable {
         getCategoryEnum().add(new SelectItem(CategoryEnum.ELECTRONICS, CategoryEnum.ELECTRONICS.toString()));
         getCategoryEnum().add(new SelectItem(CategoryEnum.OTHERS, CategoryEnum.OTHERS.toString()));
         getCategoryEnum().add(new SelectItem(CategoryEnum.PARTY, CategoryEnum.PARTY.toString()));
-        getCategoryEnum().add(new SelectItem(CategoryEnum.SPORTS,CategoryEnum.SPORTS.toString()));
+        getCategoryEnum().add(new SelectItem(CategoryEnum.SPORTS, CategoryEnum.SPORTS.toString()));
         getCategoryEnum().add(new SelectItem(CategoryEnum.VEHICLES, CategoryEnum.VEHICLES.toString()));
     }
 
     public void saveNewListing(ActionEvent event) {
-        Long newListingId = listingSessionBeanLocal.createListing(newListing).getListingId();
-        newListing.setListingId(newListingId);
-        listings.add(newListing);
-        
-        newListing = new ListingEntity();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing with Id"+newListingId+" created successfully", null));
+        try {
+            Long newListingId = listingSessionBeanLocal.createListing(newListing).getListingId();
+            newListing.setListingId(newListingId);
+            listings.add(newListing);
+
+            newListing = new ListingEntity();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing with Id" + newListingId + " created successfully", null));
+
+        } catch (CreateListingException ex) {
+        }
     }
-    
-    public void saveListing(ActionEvent event)
-    {
+
+    public void saveListing(ActionEvent event) {
         listingSessionBeanLocal.updateListing(getSelectedListingToUpdate());
-        
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Listing " + getSelectedListingToUpdate().getListingId() + " updated successfully", null));
     }
-    
-    
-    
-    public void deleteListing(javax.faces.event.ActionEvent event)
-    {
-        ListingEntity listingToDelete = (ListingEntity)event.getComponent().getAttributes().get("listingToDelete");
-        
+
+    public void deleteListing(javax.faces.event.ActionEvent event) {
+        ListingEntity listingToDelete = (ListingEntity) event.getComponent().getAttributes().get("listingToDelete");
+
         try {
             listingSessionBeanLocal.deleteListing(listingToDelete.getListingId());
         } catch (InvalidListingException ex) {
             Logger.getLogger(ListingManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         getListings().remove(listingToDelete);
-        
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Listing with listing Id" + listingToDelete.getListingId() + " deleted successfully", "Listing with listing Id" + listingToDelete.getListingId() + " deleted successfully"));
     }
 
@@ -178,7 +174,5 @@ public class ListingManagedBean implements Serializable {
     public void setCategoryEnum(List<SelectItem> categoryEnum) {
         this.categoryEnum = categoryEnum;
     }
-
-
 
 }

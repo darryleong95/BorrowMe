@@ -7,10 +7,11 @@ package ejb.session.stateless;
 
 import entity.ListingEntity;
 import java.util.List;
+import util.exception.CreateListingException;
 import util.exception.InvalidListingException;
 
 public interface ListingSessionBeanLocal {
-    public ListingEntity createListing(ListingEntity listingEntity);
+    public ListingEntity createListing(ListingEntity listingEntity) throws CreateListingException;
 
     public ListingEntity updateListing(ListingEntity listingEntity);
 

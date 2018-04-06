@@ -12,7 +12,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.CreateListingException;
 import util.exception.InvalidListingException;
 
 /**
@@ -27,19 +29,33 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public ListingEntity createListing(ListingEntity listingEntity){
-        em.persist(listingEntity);
-        em.flush();
-        em.refresh(listingEntity);
-        return listingEntity;
+    public ListingEntity createListing(ListingEntity newListing) throws CreateListingException {
+        //INCOMPLETE; STILL NEED TO GET MEMBER INFORMATION SOMEHOW AND ADD LISTING TO MEMBER AND VICE VERSA
+        
+        try {
+            em.persist(newListing);
+            em.flush();
+            em.refresh(newListing);
+            return newListing;
+        } catch (PersistenceException ex) {
+            if (ex.getCause() != null
+                    && ex.getCause().getCause() != null
+                    && ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException")) {
+                throw new CreateListingException("Listing with same name already exists");
+            } else {
+                throw new CreateListingException("An unexpected error has occurred: " + ex.getMessage());
+            }
+        } catch (Exception ex) {
+            throw new CreateListingException("An unexpected error has occurred: " + ex.getMessage());
+        }
     }
-    
+
     @Override
-    public ListingEntity updateListing(ListingEntity listingEntity){
+    public ListingEntity updateListing(ListingEntity listingEntity) {
         em.merge(listingEntity);
         return listingEntity;
     }
-    
+
     @Override
     public void deleteListing(Long listingId) throws InvalidListingException {
         ListingEntity listingEntity = em.find(ListingEntity.class, listingId);
@@ -49,20 +65,19 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             throw new InvalidListingException("Invalid listingEntity ID. Bid does not exists.");
         }
     }
-    
+
     @Override
-    public List<ListingEntity> retrieveListingList(){
+    public List<ListingEntity> retrieveListingList() {
         Query query = em.createQuery("SELECT s FROM ListingEntity s");
         return query.getResultList();
     }
-    
+
     @Override
-    public ListingEntity retrieveListingById(Long listingId) throws InvalidListingException{
+    public ListingEntity retrieveListingById(Long listingId) throws InvalidListingException {
         ListingEntity listingEntity = em.find(ListingEntity.class, listingId);
-        if(listingEntity != null){
+        if (listingEntity != null) {
             return listingEntity;
-        } 
-        else{
+        } else {
             throw new InvalidListingException("Invalid listingEntity ID");
         }
     }

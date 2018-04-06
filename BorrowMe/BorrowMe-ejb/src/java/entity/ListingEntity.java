@@ -8,7 +8,6 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale.Category;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import util.enumeration.CategoryEnum;
 
 /**
  *
@@ -40,7 +40,10 @@ public class ListingEntity implements Serializable {
     private Double costPerDay;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private CategoryEnum category;
+    
+    @Column
+    private List<String> images;
     
     @ManyToOne
     private CustomerEntity customerEntity;
@@ -52,14 +55,16 @@ public class ListingEntity implements Serializable {
     private List<FeedbackEntity> feedbackList;
     
     @OneToMany(mappedBy = "listingEntity")
-    private List<PaymentEntity> paymentEntitys;
+    private List<PaymentEntity> paymentEntities;
 
     public ListingEntity() {
-        feedbackList = new ArrayList<>();
-        requestList = new ArrayList<>();
+        feedbackList = new ArrayList<FeedbackEntity>();
+        requestList = new ArrayList<RequestEntity>();
+        paymentEntities = new ArrayList<PaymentEntity>();
+        images = new ArrayList<String>();
     }
 
-    public ListingEntity(Long listingId, String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, Category category, CustomerEntity customerEntity) {
+    public ListingEntity(Long listingId, String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, CategoryEnum category, CustomerEntity customerEntity) {
         this.listingId = listingId;
         this.listingTitle = listingTitle;
         this.listingDescription = listingDescription;
@@ -103,11 +108,11 @@ public class ListingEntity implements Serializable {
         this.costPerDay = costPerDay;
     }
 
-    public Category getCategory() {
+    public CategoryEnum getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryEnum category) {
         this.category = category;
     }
 
@@ -168,18 +173,21 @@ public class ListingEntity implements Serializable {
         return "entity.ListingEntity[ id=" + listingId + " ]";
     }
 
-    /**
-     * @return the paymentEntitys
-     */
-    public List<PaymentEntity> getPaymentEntitys() {
-        return paymentEntitys;
+
+    public List<PaymentEntity> getPaymentEntities() {
+        return paymentEntities;
     }
 
-    /**
-     * @param paymentEntitys the paymentEntitys to set
-     */
-    public void setPaymentEntitys(List<PaymentEntity> paymentEntitys) {
-        this.paymentEntitys = paymentEntitys;
+    public void setPaymentEntitys(List<PaymentEntity> paymentEntities) {
+        this.paymentEntities = paymentEntities;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
     
 }
