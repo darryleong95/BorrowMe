@@ -16,6 +16,33 @@
 
     <ui:define name="content">
 
+
+        <h:form id="form">
+            <p:dataGrid var="listing" value="#{viewAllListingsManagedBean.listings}" columns="3" layout="grid"
+                        rows="12" paginator="true" id="listing"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="6,12,16">
+
+                <f:facet name="header">
+                    Listings:
+                </f:facet>
+
+                <p:panel header="#{car.id}" style="text-align:center">
+                    <h:panelGrid columns="1" style="width:100%">
+
+                        <h:outputText value="#{listing.title}" />
+                        
+                    </h:panelGrid>
+                </p:panel>
+
+            </p:dataGrid>
+        </h:form>
+
+
+
+
+
+
         <h:form id="formCreateNewListing">
             <p:panel header="Create New Listing" toggleable="true" collapsed="true">
                 <p:messages id="messagesCreateNewListing" />
@@ -159,7 +186,7 @@
                 </f:facet>
 
             </p:dataTable>
-            
+
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
@@ -170,7 +197,7 @@
         <h:form id="formViewListing">
             <p:dialog id="dialogViewListing" widgetVar="dialogViewListing" header="View Listing" closable="true">
                 <p:panelGrid>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="listingId" value="Listing ID: " />
@@ -179,7 +206,7 @@
                             <h:outputText id="listingId" value="#{listingManagedBean.selectedListingToView.listingId}" />
                         </p:column>                 
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="listingTitle" value="Listing Title: " />
@@ -188,7 +215,7 @@
                             <h:outputText id="listingTitle" value="#{listingManagedBean.selectedListingToView.listingTitle}" />
                         </p:column>               
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="listingDescription" value="Listing Description: " />
@@ -206,7 +233,7 @@
                             <h:outputText id="listingAvailable" value="#{listingManagedBean.selectedListingToView.listingAvailable}" />
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="costPerDay" value="Cost per Day: " />
@@ -226,11 +253,11 @@
                     </p:row>
 
                 </p:panelGrid>
-                
+
             </p:dialog>
-            
+
         </h:form>
-        
+
         <h:form id="formUpdateListing">
 
             <p:dialog id="dialogUpdateListing" widgetVar="dialogUpdateListing" header="Update Listing" closable="true">
@@ -238,7 +265,7 @@
                 <p:messages id="messagesUpdateListing" redisplay="false" />
 
                 <p:panelGrid>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="listingTitle" value="Listing Title: " />
@@ -250,7 +277,7 @@
                             <p:message for="listingTitle" />
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="listingDescription" value="Listing Description: " />
@@ -313,7 +340,7 @@
             </p:dialog>
 
         </h:form>
-        
+
     </ui:define>
 
     <ui:define name="bottom">

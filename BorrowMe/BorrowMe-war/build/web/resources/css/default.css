@@ -1,29 +1,151 @@
+.ui-widget {
+    font-size: small;
+}
+
+.ui-column-header {
+    font-size: small;
+}
+
+.ui-column-title {
+    font-size: small;
+}
+
+.ui-datatable {
+    font-size: small;
+}
+
+.ui-datatable-header {
+    font-size: small;
+}
+
+.ui-datatable-footer {
+    font-size: small;
+}
+
+.ui-datatable-column {
+    font-size: small;
+}
+
+.ui-sortable-column {
+    font-size: small;
+}
+
+.ui-sortable-column-icon {
+    font-size: small;
+}
+
+.ui-datatable-data {
+    font-size: small;
+}
+
+div.ui-growl {
+   left: 10;
+}
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "verdana", "arial", "sans-serif";
+}
+
 body {
-    background-color: #ffffff;
-    font-size: 12px;
-    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    color: #000000;  
-    margin: 10px;
+    display: block;
+    width: 99%;
+    margin: 0.5% 0.5% 0.5% 0.5%;
 }
 
-h1 {
-    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    border-bottom: 1px solid #AFAFAF; 
-    font-size:  16px;
+p {
+    padding: 5px 0px 5px 0px;
+}
+
+form {
+    display: block;
+}
+
+table {
+    display: block;
+}
+
+th, td {    
+    padding: 3px 3px 3px 3px;
+}
+
+ul {
+    display: block;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.header {
+    display: block;
+    width: 100%;
+    padding: 3px 3px 3px 3px;
+    background-color: whitesmoke;
+}
+
+.mainmenu {
+    display: block;
+    width: 15%;
+    margin: 0.5% 0% 0.5% 0%;
+    padding: 3px 3px 3px 3px;
+    float: left;
+    background-color: whitesmoke;
+}
+
+.content {
+    display: block;
+    width: 82.5%;
+    margin: 0.5% 0.5% 0.5% 0.5%;
+    padding: 3px 3px 3px 3px;
+    float: right;
+}
+
+.footer {
+    display: block;
+    width: 100%;
+    margin: 0.5% 0% 0% 0%;
+    padding: 3px 3px 3px 3px;
+    clear: both;
+    background-color: whitesmoke;
+}
+
+.infoText {
+    color: blue;
+}
+
+.errorText {
+    color: red;
+}
+
+.infoTexts {
+    margin-left: 20px;
+    color: blue;
+}
+
+.errorTexts {
+    margin-left: 20px;
+    color: red;
+}
+
+.dataTable {
+    border-style: solid;
+    border-width: thin;
+}
+
+.motdTitle {
+    background-color: grey;
+    color: white;
     font-weight: bold;
-    margin: 0px;
-    padding: 0px;
-    color: #D20005;
 }
 
-a:link, a:visited {
-  color: #045491;
-  font-weight : bold;
-  text-decoration: none;
-}
-
-a:link:hover, a:visited:hover  {
-  color: #045491;
-  font-weight : bold;
-  text-decoration : underline;
+.motdMessage {
+    background-color: lightsteelblue;
 }
