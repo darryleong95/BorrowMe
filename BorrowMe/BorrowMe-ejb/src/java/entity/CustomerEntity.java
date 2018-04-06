@@ -49,7 +49,7 @@ public class CustomerEntity implements Serializable {
     private List<RequestEntity> requestList;
 
     @OneToMany(mappedBy = "customerEntity")
-    private List<ListingEntity> itemList;
+    private List<ListingEntity> listingList;
 
     //List of feedback of a lender
     @OneToMany(mappedBy = "customerEntity")
@@ -57,7 +57,7 @@ public class CustomerEntity implements Serializable {
     
     public CustomerEntity() {
         requestList = new ArrayList<>();
-        itemList = new ArrayList<>();
+        listingList = new ArrayList<>();
         feedbackList = new ArrayList<>();
     }
 
@@ -81,12 +81,12 @@ public class CustomerEntity implements Serializable {
         this.requestList = requestList;
     }
 
-    public List<ListingEntity> getItemList() {
-        return itemList;
+    public List<ListingEntity> getListingList() {
+        return listingList;
     }
 
-    public void setItemList(List<ListingEntity> itemList) {
-        this.itemList = itemList;
+    public void setListingList(List<ListingEntity> listingList) {
+        this.listingList = listingList;
     }
 
     public List<FeedbackEntity> getFeedbackList() {

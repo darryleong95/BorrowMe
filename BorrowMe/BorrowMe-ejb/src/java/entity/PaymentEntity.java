@@ -20,16 +20,16 @@ import javax.persistence.OneToOne;
 @Entity
 public class PaymentEntity implements Serializable {
 
-    @OneToOne(mappedBy = "paymentEntity")
-    private RequestEntity requestEntity;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
     @Column(nullable = false)
     private Double totalAmount;
-
+    
+    @OneToOne(mappedBy = "paymentEntity")
+    private RequestEntity requestEntity;
+    
     public PaymentEntity() {
     }
 
@@ -85,5 +85,4 @@ public class PaymentEntity implements Serializable {
     public String toString() {
         return "entity.PaymentEntity[ id=" + paymentId + " ]";
     }
-    
 }
