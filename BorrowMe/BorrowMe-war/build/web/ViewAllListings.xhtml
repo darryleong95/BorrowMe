@@ -6,14 +6,6 @@
                 template="./template/defaultTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui">
 
-    <ui:define name="top">
-        top
-    </ui:define>
-
-    <ui:define name="left">
-        left
-    </ui:define>
-
     <ui:define name="content">
 
         <h:form>
@@ -22,7 +14,6 @@
             </p:menubar>
             <br/>
         </h:form> 
-
 
         <h:form id="formAllListings">
             <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewAllListingsManagedBean.listings}" var="listing" columns="3" layout="grid"
@@ -34,10 +25,12 @@
                     Listings:
                 </f:facet>
 
-                <p:panel header="#{car.id}" style="text-align:center">
+                <p:panel header="#{listing.listingId}" style="text-align:center">
                     <h:panelGrid columns="1" style="width:100%">
-
-                        <h:outputText value="#{listing.title}" />
+                        <f:attribute name="image" value="#{listing.firstImage}" />
+                        <p:graphicImage value="#{viewAllListingsManagedBean.getImage(listing)}" />
+                        <h:outputText value="#{listing.listingTitle}" />
+                        <h:outputText value="#{listing.firstImage}" />
 
                     </h:panelGrid>
                 </p:panel>
@@ -51,7 +44,7 @@
 
                 <p:messages id="messagesCreateNewListing" redisplay="false" />
 
-                <p:panelGrid>
+                <p:panelGrid rendered="#{sessionScope['isLogin']}">
 
                     <p:row>
                         <p:column>
@@ -105,12 +98,20 @@
                     </p:row>
 
                     <p:row>
-                        <h:form id="formListingPictureUpload" enctype="multipart/form-data">
-                            <p:panel header="Image Upload">
-                                <p:messages autoUpdate="true" redisplay="false" />
-                                <p:fileUpload fileUploadListener="#{viewAllListingsManagedBean.handleFileUpload}" />
-                            </p:panel>
-                        </h:form>
+                        <p:column>
+                            <p:outputLabel value="Image: (Optional)" />
+                        </p:column>
+                        <p:column>
+                            <h:form id="formListingPictureUpload" enctype="multipart/form-data">
+                                <p:panel header="Image Upload">
+                                    <p:messages autoUpdate="true" redisplay="false" />
+                                    <p:fileUpload fileUploadListener="#{viewAllListingsManagedBean.handleFileUpload}" />
+                                </p:panel>
+                            </h:form>
+                        </p:column>
+
+                        <p:column>
+                        </p:column>
                     </p:row>
 
                     <p:row>
@@ -122,18 +123,15 @@
 
                 </p:panelGrid>
 
+                <p:panelGrid  rendered="#{!sessionScope['isLogin']}">
+                    <p:outputLabel value="NOT LOGGED IN!!!!!"></p:outputLabel>
+                </p:panelGrid>
+                <br/>
+
             </p:dialog>
 
         </h:form>
 
-
-
-
-
-    </ui:define>
-
-    <ui:define name="bottom">
-        bottom
     </ui:define>
 
 </ui:composition>

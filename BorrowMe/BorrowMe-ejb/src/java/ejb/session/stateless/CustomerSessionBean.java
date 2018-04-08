@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.stateless;
 
 import entity.CustomerEntity;
@@ -20,10 +15,6 @@ import util.exception.CustomerExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 
-/**
- *
- * @author User
- */
 @Stateless
 @Local(CustomerSessionBeanLocal.class)
 public class CustomerSessionBean implements CustomerSessionBeanLocal {
@@ -32,14 +23,14 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public Long createCustomer(CustomerEntity customer) throws CustomerExistException {
+    public long createCustomer(CustomerEntity customer) throws CustomerExistException {
         try {
             em.persist(customer);
             em.flush();
             em.refresh(customer);
         } catch (PersistenceException ex) {
             if (ex.getCause() != null && ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException")) {
-                throw new CustomerExistException("Customer with same Identification number already exists!\n");
+                throw new CustomerExistException("Customer already exists!\n");
             }
         }
         return customer.getCustomerId();

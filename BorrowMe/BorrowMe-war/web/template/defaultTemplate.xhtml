@@ -3,74 +3,75 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-    
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
     <h:head>
-        <title>Gold Class Online (GCO)</title>      
+        <title>Borrowme</title>      
         <h:outputStylesheet library="css" name="default.css" />
     </h:head>
-    
+
     <h:body>
-        
+
         <p:layout fullPage="true">
-            
+
             <p:layoutUnit position="north">
-                
-                <h1>Gold Class Online</h1>
-            
-               
-                
+
+                <h1>Borrowme</h1>
+                <ez:LoginComponent />
+
             </p:layoutUnit>
-            
+
             <p:layoutUnit size="200" position="west">
-                
+
                 <h3>Main Menu</h3>
                 <br/>
-                
+
                 <h:form>
-                    
+
                     <p:menu style="width:180px;">
 
                         <p:submenu label="System">
                             <p:menuitem value="Home" outcome="index" icon="ui-icon-home" />
-                            <p:menuitem value="Logout" actionListener="#{indexManagedBean.logout}" icon="ui-icon-unlocked" rendered="#{sessionScope['isLogin']}" />
+                            <p:menuitem value="Login" outcome="Login.xhtml" icon="ui-icon-home" rendered="#{!sessionScope['isLogin']}" />
+                            <p:menuitem value="Logout" actionListener="#{loginManagedBean.logout}" icon="ui-icon-unlocked" rendered="#{sessionScope['isLogin']}" />
                         </p:submenu>
-                        
+
                         <p:submenu label="Admin Portal">
                             <p:menuitem value="View All Listings" outcome="ViewAllListings.xhtml" icon="ui-icon-cart" />
                             <p:menuitem value="Movie Management" outcome="index.xhtml" icon="ui-icon-arrowreturnthick-1-w " />
                         </p:submenu>
-                        
+
                         <p:submenu label="Operations Portal">
                             <p:menuitem value="View All Halls" outcome="index.xhtml" icon="ui-icon-person" />
-                          
+
                         </p:submenu>
-                        
+
                         <p:submenu label="General">
                             <p:menuitem value="About" outcome="index" icon="ui-icon-info" />
                             <p:menuitem value="Help" outcome="index" icon="ui-icon-help" />
                         </p:submenu>
-                        
+
                     </p:menu>
-                    
+
                 </h:form>
-                
+
             </p:layoutUnit>
-            
+
             <p:layoutUnit position="center" >
-                
+
                 <ui:insert name="content">Content</ui:insert>
-                
+
             </p:layoutUnit>
-            
+
             <p:layoutUnit position="south" >
-                
+
                 <h6>&copy; 2018 IS3106. All Rights Reserved.</h6>
-                
+
             </p:layoutUnit>
-        
+
         </p:layout>
-        
+
     </h:body>
-    
+
 </html>

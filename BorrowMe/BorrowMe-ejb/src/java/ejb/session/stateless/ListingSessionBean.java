@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.stateless;
 
+import entity.CustomerEntity;
 import entity.ListingEntity;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,23 +14,24 @@ import javax.persistence.Query;
 import util.exception.CreateListingException;
 import util.exception.InvalidListingException;
 
-/**
- *
- * @author User
- */
 @Stateless
 @Local(ListingSessionBeanLocal.class)
 public class ListingSessionBean implements ListingSessionBeanLocal {
+
+    @EJB(name = "CustomerSessionBeanLocal")
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
 
     @PersistenceContext(unitName = "BorrowMe-ejbPU")
     private EntityManager em;
 
     @Override
     public ListingEntity createListing(ListingEntity newListing) throws CreateListingException {
-        //INCOMPLETE; STILL NEED TO GET MEMBER INFORMATION SOMEHOW AND ADD LISTING TO MEMBER AND VICE VERSA
-        
         try {
+            CustomerEntity c = customerSessionBeanLocal.retrieveCustomerByCustomerId(newListing.getCustomerEntity().getCustomerId());
+            c.getListingList().add(newListing);
+            newListing.setCustomerEntity(c);
             em.persist(newListing);
+            em.merge(c);
             em.flush();
             em.refresh(newListing);
             return newListing;

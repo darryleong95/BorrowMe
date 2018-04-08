@@ -1,4 +1,3 @@
-
 package jsf.managedbean;
 
 import ejb.session.stateless.ListingSessionBeanLocal;
@@ -23,10 +22,9 @@ import util.exception.InvalidListingException;
 @Named(value = "listingManagedBean")
 @SessionScoped
 public class ListingManagedBean implements Serializable {
-    
+
     //NOT GOING TO BE USED ANYMORE
     //GOING TO BE RETRANSITIONED TO VIEW ALL LISTINGS MANAGED BEAN
-
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
 
@@ -38,11 +36,9 @@ public class ListingManagedBean implements Serializable {
 
     private List<SelectItem> categoryEnum;
 
-    /**
-     * Creates a new instance of ListingManagedBean
-     */
     public ListingManagedBean() {
         newListing = new ListingEntity();
+        newListing.setListingAvailable(true);
         listings = new ArrayList<>();
         filteredListings = new ArrayList<>();
         categoryEnum = new ArrayList<>();
@@ -64,11 +60,11 @@ public class ListingManagedBean implements Serializable {
             Long newListingId = listingSessionBeanLocal.createListing(newListing).getListingId();
             newListing.setListingId(newListingId);
             listings.add(newListing);
-
             newListing = new ListingEntity();
+            newListing.setListingAvailable(true);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing with Id" + newListingId + " created successfully", null));
-
         } catch (CreateListingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new listing: " + ex.getMessage(), null));
         }
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -19,10 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import util.enumeration.CategoryEnum;
 
-/**
- *
- * @author User
- */
 @Entity
 public class ListingEntity implements Serializable {
 
@@ -64,17 +55,20 @@ public class ListingEntity implements Serializable {
         images = new ArrayList<String>();
     }
 
-    public ListingEntity(Long listingId, String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, CategoryEnum category, CustomerEntity customerEntity) {
-        this.listingId = listingId;
+    public ListingEntity(String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, CategoryEnum category, CustomerEntity customerEntity, List<String> images) {
+        //this.listingId = listingId;
         this.listingTitle = listingTitle;
         this.listingDescription = listingDescription;
         this.listingAvailable = true; //default true
         this.costPerDay = costPerDay;
         this.category = category;
         this.customerEntity = customerEntity;
+        this.images = images;
     }
 
-    
+    public String getFirstImage() {
+        return images.get(0);
+    }
     
     public String getListingTitle() {
         return listingTitle;

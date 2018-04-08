@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <p:growl autoUpdate="true" />
+
+        <h:form id="contentLoginForm">
+
+            <p:outputLabel for="username" value="Username:"/>&nbsp;
+            <p:inputText id="username" value="#{loginManagedBean.username}" required="true" requiredMessage="Username is required">
+                <f:validateLength minimum="4" />
+            </p:inputText>&nbsp;
+            <br/>
+            <br/>
+            <p:outputLabel for="password" value="Password:"/>&nbsp;
+            <p:password id="password" value="#{loginManagedBean.password}" required="true" requiredMessage="Password is required">
+                <f:validateLength minimum="4" />
+            </p:password>&nbsp;
+            <br/>
+            <br/>
+            <p:commandButton type="reset" value="Clear" />&nbsp;
+            <p:commandButton value="Login" update="@form" actionListener="#{loginManagedBean.login}" icon="ui-icon-key" />&nbsp;
+        </h:form>
+
+        <p:commandLink id="register" onclick="PF('dialogRegister').show()">
+            <h:outputText value="Register as a new user!" />
+        </p:commandLink>
+
+        <h:form id="formRegister">
+
+            <p:dialog id="dialogRegister" widgetVar="dialogRegister" header="Add New Listing" closable="true">
+
+                <p:messages id="messagesRegister" redisplay="false" />
+
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="username" value="Username: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="username" value="#{loginManagedBean.newCustomer.username}" required="true" requiredMessage="Username is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="username" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="password" value="Password: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText type="password" id="password" value="#{loginManagedBean.newCustomer.password}" required="true" requiredMessage="Username is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="password" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="firstName" value="First Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="firstName" value="#{loginManagedBean.newCustomer.firstName}" required="true" requiredMessage="Username is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="firstName" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="lastName" value="Last Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="lastName" value="#{loginManagedBean.newCustomer.lastName}" required="true" requiredMessage="Username is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="lastName" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="identificationNo" value="Identification Number: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="identificationNo" value="#{loginManagedBean.newCustomer.identificationNo}" required="true" requiredMessage="Identification Number is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="identificationNo" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactNo" value="Contact Number: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="contactNo" value="#{loginManagedBean.newCustomer.contactNo}" required="true" requiredMessage="Contact Number is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactNo" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="email" value="Email: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="email" value="#{loginManagedBean.newCustomer.email}" required="true" requiredMessage="Email is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="email" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton type="reset" value="Clear" />&nbsp;
+                            <p:commandButton value="Register!" update="@form" actionListener="#{loginManagedBean.register}" oncomplete="PF('dialogRegister').show();" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </p:dialog>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

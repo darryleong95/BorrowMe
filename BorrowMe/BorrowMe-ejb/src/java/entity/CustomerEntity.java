@@ -61,6 +61,7 @@ public class CustomerEntity implements Serializable {
         requestList = new ArrayList<>();
         listingList = new ArrayList<>();
         feedbackList = new ArrayList<>();
+        setCustomerType(CustomerTypeEnum.ORDINARY);
     }
 
     public CustomerEntity(String firstName, String lastName, String username, String password, String identificationNo, String contactNo, String email) {
