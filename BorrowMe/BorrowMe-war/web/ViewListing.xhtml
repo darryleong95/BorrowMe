@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <p:layout>
+
+            <p:layoutUnit size="300" position="east">
+                <br/>
+
+                <h:form>
+
+                    <p:growl id="messages" showDetail="false"/>
+
+                    <h3>Toggleable</h3>
+                    <p:menu toggleable="true">
+                        <p:submenu label="Ajax">
+                            <p:menuitem value="Save"  update="messages" icon="ui-icon-disk" />
+                            <p:menuitem value="Update" update="messages" icon="ui-icon-arrowrefresh-1-w"/>
+                        </p:submenu>
+                        <p:submenu label="Non-Ajax">
+                            <p:menuitem value="Delete" update="messages" ajax="false" icon="ui-icon-close"/>
+                        </p:submenu>
+                        <p:submenu label="Navigations">
+                            <p:menuitem value="External" url="http://www.primefaces.org" icon="ui-icon-home"/>
+                            <p:menuitem value="Internal" outcome="/index" icon="ui-icon-star"/>
+                        </p:submenu>
+                    </p:menu>
+
+                </h:form>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center" >
+
+
+
+                <p:panelGrid columns="2">
+                    <f:facet name="header">
+                        <h:outputText value="#{viewListingManagedBean.listingToView.listingTitle}" />
+                        
+                    </f:facet>
+                    
+                    <f:facet name="header">
+                        <p:galleria value="#{viewListingManagedBean.listingToView.images}" var="image" panelWidth="313" panelHeight="313" showCaption="false">
+                            <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height: 200px;width:200px;"/>
+                        </p:galleria>
+                    </f:facet>
+
+                    <h:outputText value="Title:" style="font-weight:bold"/>
+                    <h:outputText value="#{viewListingManagedBean.listingToView.listingTitle}" />
+
+                    <h:outputText value="Description:" style="font-weight:bold"/>
+                    <h:outputText value="#{viewListingManagedBean.listingToView.listingDescription}" />
+
+                    <h:outputText value="Category:" style="font-weight:bold"/>
+                    <h:outputText value="#{viewListingManagedBean.listingToView.category}" />
+
+                    <h:outputText value="Cost/day:" style="font-weight:bold"/>
+                    <h:outputText value="#{viewListingManagedBean.listingToView.costPerDay}" />
+                </p:panelGrid>
+
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" >
+
+                <h6>&copy; 2018 IS3106. All Rights Reserved.</h6>
+
+            </p:layoutUnit>
+
+        </p:layout>
+
+
+
+
+    </ui:define>
+
+</ui:composition>

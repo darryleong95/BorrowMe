@@ -8,6 +8,8 @@
 
     <ui:define name="content">
 
+        <!--<p:graphicImage style="height: 200px;width:200px;" value="./images/noimage.png" />-->
+
         <h:form>
             <p:menubar>
                 <p:menuitem value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon="ui-icon-plusthick" />
@@ -16,7 +18,7 @@
         </h:form> 
 
         <h:form id="formAllListings">
-            <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewAllListingsManagedBean.listings}" var="listing" columns="3" layout="grid"
+            <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewAllListingsManagedBean.listings}" var="listing"  columns="3" layout="grid"
                         rows="12" paginator="true"
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         rowsPerPageTemplate="6,12,16">
@@ -25,16 +27,32 @@
                     Listings:
                 </f:facet>
 
-                <p:panel header="#{listing.listingId}" style="text-align:center">
-                    <h:panelGrid columns="1" style="width:100%">
+                <p:panel header="#{listing.listingId}" style="text-align:center" >
+
+<!--onclick="rc()"-->
+
+                    <h:panelGrid  columns="1" style="width:100%; text-align:center">
                         <f:attribute name="image" value="#{listing.firstImage}" />
-                        <p:graphicImage value="#{viewAllListingsManagedBean.getImage(listing)}" />
-                        <h:outputText value="#{listing.listingTitle}" />
-                        <h:outputText value="#{listing.firstImage}" />
+                        <p:graphicImage style="height: 200px;width:200px;" value="#{listing.firstImage}" />
+                           <!--<h:outputText value="#{listing.firstImage}" /> -->
+                        <h:outputText value="#{listing.listingTitle}" style="font-weight:bold" />
+                        <h:outputText value="by #{listing.customerEntity.username}" style="font-style: italic;"/>
+                        <br/>
+                        <h:outputLabel value="$#{listing.costPerDay}/day" style="font-weight:bold" />
+
+                        <p:remoteCommand name="rc" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
+                            <f:attribute name="listingIdToView" value="#{listing.listingId}" />
+                        </p:remoteCommand>
+
+                        <h:form>
+                            <p:commandButton actionListener="#{viewAllListingsManagedBean.redirectListing}" >
+                                <f:attribute name="listingIdToView" value="#{listing.listingId}" />
+                            </p:commandButton>
+
+                        </h:form>
 
                     </h:panelGrid>
                 </p:panel>
-
             </p:dataGrid>
         </h:form>
 
@@ -102,14 +120,13 @@
                             <p:outputLabel value="Image: (Optional)" />
                         </p:column>
                         <p:column>
-                            <h:form id="formListingPictureUpload" enctype="multipart/form-data">
+                            <h:form id="formListingPictureUpload" enctype="multipart/form-data" >
                                 <p:panel header="Image Upload">
                                     <p:messages autoUpdate="true" redisplay="false" />
                                     <p:fileUpload fileUploadListener="#{viewAllListingsManagedBean.handleFileUpload}" />
                                 </p:panel>
                             </h:form>
                         </p:column>
-
                         <p:column>
                         </p:column>
                     </p:row>

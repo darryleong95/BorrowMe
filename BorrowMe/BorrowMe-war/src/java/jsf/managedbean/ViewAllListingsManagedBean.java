@@ -4,7 +4,7 @@ import ejb.session.stateless.ListingSessionBeanLocal;
 import entity.CustomerEntity;
 import entity.ListingEntity;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.view.ViewScoped;
 import javax.imageio.ImageIO;
@@ -62,39 +63,6 @@ public class ViewAllListingsManagedBean implements Serializable {
         }
     }
 
-    public StreamedContent getImage(ListingEntity listing) throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            return new DefaultStreamedContent();
-        } else {
-
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            BufferedImage img = ImageIO.read(context.getExternalContext()
-                    .getResourceAsStream(listing.getFirstImage()));
-            if (img == null) {
-                System.out.println("bufferedimage is null???");
-            }
-            int w = img.getWidth(null);
-            int h = img.getHeight(null);
-
-            // image is scaled two times at run time
-            int scale = 2;
-
-            BufferedImage bi = new BufferedImage(w * scale, h * scale,
-                    BufferedImage.TYPE_INT_ARGB);
-            Graphics g = bi.getGraphics();
-
-            g.drawImage(img, 10, 10, w * scale, h * scale, null);
-
-            ImageIO.write(bi, "png", bos);
-
-            return new DefaultStreamedContent(new ByteArrayInputStream(
-                    bos.toByteArray()), "image/png");
-
-        }
-    }
-
     public void handleFileUpload(FileUploadEvent event) throws InvalidFileTypeException {
         try {
             String newFilePath = System.getProperty("user.dir").replace("/config", "/docroot/") + event.getFile().getFileName();
@@ -128,7 +96,8 @@ public class ViewAllListingsManagedBean implements Serializable {
             }
             fileOutputStream.close();
             inputStream.close();
-            newListing.getImages().add(newFilePath);
+            String absolutePath = "http://localhost:8080/" + event.getFile().getFileName();
+            newListing.getImages().add(absolutePath);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         } catch (IOException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
@@ -150,6 +119,17 @@ public class ViewAllListingsManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing created successfully (listing ID: " + l.getListingId() + ")", null));
         } catch (CreateListingException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new listing: " + ex.getMessage(), null));
+        }
+    }
+
+    public void redirectListing(ActionEvent event) {
+        System.out.println("i reached redirect listing ");
+        long listingIdToView = (long) event.getComponent().getAttributes().get("listingIdToView");
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("listingIdToView", listingIdToView);
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("ViewListing.xhtml");
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 

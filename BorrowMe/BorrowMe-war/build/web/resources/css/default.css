@@ -149,3 +149,8 @@ a:hover {
 .motdMessage {
     background-color: lightsteelblue;
 }
+
+.img{
+    height: 100px;
+    width:100px;
+}

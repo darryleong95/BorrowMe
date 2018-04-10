@@ -27,6 +27,9 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     @Override
     public ListingEntity createListing(ListingEntity newListing) throws CreateListingException {
         try {
+            if (newListing.getImages().isEmpty()) {
+                newListing.getImages().add("./images/noimage.png");
+            }
             CustomerEntity c = customerSessionBeanLocal.retrieveCustomerByCustomerId(newListing.getCustomerEntity().getCustomerId());
             c.getListingList().add(newListing);
             newListing.setCustomerEntity(c);
