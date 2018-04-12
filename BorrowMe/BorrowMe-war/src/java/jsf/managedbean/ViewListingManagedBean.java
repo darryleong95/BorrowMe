@@ -39,6 +39,7 @@ public class ViewListingManagedBean implements Serializable {
     private String dateDiffValue;
     private List<RequestEntity> requests;
     private List<RequestEntity> filteredRequests;
+    private boolean accepted;
 
     public ViewListingManagedBean() {
         listingToView = new ListingEntity();
@@ -112,6 +113,12 @@ public class ViewListingManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new request: " + ex.getMessage(), null));
         }
     }
+    
+    public void changeAcceptance() {
+        String summary = accepted ? "Approved" : "Rejected";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+    }
+    
 
     public long getListingIdToView() {
         return listingIdToView;
@@ -175,6 +182,14 @@ public class ViewListingManagedBean implements Serializable {
 
     public void setFilteredRequests(List<RequestEntity> filteredRequests) {
         this.filteredRequests = filteredRequests;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 
 }

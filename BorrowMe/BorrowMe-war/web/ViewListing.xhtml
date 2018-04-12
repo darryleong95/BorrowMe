@@ -98,16 +98,16 @@
                                 </p:row>
                                 <p:row>
                                     <p:column colspan="2">
-                                    <h:form>
-                                        <p:commandButton value="Book Rental" onclick="PF('dialogRequest').show()" icon="ui-icon-key" />
-                                    </h:form>
+                                        <h:form>
+                                            <p:commandButton value="Book Rental" onclick="PF('dialogRequest').show()" icon="ui-icon-key" />
+                                        </h:form>
 
-                                    <h:form>
-                                        <p:commandButton value="View Requests" onclick="PF('dialogViewRequests').show()" icon="ui-icon-key" />
-                                    </h:form>
-    
+                                        <h:form>
+                                            <p:commandButton value="View Requests" onclick="PF('dialogViewRequests').show()" icon="ui-icon-key" />
+                                        </h:form>
+
                                     </p:column>
-                                    
+
                                 </p:row>
                             </p:panelGrid>
                         </p:column>
@@ -198,16 +198,14 @@
 
                 </h:form>
 
+
                 <h:form id="formViewRequests">
 
                     <p:dialog id="dialogViewRequests" widgetVar="dialogViewRequests" header="View Requests" closable="true">
 
-                        <!--<p:messages id="messagesViewRequests" redisplay="false" /> -->
-
-
                         <p:messages id="messages" redisplay="false" closable="true" />
 
-                        <p:dataTable id="dataTableAllRequests" widgetVar="dataTableAllRequests" value="#{viewListingManagedBean.requests}" var="request" rowKey="#{request.requestEntityId}" rowIndexVar="row"
+                        <p:dataTable id="dataTableAllRequests" widgetVar="dataTableAllRequests" value="#{viewListingManagedBean.requests}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
                                      filteredValue="#{viewListingManagedBean.filteredRequests}"
                                      rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
@@ -218,20 +216,33 @@
                                 </p:outputPanel>
                             </f:facet>
 
-                            <p:column headerText="Request ID" sortBy="#{request.requestEntityId}" filterBy="#{request.requestEntityId}" filterMatchMode="contains">
-                                <h:outputText value="#{request.requestEntityId}" />
+                            <p:column headerText="Request ID" sortBy="#{requestEntity.requestEntityId}" filterBy="#{requestEntity.requestEntityId}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.requestEntityId}" />
                             </p:column>
 
-                            <p:column headerText="Title:" sortBy="#{request.customerEntity.username}" filterBy="#{request.customerEntity.username}" filterMatchMode="contains">
-                                <h:outputText value="#{request.customerEntity.username}" />
+                            <p:column headerText="Requester:" sortBy="#{requestEntity.customerEntity.username}" filterBy="#{requestEntity.customerEntity.username}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.customerEntity.username}" />
                             </p:column>
 
-                            <p:column headerText="Rating:" sortBy="#{request.startDate}" filterBy="#{requerst.startDate}" filterMatchMode="contains">
-                                <h:outputText value="#{request.startDate}" />
+                            <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
+                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Genre:" sortBy="#{request.endDate}" filterBy="#{request.endDate}" filterMatchMode="contains">
-                                <h:outputText value="#{request.endDate}" />
+                            <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.endDate}" >
+                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Message:" sortBy="#{requestEntity.message}" filterBy="#{requestEntity.message}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.message}" />
+                            </p:column>
+
+                            <p:column headerText="Action" >
+                                <p:selectBooleanButton  id="approval"  value="#{viewListingManagedBean.accepted}" onLabel="Accepted" offLabel="Rejected" onIcon="ui-icon-check" offIcon="ui-icon-close">
+                                </p:selectBooleanButton>
                             </p:column>
 
                         </p:dataTable>
@@ -241,13 +252,9 @@
 
                 </h:form>
 
-
             </p:layoutUnit>
 
         </p:layout>
-
-
-
 
     </ui:define>
 
