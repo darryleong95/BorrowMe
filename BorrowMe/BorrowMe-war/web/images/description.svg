@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Android/SVGicon/description</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="7" cy="7" r="7"></circle>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon/description">
+            <g id="icon-timestamp-copy" transform="translate(3.000000, 3.000000)">
+                <g id="Oval-129">
+                    <use fill="#EDF0F7" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <circle stroke="#8F939C" stroke-width="1" cx="7" cy="7" r="6.5"></circle>
+                </g>
+                <path d="M6.34705863,11 L7.55784295,11 L7.55784295,5.3389392 L6.34705863,5.3389392 L6.34705863,11 Z M6.94999981,4.41785252 C7.39607824,4.41785252 7.69999981,4.11772316 7.69999981,3.70892626 C7.69999981,3.30012937 7.39607824,3 6.94999981,3 C6.50882334,3 6.19999981,3.30012937 6.19999981,3.70892626 C6.19999981,4.11772316 6.50882334,4.41785252 6.94999981,4.41785252 Z" id="i" fill="#8F939C"></path>
+            </g>
+        </g>
+    </g>
+</svg>

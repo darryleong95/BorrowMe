@@ -31,7 +31,7 @@
 
 <!--onclick="rc()"-->
 
-                    <h:panelGrid  columns="1" style="width:100%; text-align:center">
+                    <h:panelGrid  columns="1"  style="width:100%; text-align:center">
                         <f:attribute name="image" value="#{listing.firstImage}" />
                         <p:graphicImage style="height: 200px;width:200px;" value="#{listing.firstImage}" />
                            <!--<h:outputText value="#{listing.firstImage}" /> -->
@@ -44,12 +44,11 @@
                             <f:attribute name="listingIdToView" value="#{listing.listingId}" />
                         </p:remoteCommand>
 
-                        <h:form>
+             
                             <p:commandButton actionListener="#{viewAllListingsManagedBean.redirectListing}" >
                                 <f:attribute name="listingIdToView" value="#{listing.listingId}" />
                             </p:commandButton>
 
-                        </h:form>
 
                     </h:panelGrid>
                 </p:panel>

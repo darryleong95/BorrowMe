@@ -17,8 +17,7 @@
 
                     <p:growl id="messages" showDetail="false"/>
 
-                    <h3>Toggleable</h3>
-                    <p:menu toggleable="true">
+                    <p:menu toggleable="true" style="height:100%; width:100%">
                         <p:submenu label="Ajax">
                             <p:menuitem value="Save"  update="messages" icon="ui-icon-disk" />
                             <p:menuitem value="Update" update="messages" icon="ui-icon-arrowrefresh-1-w"/>
@@ -38,39 +37,145 @@
 
             <p:layoutUnit position="center" >
 
+                <!--styleClass="ui-noborder"-->
+
+                <p:panelGrid style="margin: 0 auto" >
+
+                    <p:row>
+                        <p:column colspan="2" >
+                            <p:galleria value="#{viewListingManagedBean.listingToView.images}" var="image" panelWidth="313" panelHeight="313" showCaption="false">
+                                <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:100%; width:100%"/>
+                            </p:galleria>
+                        </p:column>
+                        <p:column rowspan="2" style="vertical-align: top;">
+                            <p:panelGrid style="height:100%; width:100%">
+                                <p:row>
+
+                                    <p:column colspan="2">
+                                        <h:outputText style="font-weight:bold; font-size:25px" value="#{viewListingManagedBean.listingToView.listingTitle}" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column>
+                                        <p:graphicImage value="./images/defaultprofilepic.png" style="border-radius:100px; height:auto; 
+                                                        width: auto; 
+                                                        max-width: 50px; 
+                                                        max-height: 50px;"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="by #{viewListingManagedBean.listingToView.customerEntity.username}"></h:outputText>
+
+                                    </p:column>
+
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <ui:include src="./images/description.svg" />&nbsp;
+                                        <h:outputText value="Description:" style="font-weight:bold"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{viewListingManagedBean.listingToView.listingDescription}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <ui:include src="./images/category.svg" />&nbsp;
+                                        <h:outputText value="Category:" style="font-weight:bold"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{viewListingManagedBean.listingToView.category}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <ui:include src="./images/price.svg" />&nbsp;
+                                        <h:outputText value="Cost/day:" style="font-weight:bold"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{viewListingManagedBean.listingToView.costPerDay}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <h:form>
+                                        <p:commandButton value="Book Rental" onclick="PF('dialogRequest').show()" icon="ui-icon-key" />
+                                    </h:form>
+
+                                </p:row>
+                            </p:panelGrid>
+                        </p:column>
+
+                    </p:row>
+
+                    <p:row>
+                        <p:column  width="50%"><h:outputText value="Title:" style="font-weight:bold"/></p:column>
+                        <p:column width="50%"> <h:outputText value="#{viewListingManagedBean.listingToView.listingTitle}" /></p:column>
 
 
-                <p:panelGrid columns="2">
-                    <f:facet name="header">
-                        <h:outputText value="#{viewListingManagedBean.listingToView.listingTitle}" />
-                        
-                    </f:facet>
-                    
-                    <f:facet name="header">
-                        <p:galleria value="#{viewListingManagedBean.listingToView.images}" var="image" panelWidth="313" panelHeight="313" showCaption="false">
-                            <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height: 200px;width:200px;"/>
-                        </p:galleria>
-                    </f:facet>
+                    </p:row>
 
-                    <h:outputText value="Title:" style="font-weight:bold"/>
-                    <h:outputText value="#{viewListingManagedBean.listingToView.listingTitle}" />
-
-                    <h:outputText value="Description:" style="font-weight:bold"/>
-                    <h:outputText value="#{viewListingManagedBean.listingToView.listingDescription}" />
-
-                    <h:outputText value="Category:" style="font-weight:bold"/>
-                    <h:outputText value="#{viewListingManagedBean.listingToView.category}" />
-
-                    <h:outputText value="Cost/day:" style="font-weight:bold"/>
-                    <h:outputText value="#{viewListingManagedBean.listingToView.costPerDay}" />
                 </p:panelGrid>
 
+                <h:form id="formRequest">
 
-            </p:layoutUnit>
+                    <p:dialog id="dialogRequest" widgetVar="dialogRequest" header="Make Rental Request" closable="true">
 
-            <p:layoutUnit position="south" >
+                        <p:messages id="messagesRequest" redisplay="false" />
 
-                <h6>&copy; 2018 IS3106. All Rights Reserved.</h6>
+                        <p:panelGrid>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="startdate" value="Start Date: " />
+                                </p:column>
+                                <p:column>
+                                    <p:calendar id="startdate" value="#{viewListingManagedBean.newStartDate}" >
+                                        <p:ajax event="dateSelect" update="noOfDays" listener="#{viewListingManagedBean.dateDiff}" />
+                                    </p:calendar>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="startdate" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="enddate" value="End Date: " />
+                                </p:column>
+                                <p:column>
+                                    <p:calendar id="enddate" value="#{viewListingManagedBean.newEndDate}" >
+                                        <p:ajax event="dateSelect" update="noOfDays" listener="#{viewListingManagedBean.dateDiff}" />
+                                    </p:calendar>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="enddate" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="noOfDays" value="Day(s) Rental: " />
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel id="noOfDays" value="#{viewListingManagedBean.dateDiffValue}" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="noOfDays" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:commandButton type="reset" value="Clear" />&nbsp;
+                                    <p:commandButton value="Make Rental Request!" update="@form" actionListener="#{viewListingManagedBean.createRequest}" oncomplete="PF('dialogRequest').show();" />
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+
+                    </p:dialog>
+
+                </h:form>
 
             </p:layoutUnit>
 

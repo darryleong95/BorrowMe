@@ -123,8 +123,10 @@ public class ViewAllListingsManagedBean implements Serializable {
     }
 
     public void redirectListing(ActionEvent event) {
-        System.out.println("i reached redirect listing ");
+        
+        
         long listingIdToView = (long) event.getComponent().getAttributes().get("listingIdToView");
+        System.out.println("i reached redirect listing " + listingIdToView);
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("listingIdToView", listingIdToView);
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect("ViewListing.xhtml");
