@@ -75,6 +75,9 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     public CustomerEntity retrieveCustomerByCustomerId(Long custId) throws CustomerNotFoundException {
         CustomerEntity customer = em.find(CustomerEntity.class, custId);
         if (customer != null) {
+            customer.getListingList().size();
+            customer.getFeedbackList().size();
+            customer.getRequestList().size();
             return customer;
         } else {
             throw new CustomerNotFoundException("Customer Id " + custId + " does not exist!\n");
