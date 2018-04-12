@@ -70,6 +70,12 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     @Override
     public List<ListingEntity> retrieveListingList() {
         Query query = em.createQuery("SELECT s FROM ListingEntity s");
+        List<ListingEntity> results = query.getResultList();
+        for (ListingEntity l : results) {
+            l.getFeedbackList().size();
+            l.getPaymentEntities().size();
+            l.getRequestList().size();
+        }
         return query.getResultList();
     }
 

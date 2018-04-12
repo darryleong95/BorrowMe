@@ -97,10 +97,17 @@
                                     </p:column>
                                 </p:row>
                                 <p:row>
+                                    <p:column colspan="2">
                                     <h:form>
                                         <p:commandButton value="Book Rental" onclick="PF('dialogRequest').show()" icon="ui-icon-key" />
                                     </h:form>
 
+                                    <h:form>
+                                        <p:commandButton value="View Requests" onclick="PF('dialogViewRequests').show()" icon="ui-icon-key" />
+                                    </h:form>
+    
+                                    </p:column>
+                                    
                                 </p:row>
                             </p:panelGrid>
                         </p:column>
@@ -122,7 +129,7 @@
 
                         <p:messages id="messagesRequest" redisplay="false" />
 
-                        <p:panelGrid>
+                        <p:panelGrid rendered="#{sessionScope['isLogin']}">
 
                             <p:row>
                                 <p:column>
@@ -163,7 +170,17 @@
                                     <p:message for="noOfDays" />
                                 </p:column>
                             </p:row>
-
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="message" value="Message:" />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="message" value="#{viewListingManagedBean.newRequestEntity.message}" required="true" requiredMessage="Message is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="message" />
+                                </p:column>
+                            </p:row>
                             <p:row>
                                 <p:column colspan="3">
                                     <p:commandButton type="reset" value="Clear" />&nbsp;
@@ -173,9 +190,57 @@
 
                         </p:panelGrid>
 
+                        <p:panelGrid  rendered="#{!sessionScope['isLogin']}">
+                            <p:outputLabel value="NOT LOGGED IN!!!!!"></p:outputLabel>
+                        </p:panelGrid>
+
                     </p:dialog>
 
                 </h:form>
+
+                <h:form id="formViewRequests">
+
+                    <p:dialog id="dialogViewRequests" widgetVar="dialogViewRequests" header="View Requests" closable="true">
+
+                        <!--<p:messages id="messagesViewRequests" redisplay="false" /> -->
+
+
+                        <p:messages id="messages" redisplay="false" closable="true" />
+
+                        <p:dataTable id="dataTableAllRequests" widgetVar="dataTableAllRequests" value="#{viewListingManagedBean.requests}" var="request" rowKey="#{request.requestEntityId}" rowIndexVar="row"
+                                     filteredValue="#{viewListingManagedBean.filteredRequests}"
+                                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                            <f:facet name="header">
+                                <p:outputPanel style="text-align: right;">
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('dataTableAllRequests').filter()" style="width:300px" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:column headerText="Request ID" sortBy="#{request.requestEntityId}" filterBy="#{request.requestEntityId}" filterMatchMode="contains">
+                                <h:outputText value="#{request.requestEntityId}" />
+                            </p:column>
+
+                            <p:column headerText="Title:" sortBy="#{request.customerEntity.username}" filterBy="#{request.customerEntity.username}" filterMatchMode="contains">
+                                <h:outputText value="#{request.customerEntity.username}" />
+                            </p:column>
+
+                            <p:column headerText="Rating:" sortBy="#{request.startDate}" filterBy="#{requerst.startDate}" filterMatchMode="contains">
+                                <h:outputText value="#{request.startDate}" />
+                            </p:column>
+
+                            <p:column headerText="Genre:" sortBy="#{request.endDate}" filterBy="#{request.endDate}" filterMatchMode="contains">
+                                <h:outputText value="#{request.endDate}" />
+                            </p:column>
+
+                        </p:dataTable>
+
+
+                    </p:dialog>
+
+                </h:form>
+
 
             </p:layoutUnit>
 

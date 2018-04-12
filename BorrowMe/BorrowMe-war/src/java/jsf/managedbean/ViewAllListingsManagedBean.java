@@ -3,11 +3,6 @@ package jsf.managedbean;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import entity.CustomerEntity;
 import entity.ListingEntity;
-import java.awt.Graphics;
-
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,12 +18,8 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseId;
 import javax.faces.view.ViewScoped;
-import javax.imageio.ImageIO;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import util.enumeration.CategoryEnum;
 import util.exception.CreateListingException;
 import util.exception.InvalidFileTypeException;
@@ -147,7 +138,7 @@ public class ViewAllListingsManagedBean implements Serializable {
         try {
             listingSessionBeanLocal.deleteListing(listingToDelete.getListingId());
         } catch (InvalidListingException ex) {
-            Logger.getLogger(ListingManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewAllListingsManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         getListings().remove(listingToDelete);
 

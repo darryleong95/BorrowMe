@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -17,17 +12,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- *
- * @author User
- */
 @Entity
 public class RequestEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long requestId;
+    private Long requestEntityId;
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date startDate;
@@ -39,12 +30,13 @@ public class RequestEntity implements Serializable {
     @Column(nullable = false)
     private Boolean payment;
     @Column(nullable = false)
+    private Boolean acknowledged;
+    @Column(nullable = false)
     private Boolean accepted;
     @Column(nullable = false)
     private Boolean overdue;
     @Column(nullable = false)
     private String message;
-
     
     @ManyToOne
     private ListingEntity listingEntity;
@@ -57,10 +49,14 @@ public class RequestEntity implements Serializable {
 
     
     public RequestEntity() {
+        acknowledged = false;
+        accepted = false;
+        payment = false;
+        overdue = false;
     }
 
-    public RequestEntity(Long requestId, Date startDate, Date endDate, Integer noOfDays, Boolean payment, Boolean accepted, Boolean overdue, ListingEntity listingEntity, CustomerEntity customerEntity) {
-        this.requestId = requestId;
+    public RequestEntity(Long requestEntityId, Date startDate, Date endDate, Integer noOfDays, Boolean payment, Boolean accepted, Boolean overdue, ListingEntity listingEntity, CustomerEntity customerEntity) {
+        this.requestEntityId = requestEntityId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.noOfDays = noOfDays;
@@ -72,11 +68,11 @@ public class RequestEntity implements Serializable {
     }
     
     public ListingEntity getListingEntity() {
-        return getListingEntity();
+        return listingEntity;
     }
 
     public void setListingEntity(ListingEntity listingEntity) {
-        this.setListingEntity(listingEntity);
+        this.listingEntity = listingEntity;
     }
 
     public CustomerEntity getCustomerEntity() {
@@ -95,12 +91,12 @@ public class RequestEntity implements Serializable {
         this.paymentEntity = paymentEntity;
     }
 
-    public Long getRequestId() {
-        return requestId;
+    public Long getRequestEntityId() {
+        return requestEntityId;
     }
 
-    public void setRequestId(Long requestId) {
-        this.requestId = requestId;
+    public void setRequestEntityId(Long requestEntityId) {
+        this.requestEntityId = requestEntityId;
     }
 
     public Date getStartDate() {
@@ -151,18 +147,10 @@ public class RequestEntity implements Serializable {
         this.overdue = overdue;
     }
 
-    public Long getId() {
-        return requestId;
-    }
-
-    public void setId(Long requestId) {
-        this.requestId = requestId;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (requestId != null ? requestId.hashCode() : 0);
+        hash += (requestEntityId != null ? requestEntityId.hashCode() : 0);
         return hash;
     }
 
@@ -173,7 +161,7 @@ public class RequestEntity implements Serializable {
             return false;
         }
         RequestEntity other = (RequestEntity) object;
-        if ((this.requestId == null && other.requestId != null) || (this.requestId != null && !this.requestId.equals(other.requestId))) {
+        if ((this.requestEntityId == null && other.requestEntityId != null) || (this.requestEntityId != null && !this.requestEntityId.equals(other.requestEntityId))) {
             return false;
         }
         return true;
@@ -181,49 +169,39 @@ public class RequestEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.RequestEntity[ id=" + requestId + " ]";
+        return "entity.RequestEntity[ id=" + requestEntityId + " ]";
     }
 
-    /**
-     * @param noOfDays the noOfDays to set
-     */
     public void setNoOfDays(Integer noOfDays) {
         this.noOfDays = noOfDays;
     }
 
-    /**
-     * @return the payment
-     */
     public Boolean getPayment() {
         return payment;
     }
 
-    /**
-     * @return the accepted
-     */
     public Boolean getAccepted() {
         return accepted;
     }
 
-    /**
-     * @return the overdue
-     */
     public Boolean getOverdue() {
         return overdue;
     }
 
-    /**
-     * @return the message
-     */
     public String getMessage() {
         return message;
     }
 
-    /**
-     * @param message the message to set
-     */
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Boolean getAcknowledged() {
+        return acknowledged;
+    }
+
+    public void setAcknowledged(Boolean acknowledged) {
+        this.acknowledged = acknowledged;
     }
 
 }

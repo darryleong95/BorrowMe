@@ -7,11 +7,12 @@ package ejb.session.stateless;
 
 import entity.RequestEntity;
 import java.util.List;
+import util.exception.CreateRequestException;
 import util.exception.RequestNotFoundException;
 
 public interface RequestSessionBeanLocal {
 
-    public RequestEntity createRequest(RequestEntity request);
+    public RequestEntity createRequest(RequestEntity request) throws CreateRequestException;
 
     public RequestEntity updateRequest(RequestEntity request);
 

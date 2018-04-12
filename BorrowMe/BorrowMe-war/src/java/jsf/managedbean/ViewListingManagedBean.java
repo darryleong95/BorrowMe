@@ -1,23 +1,32 @@
 package jsf.managedbean;
 
 import ejb.session.stateless.ListingSessionBeanLocal;
+import ejb.session.stateless.RequestSessionBeanLocal;
+import entity.CustomerEntity;
 import entity.ListingEntity;
 import entity.RequestEntity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.SelectEvent;
+import util.exception.CreateRequestException;
 import util.exception.InvalidListingException;
 
 @Named(value = "viewListingManagedBean")
 @ViewScoped
 public class ViewListingManagedBean implements Serializable {
+
+    @EJB(name = "RequestSessionBeanLocal")
+    private RequestSessionBeanLocal requestSessionBeanLocal;
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
@@ -28,11 +37,15 @@ public class ViewListingManagedBean implements Serializable {
     private Date newStartDate;
     private Date newEndDate;
     private String dateDiffValue;
+    private List<RequestEntity> requests;
+    private List<RequestEntity> filteredRequests;
 
     public ViewListingManagedBean() {
         listingToView = new ListingEntity();
         newRequestEntity = new RequestEntity();
         dateDiffValue = "(num of days rented must be >= 1!)";
+        requests = new ArrayList<RequestEntity>();
+        filteredRequests = new ArrayList<RequestEntity>();
     }
 
     @PostConstruct
@@ -42,6 +55,10 @@ public class ViewListingManagedBean implements Serializable {
         try {
 //            System.err.println("************ FLASH: " + getListingIdToView());
             setListingToView(listingSessionBeanLocal.retrieveListingById(getListingIdToView()));
+            requests = listingToView.getRequestList();
+            for (RequestEntity r : requests) {
+                filteredRequests.add(r);
+            }
         } catch (InvalidListingException ex) {
             setListingToView(new ListingEntity());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving the listing details: " + ex.getMessage(), null));
@@ -72,9 +89,27 @@ public class ViewListingManagedBean implements Serializable {
 
                 setDateDiffValue(String.valueOf(diffDays));
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                System.out.println("ERROR AT DATE DIFF: " + ex.getMessage());
             }
+        }
+    }
+
+    public void createRequest(ActionEvent event) {
+        try {
+            CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
+            newRequestEntity.setCustomerEntity(c);
+            newRequestEntity.setListingEntity(listingToView);
+            newRequestEntity.setStartDate(newStartDate);
+            newRequestEntity.setEndDate(newEndDate);
+            newRequestEntity.setNoOfDays(Integer.valueOf(getDateDiffValue()));
+            RequestEntity r = requestSessionBeanLocal.createRequest(newRequestEntity);
+            requests.add(r);
+            filteredRequests.add(r);
+            newRequestEntity = new RequestEntity();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing created successfully (request ID: " + r.getRequestEntityId() + ")", null));
+        } catch (CreateRequestException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new request: " + ex.getMessage(), null));
         }
     }
 
@@ -124,6 +159,22 @@ public class ViewListingManagedBean implements Serializable {
 
     public void setDateDiffValue(String dateDiffValue) {
         this.dateDiffValue = dateDiffValue;
+    }
+
+    public List<RequestEntity> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<RequestEntity> requests) {
+        this.requests = requests;
+    }
+
+    public List<RequestEntity> getFilteredRequests() {
+        return filteredRequests;
+    }
+
+    public void setFilteredRequests(List<RequestEntity> filteredRequests) {
+        this.filteredRequests = filteredRequests;
     }
 
 }

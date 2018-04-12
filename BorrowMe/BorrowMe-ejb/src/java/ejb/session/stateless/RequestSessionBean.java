@@ -1,48 +1,105 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.stateless;
 
+import entity.CustomerEntity;
+import entity.ListingEntity;
 import entity.RequestEntity;
+import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.CreateRequestException;
+import util.exception.CustomerNotFoundException;
+import util.exception.InvalidListingException;
 import util.exception.RequestNotFoundException;
 
-/**
- *
- * @author josh
- */
 @Stateless
 @Local(RequestSessionBeanLocal.class)
 public class RequestSessionBean implements RequestSessionBeanLocal {
+
+    @EJB(name = "ListingSessionBeanLocal")
+    private ListingSessionBeanLocal listingSessionBeanLocal;
+
+    @EJB(name = "CustomerSessionBeanLocal")
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
 
     @PersistenceContext(unitName = "BorrowMe-ejbPU")
     private EntityManager em;
 
     @Override
-    public RequestEntity createRequest(RequestEntity request) {
-        em.persist(request);
-        em.flush();
-        em.refresh(request);
-        return request;
+    public RequestEntity createRequest(RequestEntity newRequest) throws CreateRequestException {
+
+        try {
+            if (newRequest.getNoOfDays() <= 0) {
+                throw new CreateRequestException("Must rent for >= 1 days!");
+            }
+            System.out.println("Customer ID of newRequest at session bean: " + newRequest.getCustomerEntity().getCustomerId());
+            CustomerEntity c = null;
+            try {
+                c = customerSessionBeanLocal.retrieveCustomerByCustomerId(newRequest.getCustomerEntity().getCustomerId());
+            } catch (CustomerNotFoundException ex) {
+                System.out.println("CUSTOMER NOT FOUND SESSION BEAN WHILE CREATING REQUEST");
+            }
+            c.getRequestList().add(newRequest);
+            newRequest.setCustomerEntity(c);
+            ListingEntity l = null;
+            try {
+                l = listingSessionBeanLocal.retrieveListingById(newRequest.getListingEntity().getListingId());
+            } catch (InvalidListingException ex) {
+                System.out.println("Listing NOT FOUND SESSION BEAN WHILE CREATING REQUEST");
+            }
+            List<RequestEntity> requests = l.getRequestList();
+            Date newStartDate = newRequest.getStartDate();
+            Date newEndDate = newRequest.getEndDate();
+
+            for (RequestEntity r : requests) {
+                if (r.isAccepted()) {
+                    Date otherStartDate = r.getStartDate();
+                    Date otherEndDate = r.getEndDate();
+                    if (newStartDate.compareTo(otherStartDate) < 0) {
+                        if (newEndDate.compareTo(otherStartDate) >= 0) {
+                            throw new CreateRequestException("Item unavailable for selected period!");
+                        }
+                    }
+                }
+            }
+            l.getRequestList().add(newRequest);
+            newRequest.setListingEntity(l);
+            em.persist(newRequest);
+            em.merge(c);
+            em.merge(l);
+            em.flush();
+            em.refresh(newRequest);
+            return newRequest;
+        } catch (PersistenceException ex) {
+            if (ex.getCause() != null
+                    && ex.getCause().getCause() != null
+                    && ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException")) {
+                throw new CreateRequestException("Listing with same name already exists");
+            } else {
+                throw new CreateRequestException("An unexpected error has occurred: " + ex.getMessage());
+            }
+        } //catch (Exception ex) {
+//            throw new CreateRequestException("An unexpected error has occurred: " + ex.getMessage());
+//        }
+
     }
-    
+
     @Override
-    public RequestEntity updateRequest(RequestEntity request) {
+    public RequestEntity updateRequest(RequestEntity request
+    ) {
         em.merge(request);
         return request;
     }
-    
+
     @Override
     public RequestEntity retrieveRequestByID(Long requestID) throws RequestNotFoundException {
         RequestEntity request = em.find(RequestEntity.class, requestID);
-        if(request != null) {
+        if (request != null) {
             return request;
         } else {
             throw new RequestNotFoundException("Request ID: " + requestID + " does not exist!");
@@ -50,18 +107,19 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
     }
 
     @Override
-    public List<RequestEntity> retrieveRequestListByCustomerID(Long customerID) {
+    public List<RequestEntity> retrieveRequestListByCustomerID(Long customerID
+    ) {
         Query query = em.createQuery("SELECT c FROM RequestEntity c WHERE c.customerEntity.customerId = :inCustomerID");
         query.setParameter("inCustomerID", customerID);
-        return  query.getResultList();
-    }
-    
-    @Override
-    public List<RequestEntity> retrieveBorrowHistoryList(Long customerID) {
-        Query query = em.createQuery("SELECT c FROM RequestEntity c WHERE c.customerEntity.customerID = :inCustomerID AND c.payment = TRUE AND c.accepted = TRUE");
-        query.setParameter("inCustomerID", customerID);        
         return query.getResultList();
     }
-    
-    
+
+    @Override
+    public List<RequestEntity> retrieveBorrowHistoryList(Long customerID
+    ) {
+        Query query = em.createQuery("SELECT c FROM RequestEntity c WHERE c.customerEntity.customerID = :inCustomerID AND c.payment = TRUE AND c.accepted = TRUE");
+        query.setParameter("inCustomerID", customerID);
+        return query.getResultList();
+    }
+
 }
