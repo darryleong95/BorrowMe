@@ -9,19 +9,142 @@
         <p:tabView dynamic="true" cache="true" effect="fold">
             <p:tab title="Requests Made">
                 <h:panelGrid columns="2" cellpadding="10">
-                    <h:outputText
-                        value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. 
-                        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
-                        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, 
-                        but given to ruthless violence whenever anything stands against the good of the family." />
+
+                    <h:form id="formViewMadeRequests">
+
+
+                        <p:dataTable id="dataTableAllRequestsMade" widgetVar="dataTableAllRequestsMade" value="#{viewRequestsManagedBean.requestsMade}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
+                                     filteredValue="#{viewRequestsManagedBean.filteredRequestsMade}"
+                                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                            <f:facet name="header">
+                                <p:outputPanel style="text-align: right;">
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('dataTableAllRequestsMade').filter()" style="width:300px" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:column headerText="Request ID" sortBy="#{requestEntity.requestEntityId}" filterBy="#{requestEntity.requestEntityId}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.requestEntityId}" />
+                            </p:column>
+
+                            <p:column headerText="Listing:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.listingEntity.listingTitle}" style="text-align: center;"/>
+                            </p:column>
+
+                            <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
+                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.endDate}" >
+                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Message:" sortBy="#{requestEntity.message}" filterBy="#{requestEntity.message}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.message}" />
+                            </p:column>
+
+                            <p:column headerText="Status:" rendered="#{requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
+                                <h:outputText value="Accepted"/>
+                            </p:column>
+
+                            <p:column headerText="Status:" rendered="#{!requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
+                                <h:outputText value="Rejected"/>
+                            </p:column>
+
+                            <p:column headerText="Status:" rendered="#{!requestEntity.acknowledged}" filterMatchMode="contains">
+                                <h:outputText value="Pending"/>
+                            </p:column>
+
+
+                        </p:dataTable>
+                    </h:form>
                 </h:panelGrid>
+
             </p:tab>
-            <p:tab title="Godfather Part II">
-                <h:panelGrid columns="2" cellpadding="10">
-                     <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. 
-                                  In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, 
-                                  killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows." />
-                </h:panelGrid>
+
+            <p:tab title="Requests on own listings">
+
+                <p:repeat value="#{viewRequestsManagedBean.listings}" var="listing">
+                    <h:form>
+                        <p:growl id="msgs" showDetail="true" />
+
+                        <p:fieldset legend="#{listing.listingTitle} (Listing ID: #{listing.listingId})" style="margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="5" >
+                                <h:panelGrid columns="2" cellpadding="10">
+
+                                    <p:commandLink actionListener="#{viewAllListingsManagedBean.redirectListing}" value="View Product Page">
+                                        <f:attribute name="listingIdToView" value="#{listing.listingId}" />
+                                    </p:commandLink><br/>
+
+                                    <h:form id="formViewPendingRequests">
+
+                                        <p:dataTable id="dataTableAllPendingRequests" rendered="#{not empty listing.requestList}" widgetVar="dataTableAllPendingRequests" value="#{listing.requestList}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
+                                                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                                            <p:column headerText="Request ID" sortBy="#{requestEntity.requestEntityId}" filterBy="#{requestEntity.requestEntityId}" filterMatchMode="contains">
+                                                <h:outputText value="#{requestEntity.requestEntityId}" />
+                                            </p:column>
+
+                                            <p:column headerText="Listing:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
+                                                <h:outputText value="#{requestEntity.listingEntity.listingTitle}" style="text-align: center;"/>
+                                            </p:column>
+
+                                            <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
+                                                <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
+                                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
+                                                <h:outputText value="#{requestEntity.endDate}" >
+                                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Number of Days:" sortBy="#{requestEntity.noOfDays}" filterBy="#{requestEntity.noOfDays}" filterMatchMode="contains">
+                                                <h:outputText value="#{requestEntity.noOfDays}" />
+                                            </p:column>
+
+                                            <p:column headerText="Fee:" sortBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterMatchMode="contains">
+                                                <h:outputText value="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" />
+                                            </p:column>
+
+                                            <p:column>
+                                                <p:commandButton value="Accept/Reject Request" onclick="PF('dialogApproveRequest').show()" >
+                                                    <f:setPropertyActionListener value="#{requestEntity}" target="#{viewRequestsManagedBean.selectedRequest}" />
+                                                </p:commandButton>
+
+                                            </p:column>
+                                        </p:dataTable>
+
+                                        <h:outputText value="No requests have been made on this listing yet! :(" rendered="#{empty listing.requestList}" />
+
+                                    </h:form>
+
+                                    <h:form id="formApproveRequest">
+
+                                        <p:dialog id="dialogApproveRequest" widgetVar="dialogApproveRequest" header="Approve/Reject Request" closable="true">
+
+                                            <p:messages id="messagesApproveRequest" redisplay="false" />
+
+                                            <p:panelGrid>
+                                                hi
+
+                                            </p:panelGrid>
+
+                                        </p:dialog>
+
+                                    </h:form>
+                                </h:panelGrid>
+
+                            </h:panelGrid>
+                        </p:fieldset>
+                    </h:form>
+                </p:repeat>
             </p:tab>
         </p:tabView>
 
