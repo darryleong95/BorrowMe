@@ -126,12 +126,6 @@ public class ViewAllListingsManagedBean implements Serializable {
         }
     }
 
-    public void saveListing(ActionEvent event) {
-        listingSessionBeanLocal.updateListing(getSelectedListingToUpdate());
-
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Listing " + getSelectedListingToUpdate().getListingId() + " updated successfully", null));
-    }
-
     public void deleteListing(javax.faces.event.ActionEvent event) {
         ListingEntity listingToDelete = (ListingEntity) event.getComponent().getAttributes().get("listingToDelete");
 

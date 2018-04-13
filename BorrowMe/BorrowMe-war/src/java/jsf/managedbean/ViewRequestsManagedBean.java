@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import util.exception.CustomerNotFoundException;
@@ -49,6 +50,10 @@ public class ViewRequestsManagedBean implements Serializable {
         } catch (CustomerNotFoundException ex) {
             System.out.println("Customer not found in post construct of view requests managed bean");
         }
+    }
+    
+    public void updateRequestStatus(ActionEvent event) {
+        
     }
 
     public CustomerEntity getCustomer() {

@@ -53,8 +53,20 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
 
     @Override
     public ListingEntity updateListing(ListingEntity listingEntity) {
-        em.merge(listingEntity);
-        return listingEntity;
+        ListingEntity listingToUpdate = null;
+        try {
+            if (listingEntity.getListingId() != null) {
+                listingToUpdate = retrieveListingById(listingEntity.getListingId());
+                listingToUpdate.setListingTitle(listingEntity.getListingTitle());
+                listingToUpdate.setListingDescription(listingEntity.getListingDescription());
+                listingToUpdate.setCostPerDay(listingEntity.getCostPerDay());
+                listingToUpdate.setImages(listingEntity.getImages());
+                listingToUpdate.setListingAvailable(listingEntity.getListingAvailable());
+            }
+        } catch (InvalidListingException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return listingToUpdate;
     }
 
     @Override

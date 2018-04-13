@@ -14,86 +14,92 @@
 
                 <!--styleClass="ui-noborder"-->
 
-                <p:panelGrid style="margin: 0 auto" >
+                <h:form id="formViewListing">
 
-                    <p:row>
-                        <p:column colspan="2" >
-                            <p:galleria value="#{viewListingManagedBean.listingToView.images}" var="image" panelWidth="313" panelHeight="313" showCaption="false">
-                                <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:100%; width:100%"/>
-                            </p:galleria>
-                        </p:column>
-                        <p:column colspan="3" style="vertical-align: top; width:50%">
-                            <p:panelGrid style="height:100%; width:100%">
-                                <p:row>
+                    <p:panelGrid style="margin: 0 auto" id="panelGridViewListing">
 
-                                    <p:column colspan="2">
-                                        <h:outputText style="font-weight:bold; font-size:25px" value="#{viewListingManagedBean.listingToView.listingTitle}" />
-                                    </p:column>
-                                </p:row>
+                        <p:row>
+                            <p:column colspan="2" >
+                                <p:galleria value="#{viewListingManagedBean.listingToView.images}" var="image" panelWidth="313" panelHeight="313" showCaption="false">
+                                    <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:100%; width:100%"/>
+                                </p:galleria>
+                            </p:column>
+                            <p:column colspan="3" style="vertical-align: top; width:50%">
+                                <p:panelGrid style="height:100%; width:100%">
+                                    <p:row>
 
-                                <p:row>
-                                    <p:column>
-                                        <p:graphicImage value="./images/defaultprofilepic.png" style="border-radius:100px; height:auto; 
-                                                        width: auto; 
-                                                        max-width: 50px; 
-                                                        max-height: 50px;"/>
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="by #{viewListingManagedBean.listingToView.customerEntity.username}"></h:outputText>
+                                        <p:column colspan="2">
+                                            <h:outputText style="font-weight:bold; font-size:25px" value="#{viewListingManagedBean.listingToView.listingTitle}" />
+                                        </p:column>
+                                    </p:row>
 
-                                    </p:column>
+                                    <p:row>
+                                        <p:column>
+                                            <p:graphicImage value="./images/defaultprofilepic.png" style="border-radius:100px; height:auto; 
+                                                            width: auto; 
+                                                            max-width: 50px; 
+                                                            max-height: 50px;"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="by #{viewListingManagedBean.listingToView.customerEntity.username}"></h:outputText>
 
-                                </p:row>
-                                <p:row>
-                                    <p:column>
-                                        <ui:include src="./images/description.svg" />&nbsp;
-                                        <h:outputText value="Description:" style="font-weight:bold"/>
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{viewListingManagedBean.listingToView.listingDescription}" />
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column>
-                                        <ui:include src="./images/category.svg" />&nbsp;
-                                        <h:outputText value="Category:" style="font-weight:bold"/>
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{viewListingManagedBean.listingToView.category}" />
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column>
-                                        <ui:include src="./images/price.svg" />&nbsp;
-                                        <h:outputText value="Cost/day:" style="font-weight:bold"/>
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{viewListingManagedBean.listingToView.costPerDay}" />
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column colspan="2">
-                                        <h:form rendered="#{sessionScope['currentCustomerEntity'].username != viewListingManagedBean.listingToView.customerEntity.username}">
-                                            <p:commandButton value="Book Rental" onclick="PF('dialogRequest').show()" icon="ui-icon-key" />
-                                        </h:form>
-                                        <h:form rendered="#{sessionScope['currentCustomerEntity'].username == viewListingManagedBean.listingToView.customerEntity.username}">
-                                            <p:commandButton value="View Requests" onclick="PF('dialogViewRequests').show()" icon="ui-icon-key" />
-                                        </h:form>
+                                        </p:column>
 
-                                    </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <ui:include src="./images/description.svg" />&nbsp;
+                                            <h:outputText value="Description:" style="font-weight:bold"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{viewListingManagedBean.listingToView.listingDescription}" />
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <ui:include src="./images/category.svg" />&nbsp;
+                                            <h:outputText value="Category:" style="font-weight:bold"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{viewListingManagedBean.listingToView.category}" />
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <ui:include src="./images/price.svg" />&nbsp;
+                                            <h:outputText value="Cost/day:" style="font-weight:bold"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{viewListingManagedBean.listingToView.costPerDay}" />
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <h:form rendered="#{sessionScope['currentCustomerEntity'].username != viewListingManagedBean.listingToView.customerEntity.username}">
+                                                <p:commandButton value="Book Rental" onclick="PF('dialogRequest').show()" icon="ui-icon-key" />
+                                            </h:form>
+                                            <h:form rendered="#{sessionScope['currentCustomerEntity'].username == viewListingManagedBean.listingToView.customerEntity.username}">
+                                                <p:commandButton value="View Requests" onclick="PF('dialogViewRequests').show()" icon="ui-icon-key" />
+                                                <p:commandButton value="Update Listing" onclick="PF('dialogUpdateListing').show()" icon="ui-icon-brush">
+                                                    <f:setPropertyActionListener value="#{viewListingManagedBean.listingToView}" target="#{viewListingManagedBean.selectedListingToUpdate}" />
+                                                </p:commandButton>
+                                            </h:form>
+                                        </p:column>
 
-                                </p:row>
-                            </p:panelGrid>
-                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:column>
 
-                    </p:row>
+                        </p:row>
 
-                    <!--                    <p:row>
-                                            <p:column  width="50%"><h:outputText value="Title:" style="font-weight:bold"/></p:column>
-                                            <p:column width="50%"> <h:outputText value="#{viewListingManagedBean.listingToView.listingTitle}" /></p:column>
-                                        </p:row>-->
+                        <!--                    <p:row>
+                                                <p:column  width="50%"><h:outputText value="Title:" style="font-weight:bold"/></p:column>
+                                                <p:column width="50%"> <h:outputText value="#{viewListingManagedBean.listingToView.listingTitle}" /></p:column>
+                                            </p:row>-->
 
-                </p:panelGrid>
+                    </p:panelGrid>
+
+                </h:form>
 
                 <h:form id="formRequest">
 
@@ -218,6 +224,106 @@
 
                         </p:dataTable>
 
+
+                    </p:dialog>
+
+                </h:form>
+
+
+                <h:form id="formUpdateListing">
+
+                    <p:dialog id="dialogUpdateListing" widgetVar="dialogUpdateListing" header="Update Listing" closable="true">
+
+                        <p:messages id="messagesUpdateListing" redisplay="false" />
+
+                        <p:panelGrid>
+
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="Listing ID: " />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{viewListingManagedBean.selectedListingToUpdate.listingId}" />
+                                </p:column>
+                                <p:column>
+                                    &nbsp;
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="title" value="Title:" />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText placeholder="#{viewListingManagedBean.listingToView.listingTitle}" id="title" value="#{viewListingManagedBean.selectedListingToUpdate.listingTitle}" required="true" requiredMessage="Name is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="title" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="description" value="Description:" />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText  id="description" value="#{viewListingManagedBean.selectedListingToUpdate.listingDescription}" required="true" requiredMessage="Description is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="description" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="cost" value="Cost (per day):" />
+                                </p:column>
+                                <p:column>
+                                    <p:inputNumber id="cost"  value="#{viewListingManagedBean.selectedListingToUpdate.costPerDay}" required="true" requiredMessage="Cost is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="cost" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="category" value="Category:" />
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="category" value="#{viewListingManagedBean.selectedListingToUpdate.category}" required="true" style="width:150px">
+                                        <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{viewAllListingsManagedBean.categoryEnums}" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="category" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Image: (Optional)" />
+                                </p:column>
+                                <p:column>
+                                    <h:form id="formListingPictureUpload" enctype="multipart/form-data" >
+                                        <p:panel header="Image Upload">
+                                            <p:messages autoUpdate="true" redisplay="false" />
+                                            <p:fileUpload fileUploadListener="#{viewListingManagedBean.handleFileUpload}" />
+                                        </p:panel>
+                                    </h:form>
+                                </p:column>
+                                <p:column>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:commandButton value="Update Listing" update="@form formViewListing:panelGridViewListing" actionListener="#{viewListingManagedBean.updateListing}" oncomplete="PF('dialogUpdateListing').show();" />
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
 
                     </p:dialog>
 

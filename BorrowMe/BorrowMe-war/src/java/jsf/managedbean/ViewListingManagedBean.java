@@ -5,6 +5,10 @@ import ejb.session.stateless.RequestSessionBeanLocal;
 import entity.CustomerEntity;
 import entity.ListingEntity;
 import entity.RequestEntity;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,8 +21,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import util.exception.CreateRequestException;
+import util.exception.InvalidFileTypeException;
 import util.exception.InvalidListingException;
 
 @Named(value = "viewListingManagedBean")
@@ -40,6 +46,7 @@ public class ViewListingManagedBean implements Serializable {
     private List<RequestEntity> requests;
     private List<RequestEntity> filteredRequests;
     private boolean accepted;
+    private ListingEntity selectedListingToUpdate;
 
     public ViewListingManagedBean() {
         listingToView = new ListingEntity();
@@ -47,6 +54,7 @@ public class ViewListingManagedBean implements Serializable {
         dateDiffValue = "(num of days rented must be >= 1!)";
         requests = new ArrayList<RequestEntity>();
         filteredRequests = new ArrayList<RequestEntity>();
+        selectedListingToUpdate = new ListingEntity();
     }
 
     @PostConstruct
@@ -60,6 +68,7 @@ public class ViewListingManagedBean implements Serializable {
             for (RequestEntity r : requests) {
                 filteredRequests.add(r);
             }
+            setSelectedListingToUpdate(getListingToView());
         } catch (InvalidListingException ex) {
             setListingToView(new ListingEntity());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving the listing details: " + ex.getMessage(), null));
@@ -113,12 +122,67 @@ public class ViewListingManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new request: " + ex.getMessage(), null));
         }
     }
-    
+
+    public void updateListing(ActionEvent event) {
+        try {
+            listingSessionBeanLocal.updateListing(selectedListingToUpdate);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Listing updated successfully", null));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+    }
+
+    public void handleFileUpload(FileUploadEvent event) throws InvalidFileTypeException {
+        try {
+            String newFilePath = System.getProperty("user.dir").replace("/config", "/docroot/") + event.getFile().getFileName();
+
+            if (!newFilePath.endsWith(".jpg") && !newFilePath.endsWith(".jpeg") && !newFilePath.endsWith(".png")) {
+                throw new InvalidFileTypeException("invalid file type uploaded; only accept jpg jpeg png");
+            }
+
+            //String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+            System.err.println("********** " + System.getProperty("user.dir"));
+            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
+            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+            File file = new File(newFilePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+            fileOutputStream.close();
+            inputStream.close();
+            String absolutePath = "http://localhost:8080/" + event.getFile().getFileName();
+            selectedListingToUpdate.getImages().add(absolutePath);
+            if (selectedListingToUpdate.getFirstImage().equals("./images/noimage.png")) {
+                selectedListingToUpdate.getImages().remove(0);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
+        } catch (IOException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
+        } catch (InvalidFileTypeException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
+
+        }
+    }
+
     public void changeAcceptance() {
         String summary = accepted ? "Approved" : "Rejected";
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
     }
-    
 
     public long getListingIdToView() {
         return listingIdToView;
@@ -190,6 +254,14 @@ public class ViewListingManagedBean implements Serializable {
 
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public ListingEntity getSelectedListingToUpdate() {
+        return selectedListingToUpdate;
+    }
+
+    public void setSelectedListingToUpdate(ListingEntity selectedListingToUpdate) {
+        this.selectedListingToUpdate = selectedListingToUpdate;
     }
 
 }

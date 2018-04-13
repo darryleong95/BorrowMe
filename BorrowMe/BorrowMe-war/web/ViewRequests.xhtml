@@ -117,28 +117,32 @@
                                                 <p:commandButton value="Accept/Reject Request" onclick="PF('dialogApproveRequest').show()" >
                                                     <f:setPropertyActionListener value="#{requestEntity}" target="#{viewRequestsManagedBean.selectedRequest}" />
                                                 </p:commandButton>
-
                                             </p:column>
                                         </p:dataTable>
 
                                         <h:outputText value="No requests have been made on this listing yet! :(" rendered="#{empty listing.requestList}" />
 
                                     </h:form>
-
+                                    
                                     <h:form id="formApproveRequest">
 
                                         <p:dialog id="dialogApproveRequest" widgetVar="dialogApproveRequest" header="Approve/Reject Request" closable="true">
 
                                             <p:messages id="messagesApproveRequest" redisplay="false" />
 
-                                            <p:panelGrid>
-                                                hi
-
-                                            </p:panelGrid>
-
+                                            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                                <p:outputLabel for="console" value="Basic:" />
+                                                <p:selectOneMenu id="console" value="#{viewRequestsManagedBean.selectedRequest.accepted}" style="width:125px">
+                                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                                    <f:selectItem itemLabel="Accept" itemValue="true" />
+                                                    <f:selectItem itemLabel="Reject" itemValue="false" />
+                                                </p:selectOneMenu>
+                                                <p:commandButton value="Submit" actionListener="viewRequestsManagedBean.updateRequestStatus" update="@form formViewPendingRequests:dataTableAllPendingRequests" oncomplete="PF('dialogApproveRequest').show()"/>
+                                            </h:panelGrid>
                                         </p:dialog>
 
                                     </h:form>
+
                                 </h:panelGrid>
 
                             </h:panelGrid>
