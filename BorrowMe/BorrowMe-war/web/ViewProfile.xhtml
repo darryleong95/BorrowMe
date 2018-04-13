@@ -49,9 +49,16 @@
                                                 <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.username}" />
                                             </p:column>
                                         </p:row>
+                                        <p:row>
+                                            <p:column>
+                                                <p:commandButton update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" icon="ui-icon-pencil" title="Update Profile" value=" Update Profile">
+                                                    <f:setPropertyActionListener value="#{viewProfileManagedBean.selectedProfileToView}" target="#{viewProfileManagedBean.updateProfile}" />
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:row>
                                     </p:panelGrid>
                                 </p:column>
-                                <p:column rowspan="3">
+                                <p:column rowspan="4">
 
                                     <h:form id="formAllListings">
                                         <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewAllListingsManagedBean.listings}" var="listing"  columns="3" layout="grid"
@@ -76,7 +83,7 @@
                                                     </p:remoteCommand>
 
 
-                                                    <p:commandButton actionListener="#{viewAllListingsManagedBean.redirectListing}" >
+                                                    <p:commandButton value="View Listing" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
                                                         <f:attribute name="listingIdToView" value="#{listing.listingId}" />
                                                     </p:commandButton>
 
@@ -94,11 +101,18 @@
                             <p:row>
                                 <p:column>
                                     <h:form id="formAllFeedback">
-                                        <p:dataGrid id="dataGridAllFeedback" widgetVar="dataGridFeedback" value="#{viewAllListingsManagedBean.listings}" var="listing"  columns="3" layout="grid"
+                                        <p:dataGrid id="dataGridAllFeedback" widgetVar="dataGridFeedback" value="#{viewProfileManagedBean.feedbacksForCustomer}" var="feedback"  columns="3" layout="grid"
                                                     rows="12" paginator="true"
                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                     rowsPerPageTemplate="6,12,16">
-                                        
+                                            <p:row>
+                                                <p:column>
+                                                    <h:outputText value="#{feedback.customerEntity.username}"/>  
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{feedback.borrowerReviewLender}"/>
+                                                </p:column>
+                                            </p:row>
                                         </p:dataGrid>
                                     </h:form>
                                 </p:column>
@@ -107,6 +121,115 @@
                     </p:panelGrid>
 
                 </div>
+
+                <h:form id="formUpdateProfile">
+
+                    <p:dialog id="dialogUpdateProfile" widgetVar="dialogUpdateProfile" header="Update Profile" closable="true">
+
+                        <p:messages id="messagesUpdateProfile" redisplay="false" />
+
+                        <p:panelGrid>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="firstName" value="First Name: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="firstName" value="#{viewProfileManagedBean.selectedProfileToView.firstName}" required="true" requiredMessage="First Name is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="firstName" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="lastName" value="Last Name: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="lastName" value="#{viewProfileManagedBean.selectedProfileToView.lastName}" required="true" requiredMessage="Last Name is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="lastName" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="username" value="Username: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="username" value="#{viewProfileManagedBean.selectedProfileToView.username}" required="true" requiredMessage="Username is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="username" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="password" value="Password: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="password" value="#{viewProfileManagedBean.selectedProfileToView.password}" required="true" requiredMessage="Password is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="password" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="identificationNo" value="Identification No: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="identificationNo" value="#{viewProfileManagedBean.selectedProfileToView.identificationNo}" required="true" requiredMessage="Identification No is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="identificationNo" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="contactNo" value="Contact No: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="contactNo" value="#{viewProfileManagedBean.selectedProfileToView.contactNo}" required="true" requiredMessage="Contact No is required" />
+                                </p:column>
+                                <p:column>
+                                    <p:message for="contactNo" />
+                                </p:column>
+                            </p:row>
+                            
+                                                        
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Image: (Optional)" />
+                                </p:column>
+                                <p:column>
+                                    <h:form id="formProfilePictureUpload" enctype="multipart/form-data" >
+                                        <p:panel header="Image Upload">
+                                            <p:messages autoUpdate="true" redisplay="false" />
+                                            <p:fileUpload fileUploadListener="#{viewListingManagedBean.handleFileUpload}" />
+                                        </p:panel>
+                                    </h:form>
+                                </p:column>
+                                <p:column>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:commandButton ajax="false" value="Update Profile" update="@form" actionListener="#{viewProfileManagedBean.updateProfile}" oncomplete="PF('dialogUpdateProfile').show();" />
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+
+                    </p:dialog>
+
+                </h:form>
             </p:layoutUnit>
         </p:layout>
     </ui:define>
