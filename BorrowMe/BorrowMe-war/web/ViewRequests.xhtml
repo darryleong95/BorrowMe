@@ -69,85 +69,67 @@
 
             <p:tab title="Requests on own listings">
 
-                <p:repeat value="#{viewRequestsManagedBean.listings}" var="listing">
-                    <h:form>
-                        <p:growl id="msgs" showDetail="true" />
+                <p:repeat value="#{viewRequestsManagedBean.listings}" varStatus="status" var="listing">
 
-                        <p:fieldset legend="#{listing.listingTitle} (Listing ID: #{listing.listingId})" style="margin-bottom:20px">
-                            <h:panelGrid columns="2" cellpadding="5" >
-                                <h:panelGrid columns="2" cellpadding="10">
+                    <p:growl id="msgs" showDetail="true" />
 
-                                    <p:commandLink actionListener="#{viewAllListingsManagedBean.redirectListing}" value="View Product Page">
-                                        <f:attribute name="listingIdToView" value="#{listing.listingId}" />
-                                    </p:commandLink><br/>
+                    <p:fieldset id="fieldsetPendingRequests" legend="#{listing.listingTitle} (Listing ID: #{listing.listingId})" style="margin-bottom:20px">
+                        <h:panelGrid id="panelGridPendingRequest" columns="2" cellpadding="5" >
+                            <h:panelGrid id="panelGridPendingRequest2" columns="2" cellpadding="10">
 
-                                    <h:form id="formViewPendingRequests">
+                                <p:commandLink actionListener="#{viewAllListingsManagedBean.redirectListing}" value="View Product Page">
+                                    <f:attribute name="listingIdToView" value="#{listing.listingId}" />
+                                </p:commandLink><br/>
 
-                                        <p:dataTable id="dataTableAllPendingRequests" rendered="#{not empty listing.requestList}" widgetVar="dataTableAllPendingRequests" value="#{listing.requestList}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
-                                                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                                <h:form id="formViewPendingRequests">
 
-                                            <p:column headerText="Request ID" sortBy="#{requestEntity.requestEntityId}" filterBy="#{requestEntity.requestEntityId}" filterMatchMode="contains">
-                                                <h:outputText value="#{requestEntity.requestEntityId}" />
-                                            </p:column>
+                                    <p:dataTable id="dataTableAllPendingRequests" rendered="#{not empty listing.requestList}" widgetVar="dataTableAllPendingRequests" value="#{listing.requestList}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
+                                                 rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
-                                            <p:column headerText="Listing:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
-                                                <h:outputText value="#{requestEntity.listingEntity.listingTitle}" style="text-align: center;"/>
-                                            </p:column>
+                                        <p:column headerText="Request ID" sortBy="#{requestEntity.requestEntityId}" filterBy="#{requestEntity.requestEntityId}" filterMatchMode="contains">
+                                            <h:outputText value="#{requestEntity.requestEntityId}" />
+                                        </p:column>
 
-                                            <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
-                                                <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
-                                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
-                                                </h:outputText>
-                                            </p:column>
+                                        <p:column headerText="Listing:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
+                                            <h:outputText value="#{requestEntity.listingEntity.listingTitle}" style="text-align: center;"/>
+                                        </p:column>
 
-                                            <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
-                                                <h:outputText value="#{requestEntity.endDate}" >
-                                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
-                                                </h:outputText>
-                                            </p:column>
-                                            <p:column headerText="Number of Days:" sortBy="#{requestEntity.noOfDays}" filterBy="#{requestEntity.noOfDays}" filterMatchMode="contains">
-                                                <h:outputText value="#{requestEntity.noOfDays}" />
-                                            </p:column>
+                                        <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
+                                            <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
+                                                <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                            </h:outputText>
+                                        </p:column>
 
-                                            <p:column headerText="Fee:" sortBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterMatchMode="contains">
-                                                <h:outputText value="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" />
-                                            </p:column>
+                                        <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
+                                            <h:outputText value="#{requestEntity.endDate}" >
+                                                <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Number of Days:" sortBy="#{requestEntity.noOfDays}" filterBy="#{requestEntity.noOfDays}" filterMatchMode="contains">
+                                            <h:outputText value="#{requestEntity.noOfDays}" />
+                                        </p:column>
 
-                                            <p:column>
-                                                <p:commandButton value="Accept/Reject Request" onclick="PF('dialogApproveRequest').show()" >
-                                                    <f:setPropertyActionListener value="#{requestEntity}" target="#{viewRequestsManagedBean.selectedRequest}" />
-                                                </p:commandButton>
-                                            </p:column>
-                                        </p:dataTable>
+                                        <p:column headerText="Fee:" sortBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterMatchMode="contains">
+                                            <h:outputText value="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" />
+                                        </p:column>
 
-                                        <h:outputText value="No requests have been made on this listing yet! :(" rendered="#{empty listing.requestList}" />
+                                        <p:column>
+                                            <p:outputLabel value="#{requestEntity.requestEntityId}"/>
+                                            <p:commandButton value="Accept/Reject Request" actionListener="#{viewRequestsManagedBean.redirectUpdateRequestStatus}">
+                                                <f:attribute name="requestEntity" value="#{requestEntity}" />
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
 
-                                    </h:form>
-                                    
-                                    <h:form id="formApproveRequest">
+                                    <h:outputText value="No requests have been made on this listing yet! :(" rendered="#{empty listing.requestList}" />
 
-                                        <p:dialog id="dialogApproveRequest" widgetVar="dialogApproveRequest" header="Approve/Reject Request" closable="true">
 
-                                            <p:messages id="messagesApproveRequest" redisplay="false" />
-
-                                            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                                                <p:outputLabel for="console" value="Basic:" />
-                                                <p:selectOneMenu id="console" value="#{viewRequestsManagedBean.selectedRequest.accepted}" style="width:125px">
-                                                    <f:selectItem itemLabel="Select One" itemValue="" />
-                                                    <f:selectItem itemLabel="Accept" itemValue="true" />
-                                                    <f:selectItem itemLabel="Reject" itemValue="false" />
-                                                </p:selectOneMenu>
-                                                <p:commandButton value="Submit" actionListener="viewRequestsManagedBean.updateRequestStatus" update="@form formViewPendingRequests:dataTableAllPendingRequests" oncomplete="PF('dialogApproveRequest').show()"/>
-                                            </h:panelGrid>
-                                        </p:dialog>
-
-                                    </h:form>
-
-                                </h:panelGrid>
+                                </h:form>
 
                             </h:panelGrid>
-                        </p:fieldset>
-                    </h:form>
+
+                        </h:panelGrid>
+                    </p:fieldset>
                 </p:repeat>
             </p:tab>
         </p:tabView>

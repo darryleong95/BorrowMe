@@ -4,6 +4,7 @@ import ejb.session.stateless.CustomerSessionBeanLocal;
 import entity.CustomerEntity;
 import entity.ListingEntity;
 import entity.RequestEntity;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +52,18 @@ public class ViewRequestsManagedBean implements Serializable {
             System.out.println("Customer not found in post construct of view requests managed bean");
         }
     }
-    
-    public void updateRequestStatus(ActionEvent event) {
+
+    public void redirectUpdateRequestStatus(ActionEvent event) {
+        System.out.println("inside redirect method");
         
+        RequestEntity requestEntity = (RequestEntity) event.getComponent().getAttributes().get("requestEntity");
+        System.out.println("requestEntityId from obtained request entity: " + requestEntity.getRequestEntityId());
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("requestEntity", requestEntity);
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("ApproveRequest.xhtml");
+        } catch (IOException ex) {
+            System.out.println("Error with facial recognition/voice software");
+        }
     }
 
     public CustomerEntity getCustomer() {

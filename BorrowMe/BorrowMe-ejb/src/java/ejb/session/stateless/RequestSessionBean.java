@@ -44,8 +44,7 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
             } catch (CustomerNotFoundException ex) {
                 System.out.println("CUSTOMER NOT FOUND SESSION BEAN WHILE CREATING REQUEST");
             }
-            c.getRequestList().add(newRequest);
-            newRequest.setCustomerEntity(c);
+
             ListingEntity l = null;
             try {
                 l = listingSessionBeanLocal.retrieveListingById(newRequest.getListingEntity().getListingId());
@@ -53,25 +52,34 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
                 System.out.println("Listing NOT FOUND SESSION BEAN WHILE CREATING REQUEST");
             }
             List<RequestEntity> requests = l.getRequestList();
+            System.out.println(l.getRequestList().size());
             Date newStartDate = newRequest.getStartDate();
             Date newEndDate = newRequest.getEndDate();
 
             for (RequestEntity r : requests) {
-                if (r.isAccepted()) {
-                    Date otherStartDate = r.getStartDate();
-                    Date otherEndDate = r.getEndDate();
-                    if (newStartDate.compareTo(otherStartDate) < 0) {
-                        if (newEndDate.compareTo(otherStartDate) >= 0) {
-                            throw new CreateRequestException("Item unavailable for selected period!");
-                        }
+                System.out.println("IM INSIDE THE LIST OF REQUESTS TO CHECK AGAINST");
+                // if (r.isAccepted()) {
+                Date otherStartDate = r.getStartDate();
+                Date otherEndDate = r.getEndDate();
+                System.out.println(otherStartDate);
+                if (newStartDate.compareTo(otherStartDate) < 0) {
+                    System.out.println("outerloop");
+                    if (newEndDate.compareTo(otherStartDate) >= 0) {
+                        System.out.println("inner loop, crashed, gonna die");
+                        throw new CreateRequestException("Item unavailable for selected period!");
                     }
                 }
+                //}
             }
+
+            c.getRequestList().add(newRequest);
+            newRequest.setCustomerEntity(c);
+            
             l.getRequestList().add(newRequest);
             newRequest.setListingEntity(l);
             em.persist(newRequest);
-            em.merge(c);
-            em.merge(l);
+//            em.merge(c);
+//            em.merge(l);
             em.flush();
             em.refresh(newRequest);
             return newRequest;
