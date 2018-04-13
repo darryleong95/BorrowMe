@@ -45,6 +45,8 @@ public class CustomerEntity implements Serializable {
     private String email;
     @Column(nullable = false)
     private CustomerTypeEnum customerType;
+    @Column(nullable = false)
+    private List<String> images;
     //private boolean isSuspended; --> lol seriously KIV
 
     @OneToMany(mappedBy = "customerEntity")
@@ -56,12 +58,14 @@ public class CustomerEntity implements Serializable {
     //List of feedback of a lender
     @OneToMany(mappedBy = "customerEntity")
     private List<FeedbackEntity> feedbackList;
-    
+
     public CustomerEntity() {
         requestList = new ArrayList<>();
         listingList = new ArrayList<>();
         feedbackList = new ArrayList<>();
         setCustomerType(CustomerTypeEnum.ORDINARY);
+        images = new ArrayList<>();
+        images.add("./images/defaultprofilepic.png");
     }
 
     public CustomerEntity(String firstName, String lastName, String username, String password, String identificationNo, String contactNo, String email) {
@@ -73,6 +77,11 @@ public class CustomerEntity implements Serializable {
         this.contactNo = contactNo;
         this.email = email;
         this.customerType = CustomerTypeEnum.ORDINARY; //default ORDINARY until subscribed
+        this.images = images;
+    }
+
+    public String getFirstImage() {
+        return images.get(0);
     }
 
     public List<RequestEntity> getRequestList() {
@@ -171,7 +180,6 @@ public class CustomerEntity implements Serializable {
         this.customerId = customerId;
     }
 
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -195,6 +203,20 @@ public class CustomerEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.CustomerEntity[ id=" + customerId + " ]";
+    }
+
+    /**
+     * @return the images
+     */
+    public List<String> getImages() {
+        return images;
+    }
+
+    /**
+     * @param images the images to set
+     */
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
 }

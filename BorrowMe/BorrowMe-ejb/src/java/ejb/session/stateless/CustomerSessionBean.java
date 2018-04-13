@@ -52,6 +52,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             customerToUpdate.setPassword(customer.getPassword());
             customerToUpdate.setUsername(customer.getUsername());
             customerToUpdate.setIdentificationNo(customer.getIdentificationNo());
+            customerToUpdate.setImages(customer.getImages());
             System.out.println("***********************************Check***********************************");
             return retrieveCustomerByCustomerId((Long) customer.getCustomerId());
         } else {
