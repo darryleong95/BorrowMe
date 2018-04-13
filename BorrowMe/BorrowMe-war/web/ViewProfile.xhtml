@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <p:layout>
+            <p:layoutUnit position="center">
+                <div style="width:100%">
+
+                    <p:panelGrid style="margin: 0 auto; width: 100%;">
+
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="2">My Profile</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="1">Profile Information</p:column>
+                                <p:column colspan="1">Listings</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1">
+                                    <p:panelGrid>
+                                        <f:facet name="header">
+                                            <p:row>
+                                                <p:graphicImage value="./images/defaultprofilepic.png" style="border-radius:100px; height:auto; 
+                                                                width: auto; 
+                                                                max-width: 500px; 
+                                                                max-height: 500px;"/>
+                                            </p:row>
+                                        </f:facet>
+                                        <p:row>
+                                            <p:column colspan="1">
+                                                <h:outputText value="ID:" />
+                                            </p:column>
+                                            <p:column colspan="1">
+                                                <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.customerId}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column colspan="1">
+                                                <h:outputText value="Username:" />
+
+                                            </p:column>
+                                            <p:column colspan="1">
+                                                <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.username}" />
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                </p:column>
+                                <p:column rowspan="3">
+
+                                    <h:form id="formAllListings">
+                                        <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewAllListingsManagedBean.listings}" var="listing"  columns="3" layout="grid"
+                                                    rows="12" paginator="true"
+                                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                    rowsPerPageTemplate="6,12,16">
+                                            <p:panel header="#{listing.listingId}" style= "width:200px;text-align:center" >
+
+                                                <!--onclick="rc()"-->
+
+                                                <h:panelGrid  columns="1"  style="width:100%; text-align:center">
+                                                    <f:attribute name="image" value="#{listing.firstImage}" />
+                                                    <p:graphicImage style="height:150px;width:150px;" value="#{listing.firstImage}" />
+                                                       <!--<h:outputText value="#{listing.firstImage}" /> -->
+                                                    <h:outputText value="#{listing.listingTitle}" style="font-weight:bold" />
+                                                    <h:outputText value="by #{listing.customerEntity.username}" style="font-style: italic;"/>
+                                                    <br/>
+                                                    <h:outputLabel value="$#{listing.costPerDay}/day" style="font-weight:bold" />
+
+                                                    <p:remoteCommand name="rc" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
+                                                        <f:attribute name="listingIdToView" value="#{listing.listingId}" />
+                                                    </p:remoteCommand>
+
+
+                                                    <p:commandButton actionListener="#{viewAllListingsManagedBean.redirectListing}" >
+                                                        <f:attribute name="listingIdToView" value="#{listing.listingId}" />
+                                                    </p:commandButton>
+
+
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:dataGrid>
+                                    </h:form>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>Feedback</p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:form id="formAllFeedback">
+                                        <p:dataGrid id="dataGridAllFeedback" widgetVar="dataGridFeedback" value="#{viewAllListingsManagedBean.listings}" var="listing"  columns="3" layout="grid"
+                                                    rows="12" paginator="true"
+                                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                    rowsPerPageTemplate="6,12,16">
+                                        
+                                        </p:dataGrid>
+                                    </h:form>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+
+                </div>
+            </p:layoutUnit>
+        </p:layout>
+    </ui:define>
+
+</ui:composition>

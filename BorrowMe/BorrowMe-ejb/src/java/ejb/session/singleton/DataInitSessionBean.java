@@ -3,9 +3,6 @@ package ejb.session.singleton;
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import entity.CustomerEntity;
-import entity.ListingEntity;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -13,8 +10,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import util.enumeration.CategoryEnum;
-import util.exception.CreateListingException;
 import util.exception.CustomerExistException;
 import util.exception.CustomerNotFoundException;
 

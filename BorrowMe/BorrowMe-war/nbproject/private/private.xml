@@ -3,11 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewAllListings.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/LoginManagedBean.java</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewListing.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewAllListingsManagedBean.java</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewListingManagedBean.java</file>
+            <file>file:/Users/katrina/BorrowMe/BorrowMe/BorrowMe-war/web/ViewListing.xhtml</file>
+            <file>file:/Users/katrina/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewProfileManagedBean.java</file>
+            <file>file:/Users/katrina/BorrowMe/BorrowMe/BorrowMe-war/web/ViewProfile.xhtml</file>
         </group>
     </open-files>
 </project-private>
