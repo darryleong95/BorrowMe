@@ -6,7 +6,9 @@
 package ejb.session.stateless;
 
 import entity.FeedbackEntity;
+import java.util.List;
 import javax.ejb.Local;
+import util.exception.CustomerNotFoundException;
 import util.exception.FeedbackNotFoundException;
 
 @Local
@@ -19,5 +21,7 @@ public interface FeedbackSessionBeanLocal {
     public FeedbackEntity updateFeedbackAsLender(FeedbackEntity feedback) throws FeedbackNotFoundException;
 
     public FeedbackEntity retrieveFeedback(Long id) throws FeedbackNotFoundException;
+
+    public List<FeedbackEntity> retrieveListOfFeedback(Long customerId) throws CustomerNotFoundException;
     
 }

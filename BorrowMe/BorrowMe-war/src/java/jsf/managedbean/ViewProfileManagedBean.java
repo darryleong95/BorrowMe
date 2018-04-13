@@ -38,7 +38,7 @@ public class ViewProfileManagedBean implements Serializable {
 
     private CustomerEntity selectedProfileToView;
     private Long loggedInCustomerId;
-    
+
     private List<FeedbackEntity> feedbacksForCustomer;
 
     /**
@@ -50,9 +50,15 @@ public class ViewProfileManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-       
-        selectedProfileToView = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
-        System.err.println("cust" + selectedProfileToView);
+        try {
+
+            selectedProfileToView = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
+            loggedInCustomerId = selectedProfileToView.getCustomerId();
+            feedbacksForCustomer = feedbackSessionBeanLocal.retrieveListOfFeedback(loggedInCustomerId);
+            System.err.println("cust" + selectedProfileToView);
+        } catch (CustomerNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving the Customer's Feedback: " + ex.getMessage(), null));
+        }
 
     }
 
