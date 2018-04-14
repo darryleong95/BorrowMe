@@ -38,10 +38,7 @@
 
 
                 <p:outputLabel value="Rating: "/>
-                <!-- i THINK WE SHOULD CHANGE THE WAY FEEDBACK CLASS WORKS  -->
                 <p:rating value="#{makeFeedbackManagedBean.feedback.rating}" />
-                <!-- idk whether is borrower or lender here i anyhow put -->
-
 
 
                 <p:outputLabel value="Feedback: "/>
@@ -50,13 +47,6 @@
                                  
             </h:panelGrid>
         </h:form>
-
-        <p:dialog id="dialogMakeFeedback" widgetVar="dialogMakeFeedback" header="Feedback submitted" closable="true">
-
-            <p:messages id="messages" redisplay="false" closable="true" />
-            <h:outputText value="Successfully submitted feedback!"/><br/>
-
-        </p:dialog>
         
     </ui:define>
 

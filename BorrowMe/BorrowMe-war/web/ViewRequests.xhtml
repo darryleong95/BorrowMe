@@ -11,7 +11,7 @@
                 <h:panelGrid columns="2" cellpadding="10">
 
                     <h:form id="formViewMadeRequests">
-                        
+
                         <p:messages id="messages" redisplay="false" closable="true" />
 
                         <p:dataTable id="dataTableAllRequestsMade" widgetVar="dataTableAllRequestsMade" value="#{viewRequestsManagedBean.requestsMade}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
@@ -49,13 +49,22 @@
                                 <h:outputText value="#{requestEntity.message}" />
                             </p:column>
 
+                            <p:column headerText="Total Cost:" sortBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterMatchMode="contains">
+                                <h:outputText value="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" />
+                            </p:column>
+
                             <p:column headerText="Status:" rendered="#{requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
                                 <h:outputText value="Accepted!"/>
                                 <br/>
                                 <h:outputText value="Payment Already Made!" rendered="#{requestEntity.payment}"/>
                                 <p:commandButton value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form">
-                                    <f:setPropertyActionListener value="#{requestEntity}" target="#{viewRequestsManagedBean.selectedRequest}"/>
+                                    <f:attribute name="requestEntity" value="#{requestEntity}"/>
                                 </p:commandButton>
+                                <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and !requestEntity.borrowerLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
+                                    <f:attribute name="requestEntity" value="#{requestEntity}" />
+                                </p:commandButton>
+                                <br/>
+                                <h:outputText value="Feedback Already Made!" rendered="#{requestEntity.borrowerLeftFeedback}"/>
                             </p:column>
 
                             <p:column headerText="Status:" rendered="#{!requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
@@ -75,7 +84,7 @@
 
             <p:tab title="Requests Made for My Items">
 
-                <p:repeat value="#{viewRequestsManagedBean.listings}" varStatus="status" var="listing">
+                <p:repeat value="#{viewRequestsManagedBean.listings}" varStatus="status" var="listing" >
 
                     <p:growl id="msgs" showDetail="true" />
 
@@ -125,14 +134,15 @@
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />
                                             </p:commandButton>
                                         </p:column>
-                                        
+
                                         <p:column rendered="#{requestEntity.acknowledged}">
-                                            <p:outputLabel value="Approved!" rendered="#{requestEntity.accepted}"/>
-                                            <p:commandButton value='Make Feedback' rendered="#{requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
+                                            <p:outputLabel value="Approved! Awaiting Payment" rendered="#{requestEntity.accepted}"/>
+                                            <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />
                                             </p:commandButton>
+                                            <br/>
+                                            <h:outputText value="Feedback Already Made!" rendered="#{requestEntity.lenderLeftFeedback}"/>
                                             <p:outputLabel value="Rejected" rendered="#{!requestEntity.accepted}"/>
-
                                         </p:column>
 
                                     </p:dataTable>

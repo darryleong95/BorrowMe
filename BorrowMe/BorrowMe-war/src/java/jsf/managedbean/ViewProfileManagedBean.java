@@ -9,6 +9,7 @@ import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.FeedbackSessionBeanLocal;
 import entity.CustomerEntity;
 import entity.FeedbackEntity;
+import entity.ListingEntity;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,6 +47,8 @@ public class ViewProfileManagedBean implements Serializable {
     private CustomerEntity selectedProfileToView;
     private Long loggedInCustomerId;
 
+    private List<ListingEntity> customerListings;
+
     private List<FeedbackEntity> feedbacksForCustomer;
 
     /**
@@ -53,24 +56,28 @@ public class ViewProfileManagedBean implements Serializable {
      */
     public ViewProfileManagedBean() {
         feedbacksForCustomer = new ArrayList<>();
+        customerListings = new ArrayList<>();
     }
 
     @PostConstruct
     public void postConstruct() {
         selectedProfileToView = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
+        customerListings = selectedProfileToView.getListingList();
+        feedbacksForCustomer = selectedProfileToView.getFeedbackList();
+        System.err.println("feedback list"+ feedbacksForCustomer);
         System.err.println("cust" + selectedProfileToView);
     }
-    
-    public void updateProfile(ActionEvent event){
+
+    public void updateProfile(ActionEvent event) {
         try {
             System.err.println("in mtd");
             customerSessionBeanLocal.updateCustomer(selectedProfileToView);
-            System.err.println("custid"+ selectedProfileToView);
+            System.err.println("custid" + selectedProfileToView);
         } catch (CustomerNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred while retrieving customer: " + ex.getMessage(), null));
         }
     }
-    
+
     public void handleFileUpload(FileUploadEvent event) throws InvalidFileTypeException {
         try {
             String newFilePath = System.getProperty("user.dir").replace("/config", "/docroot/") + event.getFile().getFileName();
@@ -79,10 +86,6 @@ public class ViewProfileManagedBean implements Serializable {
                 throw new InvalidFileTypeException("invalid file type uploaded; only accept jpg jpeg png");
             }
 
-            //String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-            System.err.println("********** " + System.getProperty("user.dir"));
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
             File file = new File(newFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
 
@@ -104,17 +107,32 @@ public class ViewProfileManagedBean implements Serializable {
             }
             fileOutputStream.close();
             inputStream.close();
+
             String absolutePath = "http://localhost:8080/" + event.getFile().getFileName();
             selectedProfileToView.getImages().add(absolutePath);
             if (selectedProfileToView.getFirstImage().equals("./images/defaultprofilepic.png")) {
                 selectedProfileToView.getImages().remove(0);
             }
+            customerSessionBeanLocal.updateCustomer(selectedProfileToView);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         } catch (IOException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
         } catch (InvalidFileTypeException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
+        } catch (CustomerNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while adding images: " + ex.getMessage(), null));
+        }
+    }
 
+    public void redirectListing(ActionEvent event) {
+
+        long listingIdToView = (long) event.getComponent().getAttributes().get("listingIdToView");
+        System.out.println("i reached redirect listing " + listingIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("listingIdToView", listingIdToView);
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("ViewListing.xhtml");
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -158,6 +176,20 @@ public class ViewProfileManagedBean implements Serializable {
      */
     public void setFeedbacksForCustomer(List<FeedbackEntity> feedbacksForCustomer) {
         this.feedbacksForCustomer = feedbacksForCustomer;
+    }
+
+    /**
+     * @return the customerListings
+     */
+    public List<ListingEntity> getCustomerListings() {
+        return customerListings;
+    }
+
+    /**
+     * @param customerListings the customerListings to set
+     */
+    public void setCustomerListings(List<ListingEntity> customerListings) {
+        this.customerListings = customerListings;
     }
 
 }

@@ -21,17 +21,19 @@
                                 <p:column colspan="1">Profile Information</p:column>
                                 <p:column colspan="1">Listings</p:column>
                             </p:row>
+
                             <p:row>
                                 <p:column rowspan="1">
                                     <p:panelGrid>
+
                                         <f:facet name="header">
                                             <p:row>
-                                                <p:graphicImage value="./images/defaultprofilepic.png" style="border-radius:100px; height:auto; 
-                                                                width: auto; 
-                                                                max-width: 500px; 
-                                                                max-height: 500px;"/>
+                                                <p:galleria value="#{viewProfileManagedBean.selectedProfileToView.images}" var="image" panelWidth="200" panelHeight="200" showCaption="false">
+                                                    <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:100%; width:100%"/>
+                                                </p:galleria>
                                             </p:row>
                                         </f:facet>
+
                                         <p:row>
                                             <p:column colspan="1">
                                                 <h:outputText value="ID:" />
@@ -58,10 +60,10 @@
                                         </p:row>
                                     </p:panelGrid>
                                 </p:column>
-                                <p:column rowspan="4">
+                                <p:column rowspan="5">
 
                                     <h:form id="formAllListings">
-                                        <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewAllListingsManagedBean.listings}" var="listing"  columns="3" layout="grid"
+                                        <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewProfileManagedBean.customerListings}" var="listing"  columns="3" layout="grid"
                                                     rows="12" paginator="true"
                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                     rowsPerPageTemplate="6,12,16">
@@ -78,12 +80,12 @@
                                                     <br/>
                                                     <h:outputLabel value="$#{listing.costPerDay}/day" style="font-weight:bold" />
 
-                                                    <p:remoteCommand name="rc" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
+                                                    <p:remoteCommand name="rc" actionListener="#{viewProfileManagedBean.redirectListing}" >
                                                         <f:attribute name="listingIdToView" value="#{listing.listingId}" />
                                                     </p:remoteCommand>
 
 
-                                                    <p:commandButton value="View Listing" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
+                                                    <p:commandButton value="View Listing" actionListener="#{viewProfileManagedBean.redirectListing}" >
                                                         <f:attribute name="listingIdToView" value="#{listing.listingId}" />
                                                     </p:commandButton>
 
@@ -100,21 +102,23 @@
                             </p:row>
                             <p:row>
                                 <p:column>
-                                    <h:form id="formAllFeedback">
-                                        <p:dataGrid id="dataGridAllFeedback" widgetVar="dataGridFeedback" value="#{viewProfileManagedBean.feedbacksForCustomer}" var="feedback"  columns="3" layout="grid"
-                                                    rows="12" paginator="true"
-                                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                    rowsPerPageTemplate="6,12,16">
-                                            <p:row>
-                                                <p:column>
-                                                    <h:outputText value="#{feedback.customerEntity.username}"/>  
-                                                </p:column>
-                                                <p:column>
-                                                    <h:outputText value="#{feedback.borrowerReviewLender}"/>
-                                                </p:column>
-                                            </p:row>
-                                        </p:dataGrid>
-                                    </h:form>
+                                    
+                                    <p:dataTable id="dataTableCustomerFeedback" widgetVar="dataTableCustomerFeedback" value="#{viewProfileManagedBean.feedbacksForCustomer}" var="feedback"
+                                                 rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                                        
+                                        <p:column headerText=" Reviewer Info">
+                                                <p:graphicImage style="height: 75px;width:75px;" value="#{viewProfileManagedBean.selectedProfileToView.firstImage}" />
+                                                <br/>
+                                                <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.username}"/>
+                                            </p:column>
+                                        <p:column headerText="Review">
+                                                <h:outputText value="#{feedback.review}"/>
+                                            </p:column>
+                                        
+                                        
+                                        
+
+                                    </p:dataTable>
                                 </p:column>
                             </p:row>
                         </f:facet>
@@ -189,7 +193,7 @@
                                     <p:message for="identificationNo" />
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="contactNo" value="Contact No: " />
@@ -201,8 +205,8 @@
                                     <p:message for="contactNo" />
                                 </p:column>
                             </p:row>
-                            
-                                                        
+
+
                             <p:row>
                                 <p:column>
                                     <p:outputLabel value="Image: (Optional)" />

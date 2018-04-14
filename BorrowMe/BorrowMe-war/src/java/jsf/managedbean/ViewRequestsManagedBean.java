@@ -53,8 +53,8 @@ public class ViewRequestsManagedBean implements Serializable {
         try {
             c = customerSessionBeanLocal.retrieveCustomerByCustomerId(c.getCustomerId());
             System.out.println("retrieved customer successfully from context; viewrequests managed bean");
-            setRequestsMade(c.getRequestList());
-            setListings(c.getListingList());
+            requestsMade = c.getRequestList();
+            listings = c.getListingList();
             for (RequestEntity r : requestsMade) {
                 filteredRequestsMade.add(r);
             }
@@ -77,14 +77,10 @@ public class ViewRequestsManagedBean implements Serializable {
     }
 
     public void makePayment(ActionEvent event) {
-        try {
-            System.out.println("selectedrequest at make payment managed bean is " + selectedRequest.getRequestEntityId());
-            setSelectedRequest(requestSessionBeanLocal.retrieveRequestByID(selectedRequest.getRequestEntityId()));
-            paymentSessionBeanLocal.updatePayment(selectedRequest.getPaymentEntity());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment of " + selectedRequest.getPaymentEntity().getTotalAmount() + "made!", null));
-        } catch (RequestNotFoundException ex) {
-            System.out.println("request not found exception");
-        }
+        selectedRequest = (RequestEntity) event.getComponent().getAttributes().get("requestEntity");
+        
+        paymentSessionBeanLocal.updatePayment(selectedRequest.getPaymentEntity());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment of " + selectedRequest.getPaymentEntity().getTotalAmount() + " is successfully made!", null));
     }
 
     public void redirectMakeFeedback(ActionEvent event) throws IOException {

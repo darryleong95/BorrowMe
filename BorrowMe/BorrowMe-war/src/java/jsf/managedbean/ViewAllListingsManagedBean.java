@@ -59,7 +59,7 @@ public class ViewAllListingsManagedBean implements Serializable {
             String newFilePath = System.getProperty("user.dir").replace("/config", "/docroot/") + event.getFile().getFileName();
 
             if (!newFilePath.endsWith(".jpg") && !newFilePath.endsWith(".jpeg") && !newFilePath.endsWith(".png")) {
-                throw new InvalidFileTypeException("invalid file type uploaded; only accept jpg jpeg png");
+                throw new InvalidFileTypeException("Invalid file type uploaded; only accept jpg jpeg png");
             }
 
             //String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();

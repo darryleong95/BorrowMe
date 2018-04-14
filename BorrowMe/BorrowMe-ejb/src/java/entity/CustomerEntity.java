@@ -42,7 +42,6 @@ public class CustomerEntity implements Serializable {
     private CustomerTypeEnum customerType;
     @Column(nullable = false)
     private List<String> images;
-    //private boolean isSuspended; --> lol seriously KIV
 
     @OneToMany(mappedBy = "customerEntity")
     private List<RequestEntity> requestList;

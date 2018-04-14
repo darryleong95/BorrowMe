@@ -24,6 +24,7 @@
                                     <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:100%; width:100%"/>
                                 </p:galleria>
                             </p:column>
+                            
                             <p:column colspan="3" style="vertical-align: top; width:50%">
                                 <p:panelGrid style="height:100%; width:100%">
                                     <p:row>
@@ -35,17 +36,13 @@
 
                                     <p:row>
                                         <p:column>
-                                            <p:graphicImage value="./images/defaultprofilepic.png" style="border-radius:100px; height:auto; 
-                                                            width: auto; 
-                                                            max-width: 50px; 
-                                                            max-height: 50px;"/>
+                                            <p:graphicImage style="height: 200px;width:200px;" value="#{viewListingManagedBean.listingToView.customerEntity.firstImage}" />
                                         </p:column>
                                         <p:column>
                                             <h:outputText value="by #{viewListingManagedBean.listingToView.customerEntity.username}"></h:outputText>
-
                                         </p:column>
-
                                     </p:row>
+                                    
                                     <p:row>
                                         <p:column>
                                             <ui:include src="./images/description.svg" />&nbsp;
