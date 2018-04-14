@@ -50,13 +50,13 @@ public class ApproveRequestManagedBean implements Serializable {
             c = customerSessionBeanLocal.retrieveCustomerByCustomerId(c.getCustomerId());
             System.out.println("retrieved customer successfully from context; approverequest managed bean");
             RequestEntity requestEntity = (RequestEntity) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("requestEntity");
-            if (requestEntity == null) {
-                System.out.println("requestentity is null");
-            } else if (requestEntity.getRequestEntityId() == null) {
-                System.out.println("requestentity id is null");
-            } else {
-                System.out.println("requestentity id obtained is" + requestEntity.getRequestEntityId());
-            }
+//            if (requestEntity == null) {
+//                System.out.println("requestentity is null");
+//            } else if (requestEntity.getRequestEntityId() == null) {
+//                System.out.println("requestentity id is null");
+//            } else {
+//                System.out.println("requestentity id obtained is" + requestEntity.getRequestEntityId());
+//            }
             setRequest(requestSessionBeanLocal.retrieveRequestByID(requestEntity.getRequestEntityId()));
             setListing(listingSessionBeanLocal.retrieveListingById(getRequest().getListingEntity().getListingId()));
         } catch (CustomerNotFoundException ex) {
@@ -75,11 +75,11 @@ public class ApproveRequestManagedBean implements Serializable {
         } else {
             System.out.println("boolean turned false");
         }
-        getRequest().setAcknowledged(true);
+        request.setAcknowledged(true);
         if (accepted) {
-            getRequest().setAccepted(true);
+           request.setAccepted(true);
         } else {
-            getRequest().setAccepted(false);
+            request.setAccepted(false);
         }
         requestSessionBeanLocal.updateRequest(getRequest());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Status successfully set", null));

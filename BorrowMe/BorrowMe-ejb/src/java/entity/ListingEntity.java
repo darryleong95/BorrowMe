@@ -32,7 +32,6 @@ public class ListingEntity implements Serializable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CategoryEnum category;
-    
     @Column
     private List<String> images;
     
@@ -43,28 +42,27 @@ public class ListingEntity implements Serializable {
     private List<RequestEntity> requestList;
     
     @OneToMany(mappedBy = "listingEntity")
-    private List<FeedbackEntity> feedbackList;
-    
-    @OneToMany(mappedBy = "listingEntity")
     private List<PaymentEntity> paymentEntities;
 
     public ListingEntity() {
-        feedbackList = new ArrayList<FeedbackEntity>();
         requestList = new ArrayList<RequestEntity>();
         paymentEntities = new ArrayList<PaymentEntity>();
         images = new ArrayList<String>();
     }
 
-    public ListingEntity(String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, CategoryEnum category, CustomerEntity customerEntity, List<String> images) {
-        //this.listingId = listingId;
+    public ListingEntity(String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, CategoryEnum category, List<String> images, CustomerEntity customerEntity, List<RequestEntity> requestList, List<PaymentEntity> paymentEntities) {
+        this();
         this.listingTitle = listingTitle;
         this.listingDescription = listingDescription;
-        this.listingAvailable = true; //default true
+        this.listingAvailable = listingAvailable;
         this.costPerDay = costPerDay;
         this.category = category;
-        this.customerEntity = customerEntity;
         this.images = images;
+        this.customerEntity = customerEntity;
+        this.requestList = requestList;
+        this.paymentEntities = paymentEntities;
     }
+
 
     public String getFirstImage() {
         return images.get(0);
@@ -124,14 +122,6 @@ public class ListingEntity implements Serializable {
 
     public void setRequestList(List<RequestEntity> requestList) {
         this.requestList = requestList;
-    }
-
-    public List<FeedbackEntity> getFeedbackList() {
-        return feedbackList;
-    }
-
-    public void setFeedbackList(List<FeedbackEntity> feedbackList) {
-        this.feedbackList = feedbackList;
     }
 
     public Long getListingId() {

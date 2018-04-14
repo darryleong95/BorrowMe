@@ -5,6 +5,8 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import util.exception.FeedbackExistException;
 import util.exception.FeedbackNotFoundException;
 
 @Stateless
@@ -15,46 +17,48 @@ public class FeedbackSessionBean implements FeedbackSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public Long createFeedback(FeedbackEntity feedback) {
+    public Long createFeedback(FeedbackEntity feedback) throws FeedbackExistException{
+        try {
+            em.persist(feedback);
+            em.flush();
+            em.refresh(feedback);
 
-        em.persist(feedback);
-        em.flush();
-        em.refresh(feedback);
-
-        return feedback.getFeedbackId();
-    }
-
-    @Override
-    public FeedbackEntity updateFeedbackAsBorrower(FeedbackEntity feedback) throws FeedbackNotFoundException {
-        if (feedback.getFeedbackId()!= null) {
-            FeedbackEntity feedbackToUpdate = retrieveFeedback(feedback.getFeedbackId());
-            feedbackToUpdate.setBorrowerReviewLender(feedback.getBorrowerReviewLender());
-            feedbackToUpdate.setBorrowerReviewLenderRating(feedback.getBorrowerReviewLenderRating());
-            feedbackToUpdate.setListingRating(feedback.getListingRating());
-            feedbackToUpdate.setListingReview(feedback.getListingReview());
-            System.out.println("***********************************Check Feedback update***********************************");
-            return retrieveFeedback(feedback.getFeedbackId());
-        } else {
-            throw new FeedbackNotFoundException("ID not provided for feedback to be updated");
+            return feedback.getFeedbackId();
+        } catch (PersistenceException ex) {
+            if (ex.getCause() != null
+                    && ex.getCause().getCause() != null
+                    && ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException")) {
+                throw new FeedbackExistException("Feedback with same name already exists");
+            } else {
+                throw new FeedbackExistException("An unexpected error has occurred: " + ex.getMessage());
+            }
+        } catch (Exception ex) {
+            throw new FeedbackExistException("An unexpected error has occurred: " + ex.getMessage());
         }
     }
-    
-    @Override
-    public FeedbackEntity updateFeedbackAsLender(FeedbackEntity feedback) throws FeedbackNotFoundException {
+
+
+@Override
+        public FeedbackEntity updateFeedback(FeedbackEntity feedback) throws FeedbackNotFoundException {
         if (feedback.getFeedbackId() != null) {
-            FeedbackEntity feedbackToUpdate = retrieveFeedback(feedback.getFeedbackId());
-            feedbackToUpdate.setLenderReviewBorrower(feedback.getLenderReviewBorrower());
-            feedbackToUpdate.setLenderReviewBorrowerRating(feedback.getLenderReviewBorrowerRating());
+            FeedbackEntity feedbackToUpdate = retrieveFeedbackById(feedback.getFeedbackId());
+            feedbackToUpdate.setRating(feedback.getRating());
+            feedbackToUpdate.setReview(feedback.getReview());
+            feedbackToUpdate.setCustomerEntity(feedback.getCustomerEntity());
+            feedbackToUpdate.setRequestEntity(feedback.getRequestEntity());
             System.out.println("***********************************Check Feedback update***********************************");
-            return retrieveFeedback(feedback.getFeedbackId());
+            return retrieveFeedbackById(feedback.getFeedbackId());
         } else {
             throw new FeedbackNotFoundException("ID not provided for feedback to be updated");
         }
     }
-    
+
     @Override
-    public FeedbackEntity retrieveFeedback(Long id) throws FeedbackNotFoundException {
-        FeedbackEntity feedback = em.find(FeedbackEntity.class, id);
+        public FeedbackEntity 
+
+retrieveFeedbackById(Long id) throws FeedbackNotFoundException {
+        FeedbackEntity feedback = em.find(FeedbackEntity.class
+, id);
 
         if (feedback != null) {
             return feedback;

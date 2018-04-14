@@ -34,7 +34,7 @@
 
         <h:form id="formRegister">
 
-            <p:dialog id="dialogRegister" widgetVar="dialogRegister" header="Add New Listing" closable="true">
+            <p:dialog id="dialogRegister" widgetVar="dialogRegister" header="Register Account" closable="true">
 
                 <p:messages id="messagesRegister" redisplay="false" />
 
@@ -56,7 +56,7 @@
                             <p:outputLabel for="password" value="Password: " />
                         </p:column>
                         <p:column>
-                            <p:inputText type="password" id="password" value="#{loginManagedBean.newCustomer.password}" required="true" requiredMessage="Username is required" />
+                            <p:inputText type="password" id="password" value="#{loginManagedBean.newCustomer.password}" required="true" requiredMessage="Password is required" />
                         </p:column>
                         <p:column>
                             <p:message for="password" />
@@ -68,7 +68,7 @@
                             <p:outputLabel for="firstName" value="First Name: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="firstName" value="#{loginManagedBean.newCustomer.firstName}" required="true" requiredMessage="Username is required" />
+                            <p:inputText id="firstName" value="#{loginManagedBean.newCustomer.firstName}" required="true" requiredMessage="First Name is required" />
                         </p:column>
                         <p:column>
                             <p:message for="firstName" />
@@ -80,7 +80,7 @@
                             <p:outputLabel for="lastName" value="Last Name: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="lastName" value="#{loginManagedBean.newCustomer.lastName}" required="true" requiredMessage="Username is required" />
+                            <p:inputText id="lastName" value="#{loginManagedBean.newCustomer.lastName}" required="true" requiredMessage="Last Name is required" />
                         </p:column>
                         <p:column>
                             <p:message for="lastName" />

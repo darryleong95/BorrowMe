@@ -7,17 +7,16 @@ package ejb.session.stateless;
 
 import entity.FeedbackEntity;
 import javax.ejb.Local;
+import util.exception.FeedbackExistException;
 import util.exception.FeedbackNotFoundException;
 
 @Local
 public interface FeedbackSessionBeanLocal {
 
-    public Long createFeedback(FeedbackEntity feedback);
+    public Long createFeedback(FeedbackEntity feedback) throws FeedbackExistException;
 
-    public FeedbackEntity updateFeedbackAsBorrower(FeedbackEntity feedback) throws FeedbackNotFoundException;
-    
-    public FeedbackEntity updateFeedbackAsLender(FeedbackEntity feedback) throws FeedbackNotFoundException;
+    public FeedbackEntity updateFeedback(FeedbackEntity feedback) throws FeedbackNotFoundException;
 
-    public FeedbackEntity retrieveFeedback(Long id) throws FeedbackNotFoundException;
-    
+    public FeedbackEntity retrieveFeedbackById(Long id) throws FeedbackNotFoundException;
+
 }

@@ -8,7 +8,7 @@
 
     <ui:define name="content">
 
-        <h:form>
+        <h:form id="formMakeFeedback">
 
             <p:messages id="messages" redisplay="false" closable="true" />
 
@@ -39,13 +39,13 @@
 
                 <p:outputLabel value="Rating: "/>
                 <!-- i THINK WE SHOULD CHANGE THE WAY FEEDBACK CLASS WORKS  -->
-                <p:rating value="#{makeFeedbackManagedBean.feedback.borrowerReviewLenderRating}" />
+                <p:rating value="#{makeFeedbackManagedBean.feedback.rating}" />
                 <!-- idk whether is borrower or lender here i anyhow put -->
 
 
 
                 <p:outputLabel value="Feedback: "/>
-                <p:inputTextarea rows="6" cols="33" value="#{makeFeedbackManagedBean.feedback.listingReview}"/>
+                <p:inputTextarea rows="6" cols="33" value="#{makeFeedbackManagedBean.feedback.review}"/>
                 <p:commandButton value="Submit" update="@form" actionListener="#{makeFeedbackManagedBean.makeFeedback}"  oncomplete="PF('dialogMakeFeedback').show()"/>
                                  
             </h:panelGrid>
@@ -55,10 +55,9 @@
 
             <p:messages id="messages" redisplay="false" closable="true" />
             <h:outputText value="Successfully submitted feedback!"/><br/>
-            <h:outputText value="JUST PLACEHOLDER, SESSION BEAN AND MANAGED BEAN METHODS NOT DONE YET!!!"/>
 
         </p:dialog>
-
+        
     </ui:define>
 
 </ui:composition>

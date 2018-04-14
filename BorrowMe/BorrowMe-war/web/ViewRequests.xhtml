@@ -7,7 +7,7 @@
     <ui:define name="content">
 
         <p:tabView dynamic="true" cache="true" effect="fold">
-            <p:tab title="Requests Made">
+            <p:tab title="Requests Made for Other's Items">
                 <h:panelGrid columns="2" cellpadding="10">
 
                     <h:form id="formViewMadeRequests">
@@ -53,9 +53,9 @@
                                 <h:outputText value="Accepted!"/>
                                 <br/>
                                 <h:outputText value="Payment Already Made!" rendered="#{requestEntity.payment}"/>
-                                <p:commandLink value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form">
+                                <p:commandButton value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form">
                                     <f:setPropertyActionListener value="#{requestEntity}" target="#{viewRequestsManagedBean.selectedRequest}"/>
-                                </p:commandLink>
+                                </p:commandButton>
                             </p:column>
 
                             <p:column headerText="Status:" rendered="#{!requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
@@ -73,7 +73,7 @@
 
             </p:tab>
 
-            <p:tab title="Requests on own listings">
+            <p:tab title="Requests Made for My Items">
 
                 <p:repeat value="#{viewRequestsManagedBean.listings}" varStatus="status" var="listing">
 
@@ -96,7 +96,7 @@
                                             <h:outputText value="#{requestEntity.requestEntityId}" />
                                         </p:column>
 
-                                        <p:column headerText="Listing:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
+                                        <p:column headerText="Listing ID:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
                                             <h:outputText value="#{requestEntity.listingEntity.listingTitle}" style="text-align: center;"/>
                                         </p:column>
 
@@ -125,11 +125,12 @@
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />
                                             </p:commandButton>
                                         </p:column>
+                                        
                                         <p:column rendered="#{requestEntity.acknowledged}">
                                             <p:outputLabel value="Approved!" rendered="#{requestEntity.accepted}"/>
-                                            <p:commandLink value='Make Feedback' rendered="#{requestEntity.accepted}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
+                                            <p:commandButton value='Make Feedback' rendered="#{requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />
-                                              </p:commandLink>
+                                            </p:commandButton>
                                             <p:outputLabel value="Rejected" rendered="#{!requestEntity.accepted}"/>
 
                                         </p:column>

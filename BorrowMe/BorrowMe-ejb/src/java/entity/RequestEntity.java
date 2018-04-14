@@ -1,13 +1,16 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,6 +40,10 @@ public class RequestEntity implements Serializable {
     private Boolean overdue;
     @Column(nullable = false)
     private String message;
+    @Column(nullable = false)
+    private Boolean borrowerLeftFeedback;
+    @Column(nullable = false)
+    private Boolean lenderLeftFeedback;
     
     @ManyToOne
     private ListingEntity listingEntity;
@@ -46,6 +53,9 @@ public class RequestEntity implements Serializable {
     
     @OneToOne
     private PaymentEntity paymentEntity;
+    
+    @OneToMany(mappedBy = "requestEntity")
+    private List<FeedbackEntity> feedbackList;
 
     
     public RequestEntity() {
@@ -53,18 +63,28 @@ public class RequestEntity implements Serializable {
         accepted = false;
         payment = false;
         overdue = false;
+        borrowerLeftFeedback = false;
+        lenderLeftFeedback = false;
+        
+        feedbackList = new ArrayList<>();
     }
 
-    public RequestEntity(Long requestEntityId, Date startDate, Date endDate, Integer noOfDays, Boolean payment, Boolean accepted, Boolean overdue, ListingEntity listingEntity, CustomerEntity customerEntity) {
-        this.requestEntityId = requestEntityId;
+    public RequestEntity(Date startDate, Date endDate, Integer noOfDays, Boolean payment, Boolean acknowledged, Boolean accepted, Boolean overdue, String message, Boolean borrowerLeftFeedback, Boolean lenderLeftFeedback, ListingEntity listingEntity, CustomerEntity customerEntity, PaymentEntity paymentEntity, List<FeedbackEntity> feedbackList) {
+        this();
         this.startDate = startDate;
         this.endDate = endDate;
         this.noOfDays = noOfDays;
-        this.payment = false; //defauly false
-        this.accepted = false; //default false
-        this.overdue = false; //default false
+        this.payment = payment;
+        this.acknowledged = acknowledged;
+        this.accepted = accepted;
+        this.overdue = overdue;
+        this.message = message;
+        this.borrowerLeftFeedback = borrowerLeftFeedback;
+        this.lenderLeftFeedback = lenderLeftFeedback;
         this.listingEntity = listingEntity;
         this.customerEntity = customerEntity;
+        this.paymentEntity = paymentEntity;
+        this.feedbackList = feedbackList;
     }
     
     public ListingEntity getListingEntity() {
@@ -204,4 +224,33 @@ public class RequestEntity implements Serializable {
         this.acknowledged = acknowledged;
     }
 
+    /**
+     * @return the borrowerLeftFeedback
+     */
+    public Boolean getBorrowerLeftFeedback() {
+        return borrowerLeftFeedback;
+    }
+
+    /**
+     * @param borrowerLeftFeedback the borrowerLeftFeedback to set
+     */
+    public void setBorrowerLeftFeedback(Boolean borrowerLeftFeedback) {
+        this.borrowerLeftFeedback = borrowerLeftFeedback;
+    }
+
+    /**
+     * @return the lenderLeftFeedback
+     */
+    public Boolean getLenderLeftFeedback() {
+        return lenderLeftFeedback;
+    }
+
+    /**
+     * @param lenderLeftFeedback the lenderLeftFeedback to set
+     */
+    public void setLenderLeftFeedback(Boolean lenderLeftFeedback) {
+        this.lenderLeftFeedback = lenderLeftFeedback;
+    }
+
+   
 }

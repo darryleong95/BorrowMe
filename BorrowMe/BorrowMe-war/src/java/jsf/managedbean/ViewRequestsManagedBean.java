@@ -87,16 +87,14 @@ public class ViewRequestsManagedBean implements Serializable {
         }
     }
 
-    public void redirectMakeFeedback(ActionEvent event) {
+    public void redirectMakeFeedback(ActionEvent event) throws IOException {
         RequestEntity requestEntity = (RequestEntity) event.getComponent().getAttributes().get("requestEntity");
         System.out.println("requestEntityId from obtained request entity: " + requestEntity.getRequestEntityId());
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("requestEntity", requestEntity);
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("MakeFeedback.xhtml");
-        } catch (IOException ex) {
-            System.out.println("IO Exception");
-        }
+
+        FacesContext.getCurrentInstance().getExternalContext().redirect("MakeFeedback.xhtml");
     }
+  
 
     public CustomerEntity getCustomer() {
         return customer;

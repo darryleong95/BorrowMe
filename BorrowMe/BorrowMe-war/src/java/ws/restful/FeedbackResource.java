@@ -47,14 +47,14 @@ public class FeedbackResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateFeedbackAsBorrower(JAXBElement<UpdateFeedbackReq> jaxbUpdateFeedbackReq) {
+    public Response updateFeedback(JAXBElement<UpdateFeedbackReq> jaxbUpdateFeedbackReq) {
         if ((jaxbUpdateFeedbackReq != null) && (jaxbUpdateFeedbackReq.getValue() != null)) {
             try {
                 UpdateFeedbackReq updateFeedbackReq = jaxbUpdateFeedbackReq.getValue();
 
-                FeedbackEntity updated = feedbackSessionBean.updateFeedbackAsBorrower(updateFeedbackReq.getFeedback());
+                FeedbackEntity updated = feedbackSessionBean.updateFeedback(updateFeedbackReq.getFeedback());
 
-                RetrieveFeedbackRsp retrieveFeedbackRsp = new RetrieveFeedbackRsp(feedbackSessionBean.retrieveFeedback(updated.getFeedbackId()));
+                RetrieveFeedbackRsp retrieveFeedbackRsp = new RetrieveFeedbackRsp(feedbackSessionBean.retrieveFeedbackById(updated.getFeedbackId()));
 
                 return Response.status(Response.Status.OK).entity(retrieveFeedbackRsp).build();
             } catch (FeedbackNotFoundException ex) {
@@ -73,35 +73,35 @@ public class FeedbackResource {
         }
     }
     
-    @Path("feedbackAsLender")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateFeedbackAsLender(JAXBElement<UpdateFeedbackReq> jaxbUpdateFeedbackReq) {
-        if ((jaxbUpdateFeedbackReq != null) && (jaxbUpdateFeedbackReq.getValue() != null)) {
-            try {
-                UpdateFeedbackReq updateFeedbackReq = jaxbUpdateFeedbackReq.getValue();
-
-                FeedbackEntity updated = feedbackSessionBean.updateFeedbackAsLender(updateFeedbackReq.getFeedback());
-
-                RetrieveFeedbackRsp retrieveFeedbackRsp = new RetrieveFeedbackRsp(feedbackSessionBean.retrieveFeedback(updated.getFeedbackId()));
-
-                return Response.status(Response.Status.OK).entity(retrieveFeedbackRsp).build();
-            } catch (FeedbackNotFoundException ex) {
-                ws.restful.datamodel.Feedback.ErrorRsp errorRsp = new ws.restful.datamodel.Feedback.ErrorRsp(ex.getMessage());
-
-                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
-            } catch (Exception ex) {
-                ws.restful.datamodel.Feedback.ErrorRsp errorRsp = new ws.restful.datamodel.Feedback.ErrorRsp(ex.getMessage());
-
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-            }
-        } else {
-            ws.restful.datamodel.Feedback.ErrorRsp errorRsp = new ws.restful.datamodel.Feedback.ErrorRsp("Invalid update feedback request");
-
-            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
-        }
-    }
+//    @Path("feedbackAsLender")
+//    @POST
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response updateFeedbackAsLender(JAXBElement<UpdateFeedbackReq> jaxbUpdateFeedbackReq) {
+//        if ((jaxbUpdateFeedbackReq != null) && (jaxbUpdateFeedbackReq.getValue() != null)) {
+//            try {
+//                UpdateFeedbackReq updateFeedbackReq = jaxbUpdateFeedbackReq.getValue();
+//
+//                FeedbackEntity updated = feedbackSessionBean.updateFeedbackAsLender(updateFeedbackReq.getFeedback());
+//
+//                RetrieveFeedbackRsp retrieveFeedbackRsp = new RetrieveFeedbackRsp(feedbackSessionBean.retrieveFeedback(updated.getFeedbackId()));
+//
+//                return Response.status(Response.Status.OK).entity(retrieveFeedbackRsp).build();
+//            } catch (FeedbackNotFoundException ex) {
+//                ws.restful.datamodel.Feedback.ErrorRsp errorRsp = new ws.restful.datamodel.Feedback.ErrorRsp(ex.getMessage());
+//
+//                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+//            } catch (Exception ex) {
+//                ws.restful.datamodel.Feedback.ErrorRsp errorRsp = new ws.restful.datamodel.Feedback.ErrorRsp(ex.getMessage());
+//
+//                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+//            }
+//        } else {
+//            ws.restful.datamodel.Feedback.ErrorRsp errorRsp = new ws.restful.datamodel.Feedback.ErrorRsp("Invalid update feedback request");
+//
+//            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+//        }
+//    }
 
     private FeedbackSessionBeanLocal lookupFeedbackSessionBeanLocal() {
         try {

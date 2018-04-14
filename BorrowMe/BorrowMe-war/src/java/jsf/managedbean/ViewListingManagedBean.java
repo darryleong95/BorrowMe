@@ -108,7 +108,7 @@ public class ViewListingManagedBean implements Serializable {
     public void createRequest(ActionEvent event) {
         try {
             CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
-            newRequestEntity.setCustomerEntity(c);
+            newRequestEntity.setCustomerEntity(c); //borrower
             newRequestEntity.setListingEntity(listingToView);
             newRequestEntity.setStartDate(newStartDate);
             newRequestEntity.setEndDate(newEndDate);

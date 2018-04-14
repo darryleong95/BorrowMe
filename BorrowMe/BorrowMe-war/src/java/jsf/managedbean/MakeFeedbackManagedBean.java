@@ -1,6 +1,7 @@
 package jsf.managedbean;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.FeedbackSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.RequestSessionBeanLocal;
 import entity.CustomerEntity;
@@ -8,19 +9,26 @@ import entity.FeedbackEntity;
 import entity.ListingEntity;
 import entity.RequestEntity;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import util.exception.CustomerNotFoundException;
+import util.exception.FeedbackExistException;
 import util.exception.InvalidListingException;
 import util.exception.RequestNotFoundException;
 
 @Named(value = "makeFeedbackManagedBean")
 @ViewScoped
 public class MakeFeedbackManagedBean implements Serializable {
+
+    @EJB(name = "FeedbackSessionBeanLocal")
+    private FeedbackSessionBeanLocal feedbackSessionBeanLocal;
 
     @EJB(name = "RequestSessionBeanLocal")
     private RequestSessionBeanLocal requestSessionBeanLocal;
@@ -30,14 +38,14 @@ public class MakeFeedbackManagedBean implements Serializable {
 
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
-   
+
     private CustomerEntity customer;
-    private FeedbackEntity feedback;
+    private FeedbackEntity newFeedback;
     private RequestEntity request;
     private ListingEntity listing;
 
     public MakeFeedbackManagedBean() {
-        feedback = new FeedbackEntity();
+        newFeedback = new FeedbackEntity();
         request = new RequestEntity();
         customer = new CustomerEntity();
         listing = new ListingEntity();
@@ -45,20 +53,20 @@ public class MakeFeedbackManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-               CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
+        CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
         try {
             customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(c.getCustomerId());
             System.out.println("retrieved customer successfully from context; approverequest managed bean");
             RequestEntity requestEntity = (RequestEntity) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("requestEntity");
-            if (requestEntity == null) {
-                System.out.println("requestentity is null");
-            } else if (requestEntity.getRequestEntityId() == null) {
-                System.out.println("requestentity id is null");
-            } else {
-                System.out.println("requestentity id obtained is" + requestEntity.getRequestEntityId());
-            }
-            setRequest(requestSessionBeanLocal.retrieveRequestByID(requestEntity.getRequestEntityId()));
-            setListing(listingSessionBeanLocal.retrieveListingById(getRequest().getListingEntity().getListingId()));
+//            if (requestEntity == null) {
+//                System.out.println("requestentity is null");
+//            } else if (requestEntity.getRequestEntityId() == null) {
+//                System.out.println("requestentity id is null");
+//            } else {
+//                System.out.println("requestentity id obtained is" + requestEntity.getRequestEntityId());
+//            }
+            request = requestSessionBeanLocal.retrieveRequestByID(requestEntity.getRequestEntityId());
+            listing = listingSessionBeanLocal.retrieveListingById(getRequest().getListingEntity().getListingId());
         } catch (CustomerNotFoundException ex) {
             System.out.println("Customer not found??? :" + ex.getMessage());
         } catch (RequestNotFoundException ex) {
@@ -67,17 +75,34 @@ public class MakeFeedbackManagedBean implements Serializable {
             System.out.println("listing retrieved not found:" + ex.getMessage());
         }
     }
-    
-    public void makeFeedback (ActionEvent event) {
-        //TO COMPLETE
+
+    public void makeFeedback(ActionEvent event) {
+        try {
+            CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
+            newFeedback.setCustomerEntity(c);
+            newFeedback.setRequestEntity(request);
+            Long newFeedbackId = feedbackSessionBeanLocal.createFeedback(newFeedback);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New feedback created successfully (feedback ID: " + newFeedbackId + ")", null));
+
+            if (c.getCustomerId() != request.getCustomerEntity().getCustomerId()) { //lender left fdbk
+                request.setLenderLeftFeedback(Boolean.TRUE);
+                System.err.println("set");
+            } else { //borrower left feedback
+                request.setBorrowerLeftFeedback(Boolean.TRUE);
+            }
+            requestSessionBeanLocal.updateRequest(request);
+            
+        } catch (FeedbackExistException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new feedback: " + ex.getMessage(), null));
+        }
     }
 
     public FeedbackEntity getFeedback() {
-        return feedback;
+        return newFeedback;
     }
 
-    public void setFeedback(FeedbackEntity feedback) {
-        this.feedback = feedback;
+    public void setFeedback(FeedbackEntity newFeedback) {
+        this.newFeedback = newFeedback;
     }
 
     public RequestEntity getRequest() {
