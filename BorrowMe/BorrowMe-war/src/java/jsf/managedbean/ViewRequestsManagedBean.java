@@ -1,6 +1,8 @@
 package jsf.managedbean;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.PaymentSessionBeanLocal;
+import ejb.session.stateless.RequestSessionBeanLocal;
 import entity.CustomerEntity;
 import entity.ListingEntity;
 import entity.RequestEntity;
@@ -10,15 +12,23 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import util.exception.CustomerNotFoundException;
+import util.exception.RequestNotFoundException;
 
 @Named(value = "viewRequestsManagedBean")
 @ViewScoped
 public class ViewRequestsManagedBean implements Serializable {
+
+    @EJB(name = "RequestSessionBeanLocal")
+    private RequestSessionBeanLocal requestSessionBeanLocal;
+
+    @EJB(name = "PaymentSessionBeanLocal")
+    private PaymentSessionBeanLocal paymentSessionBeanLocal;
 
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
@@ -55,7 +65,7 @@ public class ViewRequestsManagedBean implements Serializable {
 
     public void redirectUpdateRequestStatus(ActionEvent event) {
         System.out.println("inside redirect method");
-        
+
         RequestEntity requestEntity = (RequestEntity) event.getComponent().getAttributes().get("requestEntity");
         System.out.println("requestEntityId from obtained request entity: " + requestEntity.getRequestEntityId());
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("requestEntity", requestEntity);
@@ -63,6 +73,28 @@ public class ViewRequestsManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().redirect("ApproveRequest.xhtml");
         } catch (IOException ex) {
             System.out.println("Error with facial recognition/voice software");
+        }
+    }
+
+    public void makePayment(ActionEvent event) {
+        try {
+            System.out.println("selectedrequest at make payment managed bean is " + selectedRequest.getRequestEntityId());
+            setSelectedRequest(requestSessionBeanLocal.retrieveRequestByID(selectedRequest.getRequestEntityId()));
+            paymentSessionBeanLocal.updatePayment(selectedRequest.getPaymentEntity());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment of " + selectedRequest.getPaymentEntity().getTotalAmount() + "made!", null));
+        } catch (RequestNotFoundException ex) {
+            System.out.println("request not found exception");
+        }
+    }
+
+    public void redirectMakeFeedback(ActionEvent event) {
+        RequestEntity requestEntity = (RequestEntity) event.getComponent().getAttributes().get("requestEntity");
+        System.out.println("requestEntityId from obtained request entity: " + requestEntity.getRequestEntityId());
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("requestEntity", requestEntity);
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("MakeFeedback.xhtml");
+        } catch (IOException ex) {
+            System.out.println("IO Exception");
         }
     }
 

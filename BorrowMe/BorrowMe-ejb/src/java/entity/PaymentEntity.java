@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -14,18 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-/**
- *
- * @author User
- */
-
 @Entity
 public class PaymentEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long paymentEntityId;
 
     @Column(nullable = true)
     private Double totalAmount;
@@ -64,18 +54,18 @@ public class PaymentEntity implements Serializable {
         this.totalAmount = totalAmount;
     }
     
-    public Long getId() {
-        return id;
+    public Long getPaymentEntityId() {
+        return paymentEntityId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPaymentEntityId(Long paymentEntityId) {
+        this.paymentEntityId = paymentEntityId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (paymentEntityId != null ? paymentEntityId.hashCode() : 0);
         return hash;
     }
 
@@ -86,7 +76,7 @@ public class PaymentEntity implements Serializable {
             return false;
         }
         PaymentEntity other = (PaymentEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.paymentEntityId == null && other.paymentEntityId != null) || (this.paymentEntityId != null && !this.paymentEntityId.equals(other.paymentEntityId))) {
             return false;
         }
         return true;
@@ -94,7 +84,23 @@ public class PaymentEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Payment[ id=" + id + " ]";
+        return "entity.Payment[ id=" + paymentEntityId + " ]";
+    }
+
+    public RequestEntity getRequestEntity() {
+        return requestEntity;
+    }
+
+    public void setRequestEntity(RequestEntity requestEntity) {
+        this.requestEntity = requestEntity;
+    }
+
+    public ListingEntity getListingEntity() {
+        return listingEntity;
+    }
+
+    public void setListingEntity(ListingEntity listingEntity) {
+        this.listingEntity = listingEntity;
     }
     
 }

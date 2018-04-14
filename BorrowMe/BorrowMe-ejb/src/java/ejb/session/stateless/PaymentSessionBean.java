@@ -1,14 +1,20 @@
 package ejb.session.stateless;
 
 import entity.PaymentEntity;
+import entity.RequestEntity;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.exception.CreatePaymentException;
 import util.exception.PaymentNotFoundException;
+import util.exception.RequestNotFoundException;
 
 @Stateless
 public class PaymentSessionBean implements PaymentSessionBeanLocal {
+
+    @EJB(name = "RequestSessionBeanLocal")
+    private RequestSessionBeanLocal requestSessionBeanLocal;
 
     @PersistenceContext(unitName = "BorrowMe-ejbPU")
     private EntityManager em;
@@ -19,7 +25,7 @@ public class PaymentSessionBean implements PaymentSessionBeanLocal {
         em.persist(payment);
         em.flush();
         payment.setStatus(false); //set to false by default
-        return payment.getId();
+        return payment.getPaymentEntityId();
     }
 
     @Override
@@ -37,7 +43,24 @@ public class PaymentSessionBean implements PaymentSessionBeanLocal {
         PaymentEntity payment = retrievePayment(id);
         payment.setTotalAmount(paymentAmount);
         payment.setStatus(true);
-        return retrievePayment(payment.getId());
+        return retrievePayment(payment.getPaymentEntityId());
+    }
+
+    @Override
+    public PaymentEntity updatePayment(PaymentEntity paymentEntity) {
+        PaymentEntity pe = null;
+        try {
+            pe = retrievePayment(paymentEntity.getPaymentEntityId());
+            pe.setStatus(true);
+            em.merge(pe);
+            RequestEntity request = requestSessionBeanLocal.retrieveRequestByID(pe.getRequestEntity().getRequestEntityId());
+            request.setPayment(true);
+        } catch (PaymentNotFoundException ex) {
+            System.out.println("payment not found exception at payment session bean");
+        } catch (RequestNotFoundException ex) {
+            System.out.println("request not found in payment session bean");
+        }
+        return pe;
     }
 
 }

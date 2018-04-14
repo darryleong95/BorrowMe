@@ -11,7 +11,8 @@
                 <h:panelGrid columns="2" cellpadding="10">
 
                     <h:form id="formViewMadeRequests">
-
+                        
+                        <p:messages id="messages" redisplay="false" closable="true" />
 
                         <p:dataTable id="dataTableAllRequestsMade" widgetVar="dataTableAllRequestsMade" value="#{viewRequestsManagedBean.requestsMade}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
                                      filteredValue="#{viewRequestsManagedBean.filteredRequestsMade}"
@@ -49,7 +50,12 @@
                             </p:column>
 
                             <p:column headerText="Status:" rendered="#{requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
-                                <h:outputText value="Accepted"/>
+                                <h:outputText value="Accepted!"/>
+                                <br/>
+                                <h:outputText value="Payment Already Made!" rendered="#{requestEntity.payment}"/>
+                                <p:commandLink value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form">
+                                    <f:setPropertyActionListener value="#{requestEntity}" target="#{viewRequestsManagedBean.selectedRequest}"/>
+                                </p:commandLink>
                             </p:column>
 
                             <p:column headerText="Status:" rendered="#{!requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
@@ -113,12 +119,21 @@
                                             <h:outputText value="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" />
                                         </p:column>
 
-                                        <p:column>
-                                            <p:outputLabel value="#{requestEntity.requestEntityId}"/>
+                                        <p:column rendered="#{!requestEntity.acknowledged}">
+                                            <p:outputLabel value="Awaiting Approval!" />
                                             <p:commandButton value="Accept/Reject Request" actionListener="#{viewRequestsManagedBean.redirectUpdateRequestStatus}">
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />
                                             </p:commandButton>
                                         </p:column>
+                                        <p:column rendered="#{requestEntity.acknowledged}">
+                                            <p:outputLabel value="Approved!" rendered="#{requestEntity.accepted}"/>
+                                            <p:commandLink value='Make Feedback' rendered="#{requestEntity.accepted}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
+                                                <f:attribute name="requestEntity" value="#{requestEntity}" />
+                                              </p:commandLink>
+                                            <p:outputLabel value="Rejected" rendered="#{!requestEntity.accepted}"/>
+
+                                        </p:column>
+
                                     </p:dataTable>
 
                                     <h:outputText value="No requests have been made on this listing yet! :(" rendered="#{empty listing.requestList}" />

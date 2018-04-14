@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <h:form>
+
+            <p:messages id="messages" redisplay="false" closable="true" />
+
+            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                <p:outputLabel value="Listing Title: "/>
+                <p:outputLabel value="#{makeFeedbackManagedBean.listing.listingTitle}"/>
+
+                <p:outputLabel value="Requester: " />
+                <p:outputLabel value="#{makeFeedbackManagedBean.request.customerEntity.username}"/>
+
+                <p:outputLabel value="Start Date: "/>
+                <p:outputLabel value="#{makeFeedbackManagedBean.request.startDate}">
+                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                </p:outputLabel>
+
+                <p:outputLabel value="End Date: "/>
+                <p:outputLabel value="#{makeFeedbackManagedBean.request.endDate}">
+                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                </p:outputLabel>
+
+                <p:outputLabel value="Number of Days Rented: "/>
+                <p:outputLabel value="#{makeFeedbackManagedBean.request.noOfDays}"/>
+
+
+                <p:outputLabel value="Earnings: "/>
+                <p:outputLabel value="#{makeFeedbackManagedBean.request.noOfDays * approveRequestManagedBean.request.listingEntity.costPerDay}"/>
+
+
+                <p:outputLabel value="Rating: "/>
+                <!-- i THINK WE SHOULD CHANGE THE WAY FEEDBACK CLASS WORKS  -->
+                <p:rating value="#{makeFeedbackManagedBean.feedback.borrowerReviewLenderRating}" />
+                <!-- idk whether is borrower or lender here i anyhow put -->
+
+
+
+                <p:outputLabel value="Feedback: "/>
+                <p:inputTextarea rows="6" cols="33" value="#{makeFeedbackManagedBean.feedback.listingReview}"/>
+                <p:commandButton value="Submit" update="@form" actionListener="#{makeFeedbackManagedBean.makeFeedback}"  oncomplete="PF('dialogMakeFeedback').show()"/>
+                                 
+            </h:panelGrid>
+        </h:form>
+
+        <p:dialog id="dialogMakeFeedback" widgetVar="dialogMakeFeedback" header="Feedback submitted" closable="true">
+
+            <p:messages id="messages" redisplay="false" closable="true" />
+            <h:outputText value="Successfully submitted feedback!"/><br/>
+            <h:outputText value="JUST PLACEHOLDER, SESSION BEAN AND MANAGED BEAN METHODS NOT DONE YET!!!"/>
+
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

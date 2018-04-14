@@ -2,6 +2,7 @@ package ejb.session.stateless;
 
 import entity.CustomerEntity;
 import entity.ListingEntity;
+import entity.PaymentEntity;
 import entity.RequestEntity;
 import java.util.Date;
 import java.util.List;
@@ -12,14 +13,19 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.CreatePaymentException;
 import util.exception.CreateRequestException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidListingException;
+import util.exception.PaymentNotFoundException;
 import util.exception.RequestNotFoundException;
 
 @Stateless
 @Local(RequestSessionBeanLocal.class)
 public class RequestSessionBean implements RequestSessionBeanLocal {
+
+    @EJB(name = "PaymentSessionBeanLocal")
+    private PaymentSessionBeanLocal paymentSessionBeanLocal;
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
@@ -74,7 +80,7 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
 
             c.getRequestList().add(newRequest);
             newRequest.setCustomerEntity(c);
-            
+
             l.getRequestList().add(newRequest);
             newRequest.setListingEntity(l);
             em.persist(newRequest);
@@ -98,9 +104,27 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
     }
 
     @Override
-    public RequestEntity updateRequest(RequestEntity request
-    ) {
-        em.merge(request);
+    public RequestEntity updateRequest(RequestEntity request) {
+        try {
+            if (request.getAccepted()) {
+                PaymentEntity payment = new PaymentEntity();
+                payment.setRequestEntity(request);
+                payment.setListingEntity(listingSessionBeanLocal.retrieveListingById(request.getListingEntity().getListingId()));
+                payment.setStatus(false);
+                payment.setTotalAmount(request.getNoOfDays() * request.getListingEntity().getCostPerDay());
+                long id = paymentSessionBeanLocal.createPayment(payment);
+                System.out.println("payment id made:" + id);
+                request.setAccepted(true);
+                request.setPaymentEntity(paymentSessionBeanLocal.retrievePayment(id));
+                em.merge(request);
+            }
+        } catch (CreatePaymentException ex) {
+            System.out.println("Create payment exception!!!!!");
+        } catch (InvalidListingException ex) {
+            System.out.println("invalid listing exception!!!!!!");
+        } catch (PaymentNotFoundException ex) {
+            System.out.println("payment not found!!!!!!");
+        }
         return request;
     }
 

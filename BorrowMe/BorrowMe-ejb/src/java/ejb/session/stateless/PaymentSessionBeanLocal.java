@@ -18,5 +18,8 @@ public interface PaymentSessionBeanLocal {
     public PaymentEntity makePayment(Long id, Double paymentAmount) throws PaymentNotFoundException;
 
     public Long createPayment(PaymentEntity payment) throws CreatePaymentException;
+
+    
+    public PaymentEntity updatePayment(PaymentEntity paymentEntity);
 }
     

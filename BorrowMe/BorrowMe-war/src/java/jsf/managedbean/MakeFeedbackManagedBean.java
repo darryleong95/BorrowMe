@@ -4,13 +4,12 @@ import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.RequestSessionBeanLocal;
 import entity.CustomerEntity;
+import entity.FeedbackEntity;
 import entity.ListingEntity;
 import entity.RequestEntity;
-import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
@@ -19,25 +18,26 @@ import util.exception.CustomerNotFoundException;
 import util.exception.InvalidListingException;
 import util.exception.RequestNotFoundException;
 
-@Named(value = "approveRequestManagedBean")
+@Named(value = "makeFeedbackManagedBean")
 @ViewScoped
-public class ApproveRequestManagedBean implements Serializable {
-
-    @EJB(name = "ListingSessionBeanLocal")
-    private ListingSessionBeanLocal listingSessionBeanLocal;
+public class MakeFeedbackManagedBean implements Serializable {
 
     @EJB(name = "RequestSessionBeanLocal")
     private RequestSessionBeanLocal requestSessionBeanLocal;
 
+    @EJB(name = "ListingSessionBeanLocal")
+    private ListingSessionBeanLocal listingSessionBeanLocal;
+
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
-
-    private RequestEntity request;
+   
     private CustomerEntity customer;
+    private FeedbackEntity feedback;
+    private RequestEntity request;
     private ListingEntity listing;
-    private boolean accepted;
 
-    public ApproveRequestManagedBean() {
+    public MakeFeedbackManagedBean() {
+        feedback = new FeedbackEntity();
         request = new RequestEntity();
         customer = new CustomerEntity();
         listing = new ListingEntity();
@@ -45,9 +45,9 @@ public class ApproveRequestManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-        CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
+               CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
         try {
-            c = customerSessionBeanLocal.retrieveCustomerByCustomerId(c.getCustomerId());
+            customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(c.getCustomerId());
             System.out.println("retrieved customer successfully from context; approverequest managed bean");
             RequestEntity requestEntity = (RequestEntity) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("requestEntity");
             if (requestEntity == null) {
@@ -67,25 +67,18 @@ public class ApproveRequestManagedBean implements Serializable {
             System.out.println("listing retrieved not found:" + ex.getMessage());
         }
     }
-
-    public void updateRequestStatus(ActionEvent event) {
-        System.out.println("@ update request status method");
-        if (accepted) {
-            System.out.println("boolean turned accepted");
-        } else {
-            System.out.println("boolean turned false");
-        }
-        getRequest().setAcknowledged(true);
-        if (accepted) {
-            getRequest().setAccepted(true);
-        } else {
-            getRequest().setAccepted(false);
-        }
-        requestSessionBeanLocal.updateRequest(getRequest());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Status successfully set", null));
+    
+    public void makeFeedback (ActionEvent event) {
+        //TO COMPLETE
     }
 
- 
+    public FeedbackEntity getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(FeedbackEntity feedback) {
+        this.feedback = feedback;
+    }
 
     public RequestEntity getRequest() {
         return request;
@@ -109,14 +102,6 @@ public class ApproveRequestManagedBean implements Serializable {
 
     public void setListing(ListingEntity listing) {
         this.listing = listing;
-    }
-
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
     }
 
 }
