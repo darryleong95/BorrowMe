@@ -35,8 +35,9 @@
                         <f:attribute name="image" value="#{listing.firstImage}" />
                         <p:graphicImage style="height: 200px;width:200px;" value="#{listing.firstImage}" />
                         <h:outputText value="#{listing.listingTitle}" style="font-weight:bold" />
-                        <h:outputText value="by #{listing.customerEntity.username}" style="font-style: italic;"/>
+                        <h:outputText value="By #{listing.customerEntity.username}" style="font-style: italic;"/>
                         <br/>
+                        <h:outputText value="#{listing.category}"/>
                         <h:outputLabel value="$#{listing.costPerDay}/day" style="font-weight:bold" />
 
                         <p:remoteCommand name="rc" actionListener="#{viewAllListingsManagedBean.redirectListing}" >

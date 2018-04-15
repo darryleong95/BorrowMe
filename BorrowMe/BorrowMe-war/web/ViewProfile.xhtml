@@ -18,8 +18,8 @@
                                 <p:column colspan="2">My Profile</p:column>
                             </p:row>
                             <p:row>
-                                <p:column colspan="1">Profile Information</p:column>
-                                <p:column colspan="1">Listings</p:column>
+                                <p:column style="width:350px" colspan="1">Profile Information</p:column>
+                                <p:column style="width:500px" colspan="1">Listings</p:column>
                             </p:row>
 
                             <p:row>
@@ -28,8 +28,8 @@
 
                                         <f:facet name="header">
                                             <p:row style="padding:20px">
-                                                <p:graphicImage style="height:75px; width: 75px; border-radius:100px;" value="#{viewProfileManagedBean.selectedProfileToView.profileImage}"/>
-                                            <br/>
+                                                <p:graphicImage style="height:250px; width: 250px; border-radius:300px;" value="#{viewProfileManagedBean.selectedProfileToView.profileImage}"/>
+                                                <br/>
                                             </p:row>
                                         </f:facet>
 
@@ -51,7 +51,7 @@
                                             </p:column>
                                         </p:row>
                                         <p:row>
-                                            <p:column>
+                                            <p:column colspan="2">
                                                 <p:commandButton update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" icon="ui-icon-pencil" title="Update Profile" value=" Update Profile">
                                                     <f:setPropertyActionListener value="#{viewProfileManagedBean.selectedProfileToView}" target="#{viewProfileManagedBean.updateProfile}" />
                                                 </p:commandButton>
@@ -75,8 +75,9 @@
                                                     <p:graphicImage style="height:150px;width:150px;" value="#{listing.firstImage}" />
                                                        <!--<h:outputText value="#{listing.firstImage}" /> -->
                                                     <h:outputText value="#{listing.listingTitle}" style="font-weight:bold" />
-                                                    <h:outputText value="by #{listing.customerEntity.username}" style="font-style: italic;"/>
+                                                    <h:outputText value="By #{listing.customerEntity.username}" style="font-style: italic;"/>
                                                     <br/>
+                                                    <h:outputText value="#{listing.category}"/>
                                                     <h:outputLabel value="$#{listing.costPerDay}/day" style="font-weight:bold" />
 
                                                     <p:remoteCommand name="rc" actionListener="#{viewProfileManagedBean.redirectListing}" >
@@ -101,21 +102,21 @@
                             </p:row>
                             <p:row>
                                 <p:column>
-                                    
+
                                     <p:dataTable id="dataTableCustomerFeedback" widgetVar="dataTableCustomerFeedback" value="#{viewProfileManagedBean.feedbacksForCustomer}" var="feedback"
-                                                 rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
-                                        
+                                                 rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="6,12,16">
+
                                         <p:column headerText=" Reviewer Info">
-                                                <p:graphicImage style="height: 75px;width:75px;" value="#{viewProfileManagedBean.selectedProfileToView.firstImage}" />
-                                                <br/>
-                                                <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.username}"/>
-                                            </p:column>
+                                            <p:graphicImage style="height: 75px;width:75px; border-radius:100px;" value="#{viewProfileManagedBean.selectedProfileToView.profileImage}" />
+                                            <br/>
+                                            <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.username}"/>
+                                        </p:column>
                                         <p:column headerText="Review">
-                                                <h:outputText value="#{feedback.review}"/>
-                                            </p:column>
-                                        
-                                        
-                                        
+                                            <h:outputText value="#{feedback.review}"/>
+                                        </p:column>
+
+
+
 
                                     </p:dataTable>
                                 </p:column>

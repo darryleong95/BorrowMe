@@ -79,7 +79,9 @@ public class MakeFeedbackManagedBean implements Serializable {
     public void makeFeedback(ActionEvent event) {
         try {
             CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
+            c.getFeedbackList().add(newFeedback);
             newFeedback.setCustomerEntity(c);
+            request.setCustomerEntity(c);
             newFeedback.setRequestEntity(request);
             Long newFeedbackId = feedbackSessionBeanLocal.createFeedback(newFeedback);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New feedback created successfully (feedback ID: " + newFeedbackId + ")", null));

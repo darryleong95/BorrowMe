@@ -136,7 +136,9 @@
                                         </p:column>
 
                                         <p:column rendered="#{requestEntity.acknowledged}">
-                                            <p:outputLabel value="Approved! Awaiting Payment" rendered="#{requestEntity.accepted}"/>
+                                            <p:outputLabel value="Approved!" rendered="#{requestEntity.accepted}"/>
+                                            <br/>
+                                            <p:outputLabel value="Awaiting Payment!" rendered="#{!requestEntity.payment}"/>
                                             <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />
                                             </p:commandButton>
