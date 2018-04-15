@@ -41,7 +41,7 @@ public class CustomerEntity implements Serializable {
     @Column(nullable = false)
     private CustomerTypeEnum customerType;
     @Column(nullable = false)
-    private List<String> images;
+    private String profileImage;
 
     @OneToMany(mappedBy = "customerEntity")
     private List<RequestEntity> requestList;
@@ -58,8 +58,7 @@ public class CustomerEntity implements Serializable {
         listingList = new ArrayList<>();
         feedbackList = new ArrayList<>();
         setCustomerType(CustomerTypeEnum.ORDINARY);
-        images = new ArrayList<>();
-        images.add("./images/defaultprofilepic.png");
+        profileImage = "./images/defaultprofilepic.png";
     }
 
     public CustomerEntity(String firstName, String lastName, String username, String password, String identificationNo, String contactNo, String email) {
@@ -71,11 +70,15 @@ public class CustomerEntity implements Serializable {
         this.contactNo = contactNo;
         this.email = email;
         this.customerType = CustomerTypeEnum.ORDINARY; //default ORDINARY until subscribed
-        this.images = images;
+        this.profileImage = profileImage;
     }
 
-    public String getFirstImage() {
-        return images.get(0);
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public List<RequestEntity> getRequestList() {
@@ -197,20 +200,6 @@ public class CustomerEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.CustomerEntity[ id=" + customerId + " ]";
-    }
-
-    /**
-     * @return the images
-     */
-    public List<String> getImages() {
-        return images;
-    }
-
-    /**
-     * @param images the images to set
-     */
-    public void setImages(List<String> images) {
-        this.images = images;
     }
 
 }

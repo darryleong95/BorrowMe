@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedbean;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
@@ -17,8 +12,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -30,10 +23,6 @@ import org.primefaces.event.FileUploadEvent;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidFileTypeException;
 
-/**
- *
- * @author katrina
- */
 @Named(value = "viewProfileManagedBean")
 @ViewScoped
 public class ViewProfileManagedBean implements Serializable {
@@ -51,9 +40,6 @@ public class ViewProfileManagedBean implements Serializable {
 
     private List<FeedbackEntity> feedbacksForCustomer;
 
-    /**
-     * Creates a new instance of ViewProfileManagedBean
-     */
     public ViewProfileManagedBean() {
         feedbacksForCustomer = new ArrayList<>();
         customerListings = new ArrayList<>();
@@ -109,18 +95,12 @@ public class ViewProfileManagedBean implements Serializable {
             inputStream.close();
 
             String absolutePath = "http://localhost:8080/" + event.getFile().getFileName();
-            selectedProfileToView.getImages().add(absolutePath);
-            if (selectedProfileToView.getFirstImage().equals("./images/defaultprofilepic.png")) {
-                selectedProfileToView.getImages().remove(0);
-            }
-            customerSessionBeanLocal.updateCustomer(selectedProfileToView);
+            selectedProfileToView.setProfileImage(absolutePath);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         } catch (IOException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
         } catch (InvalidFileTypeException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
-        } catch (CustomerNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while adding images: " + ex.getMessage(), null));
         }
     }
 
@@ -136,58 +116,34 @@ public class ViewProfileManagedBean implements Serializable {
         }
     }
 
-    /**
-     * @return the selectedProfileToView
-     */
     public CustomerEntity getSelectedProfileToView() {
         return selectedProfileToView;
     }
-
-    /**
-     * @param selectedProfileToView the selectedProfileToView to set
-     */
+    
     public void setSelectedProfileToView(CustomerEntity selectedProfileToView) {
         this.selectedProfileToView = selectedProfileToView;
     }
 
-    /**
-     * @return the loggedInCustomerId
-     */
     public Long getLoggedInCustomerId() {
         return loggedInCustomerId;
     }
 
-    /**
-     * @param loggedInCustomerId the loggedInCustomerId to set
-     */
     public void setLoggedInCustomerId(Long loggedInCustomerId) {
         this.loggedInCustomerId = loggedInCustomerId;
     }
 
-    /**
-     * @return the feedbacksForCustomer
-     */
     public List<FeedbackEntity> getFeedbacksForCustomer() {
         return feedbacksForCustomer;
     }
 
-    /**
-     * @param feedbacksForCustomer the feedbacksForCustomer to set
-     */
     public void setFeedbacksForCustomer(List<FeedbackEntity> feedbacksForCustomer) {
         this.feedbacksForCustomer = feedbacksForCustomer;
     }
 
-    /**
-     * @return the customerListings
-     */
     public List<ListingEntity> getCustomerListings() {
         return customerListings;
     }
 
-    /**
-     * @param customerListings the customerListings to set
-     */
     public void setCustomerListings(List<ListingEntity> customerListings) {
         this.customerListings = customerListings;
     }

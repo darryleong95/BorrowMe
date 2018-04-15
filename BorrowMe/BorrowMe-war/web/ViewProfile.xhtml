@@ -27,10 +27,9 @@
                                     <p:panelGrid>
 
                                         <f:facet name="header">
-                                            <p:row>
-                                                <p:galleria value="#{viewProfileManagedBean.selectedProfileToView.images}" var="image" panelWidth="200" panelHeight="200" showCaption="false">
-                                                    <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:100%; width:100%"/>
-                                                </p:galleria>
+                                            <p:row style="padding:20px">
+                                                <p:graphicImage style="height:75px; width: 75px; border-radius:100px;" value="#{viewProfileManagedBean.selectedProfileToView.profileImage}"/>
+                                            <br/>
                                             </p:row>
                                         </f:facet>
 
@@ -215,7 +214,7 @@
                                     <h:form id="formProfilePictureUpload" enctype="multipart/form-data" >
                                         <p:panel header="Image Upload">
                                             <p:messages autoUpdate="true" redisplay="false" />
-                                            <p:fileUpload fileUploadListener="#{viewListingManagedBean.handleFileUpload}" />
+                                            <p:fileUpload fileUploadListener="#{viewProfileManagedBean.handleFileUpload}" />
                                         </p:panel>
                                     </h:form>
                                 </p:column>
