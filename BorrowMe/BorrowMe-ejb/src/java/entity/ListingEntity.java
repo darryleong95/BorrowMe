@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class ListingEntity implements Serializable {
@@ -40,7 +41,8 @@ public class ListingEntity implements Serializable {
     
     @OneToMany(mappedBy = "listingEntity")
     private List<PaymentEntity> paymentEntities;
-
+    
+ 
     public ListingEntity() {
         requestList = new ArrayList<RequestEntity>();
         paymentEntities = new ArrayList<PaymentEntity>();

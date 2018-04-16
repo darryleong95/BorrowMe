@@ -28,6 +28,8 @@ import ws.restful.datamodel.Listing.RetrieveAllListingsRsp;
 import ws.restful.datamodel.Listing.RetrieveListingRsp;
 import ws.restful.datamodel.Listing.UpdateListingReq;
 import ejb.session.stateless.ListingSessionBeanLocal;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 @Path("Listing") //demarcate the URI to identify resource
 
@@ -173,4 +175,6 @@ public class ListingResource
             throw new RuntimeException(ne);
         }
     }
+
 }
+
