@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import util.enumeration.CategoryEnum;
 
 @Entity
 public class ListingEntity implements Serializable {
@@ -30,8 +27,8 @@ public class ListingEntity implements Serializable {
     @Column(nullable = false)
     private Double costPerDay;
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CategoryEnum category;
+    
+    private String category;
     @Column
     private List<String> images;
     
@@ -50,8 +47,7 @@ public class ListingEntity implements Serializable {
         images = new ArrayList<String>();
     }
 
-    public ListingEntity(String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, CategoryEnum category, List<String> images, CustomerEntity customerEntity, List<RequestEntity> requestList, List<PaymentEntity> paymentEntities) {
-        this();
+    public ListingEntity(String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, String category, List<String> images, CustomerEntity customerEntity, List<RequestEntity> requestList, List<PaymentEntity> paymentEntities) {
         this.listingTitle = listingTitle;
         this.listingDescription = listingDescription;
         this.listingAvailable = listingAvailable;
@@ -62,6 +58,8 @@ public class ListingEntity implements Serializable {
         this.requestList = requestList;
         this.paymentEntities = paymentEntities;
     }
+
+    
 
 
     public String getFirstImage() {
@@ -100,13 +98,6 @@ public class ListingEntity implements Serializable {
         this.costPerDay = costPerDay;
     }
 
-    public CategoryEnum getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryEnum category) {
-        this.category = category;
-    }
 
     public CustomerEntity getCustomerEntity() {
         return customerEntity;
@@ -172,6 +163,20 @@ public class ListingEntity implements Serializable {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    /**
+     * @return the category
+     */
+    public String getCategory() {
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(String category) {
+        this.category = category;
     }
     
 }

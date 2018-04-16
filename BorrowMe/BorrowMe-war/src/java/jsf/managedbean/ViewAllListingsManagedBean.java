@@ -38,12 +38,15 @@ public class ViewAllListingsManagedBean implements Serializable {
     private ListingEntity selectedListingToUpdate;
     private List<ListingEntity> listings;
     private List<ListingEntity> filteredListings;
+    
+    private List<String> categories;
 
     public ViewAllListingsManagedBean() {
         newListing = new ListingEntity();
         newListing.setListingAvailable(true);
         listings = new ArrayList<>();
         filteredListings = new ArrayList<>();
+        categories = new ArrayList<>();
     }
 
     @PostConstruct
@@ -52,6 +55,11 @@ public class ViewAllListingsManagedBean implements Serializable {
         for (ListingEntity l : listings) {
             filteredListings.add(l);
         }
+        getCategories().add("PARTY");
+        getCategories().add("ELECTRONICS");
+        getCategories().add("SPORTS");
+        getCategories().add("VEHICLES");
+        getCategories().add("OTHERS");
     }
 
     public void handleFileUpload(FileUploadEvent event) throws InvalidFileTypeException {
@@ -180,8 +188,19 @@ public class ViewAllListingsManagedBean implements Serializable {
         this.filteredListings = filteredListings;
     }
 
-    public CategoryEnum[] getCategoryEnums() {
-        return CategoryEnum.values();
+    /**
+     * @return the categories
+     */
+    public List<String> getCategories() {
+        return categories;
     }
+
+    /**
+     * @param categories the categories to set
+     */
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
+    }
+
 
 }

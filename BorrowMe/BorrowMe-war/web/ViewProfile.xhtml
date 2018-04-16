@@ -50,13 +50,34 @@
                                                 <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.username}" />
                                             </p:column>
                                         </p:row>
+                                        
+                                        <p:row>
+                                            <p:column colspan="1">
+                                                <h:outputText value="Customer Type:" />
+
+                                            </p:column>
+                                            <p:column colspan="1">
+                                                <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.customerType}" />
+                                            </p:column>
+                                        </p:row>
+                                        
                                         <p:row>
                                             <p:column colspan="2">
-                                                <p:commandButton update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" icon="ui-icon-pencil" title="Update Profile" value=" Update Profile">
+                                                <p:commandButton update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" icon="ui-icon-pencil" title="Update Profile" value="Update Profile">
                                                     <f:setPropertyActionListener value="#{viewProfileManagedBean.selectedProfileToView}" target="#{viewProfileManagedBean.updateProfile}" />
                                                 </p:commandButton>
                                             </p:column>
                                         </p:row>
+                                        
+                                        <p:row>
+                                            <p:column colspan="2">
+                                                <p:commandButton update="formRegisterPremium" oncomplete="PF('dialogRegisterPremium').show()" icon="ui-icon-heart" title="Register for Premium" value="Register for Premium">
+                                                    <f:setPropertyActionListener value="#{viewProfileManagedBean.selectedProfileToView}" target="#{viewProfileManagedBean.registerPremium}" />
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:row>
+                                        
+                                        
                                     </p:panelGrid>
                                 </p:column>
                                 <p:column rowspan="5">
@@ -226,6 +247,26 @@
                             <p:row>
                                 <p:column colspan="3">
                                     <p:commandButton ajax="false" value="Update Profile" update="@form" actionListener="#{viewProfileManagedBean.updateProfile}" oncomplete="PF('dialogUpdateProfile').show();" />
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+
+                    </p:dialog>
+
+                </h:form>
+                
+                <h:form id="formRegisterPremium">
+
+                    <p:dialog id="dialogRegisterPremium" widgetVar="dialogRegisterPremium" header="Register Premium" closable="true">
+
+                        <p:messages id="messagesRegisterPremium" redisplay="false" />
+
+                        <p:panelGrid>
+
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:commandButton ajax="false" value="Make Payment of $15!" update="@form" actionListener="#{viewProfileManagedBean.registerPremium}" oncomplete="PF('dialogRegisterPremium').show();" />
                                 </p:column>
                             </p:row>
 

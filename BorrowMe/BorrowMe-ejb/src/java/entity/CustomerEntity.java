@@ -39,7 +39,7 @@ public class CustomerEntity implements Serializable {
     @Column(length = 32, nullable = false, unique = true) //Should be unique
     private String email;
     @Column(nullable = false)
-    private CustomerTypeEnum customerType;
+    private String customerType;
     @Column(nullable = false)
     private String profileImage;
 
@@ -57,11 +57,12 @@ public class CustomerEntity implements Serializable {
         requestList = new ArrayList<>();
         listingList = new ArrayList<>();
         feedbackList = new ArrayList<>();
-        setCustomerType(CustomerTypeEnum.ORDINARY);
+        customerType = ("ORDINARY");
         profileImage = "./images/defaultprofilepic.png";
     }
 
     public CustomerEntity(String firstName, String lastName, String username, String password, String identificationNo, String contactNo, String email) {
+        this();
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -69,8 +70,11 @@ public class CustomerEntity implements Serializable {
         this.identificationNo = identificationNo;
         this.contactNo = contactNo;
         this.email = email;
-        this.customerType = CustomerTypeEnum.ORDINARY; //default ORDINARY until subscribed
+        this.customerType = customerType;
         this.profileImage = profileImage;
+        this.requestList = requestList;
+        this.listingList = listingList;
+        this.feedbackList = feedbackList;
     }
 
     public String getProfileImage() {
@@ -161,13 +165,6 @@ public class CustomerEntity implements Serializable {
         this.email = email;
     }
 
-    public CustomerTypeEnum getCustomerType() {
-        return customerType;
-    }
-
-    public void setCustomerType(CustomerTypeEnum customerType) {
-        this.customerType = customerType;
-    }
 
     public Long getCustomerId() {
         return customerId;
@@ -200,6 +197,20 @@ public class CustomerEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.CustomerEntity[ id=" + customerId + " ]";
+    }
+
+    /**
+     * @return the customerType
+     */
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    /**
+     * @param customerType the customerType to set
+     */
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
     }
 
 }

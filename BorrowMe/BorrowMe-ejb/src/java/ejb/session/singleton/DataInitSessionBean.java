@@ -4,6 +4,7 @@ import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import entity.CustomerEntity;
 import entity.ListingEntity;
+import entity.RequestEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -53,6 +54,7 @@ public class DataInitSessionBean {
             //}
         } catch (CustomerNotFoundException ex) {
             try {
+               
                 CustomerEntity customer = new CustomerEntity("Darryl", "Leong", "testerAccount", "password", "S9505342D", "91919177", "darryleong95@gmail.com");
                 customerSessionBean.createCustomer(customer);
             } catch (CustomerExistException e) {

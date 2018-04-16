@@ -53,6 +53,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             customerToUpdate.setUsername(customer.getUsername());
             customerToUpdate.setIdentificationNo(customer.getIdentificationNo());
             customerToUpdate.setProfileImage(customer.getProfileImage());
+            customerToUpdate.setCustomerType(customer.getCustomerType());
             System.out.println("***********************************Check***********************************");
             return retrieveCustomerByCustomerId((Long) customer.getCustomerId());
         } else {
@@ -118,7 +119,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     public CustomerEntity applyPremium(long customerId) throws CustomerNotFoundException{
         CustomerEntity customer = retrieveCustomerByCustomerId(customerId);
         
-        customer.setCustomerType(CustomerTypeEnum.PREMIUM);
+        customer.setCustomerType("PREMIUM");
         
         return customer;
     }
