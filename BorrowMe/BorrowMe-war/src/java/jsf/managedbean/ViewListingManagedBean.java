@@ -48,6 +48,8 @@ public class ViewListingManagedBean implements Serializable {
     private boolean accepted;
     private ListingEntity selectedListingToUpdate;
 
+    private List<String> categories;
+
     public ViewListingManagedBean() {
         listingToView = new ListingEntity();
         newRequestEntity = new RequestEntity();
@@ -55,12 +57,18 @@ public class ViewListingManagedBean implements Serializable {
         requests = new ArrayList<RequestEntity>();
         filteredRequests = new ArrayList<RequestEntity>();
         selectedListingToUpdate = new ListingEntity();
+        categories = new ArrayList<>();
+
     }
 
     @PostConstruct
     public void postConstruct() {
         setListingIdToView((Long) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("listingIdToView"));
-
+        getCategories().add("PARTY");
+        getCategories().add("ELECTRONICS");
+        getCategories().add("SPORTS");
+        getCategories().add("VEHICLES");
+        getCategories().add("OTHERS");
         try {
 //            System.err.println("************ FLASH: " + getListingIdToView());
             setListingToView(listingSessionBeanLocal.retrieveListingById(getListingIdToView()));
@@ -264,6 +272,20 @@ public class ViewListingManagedBean implements Serializable {
 
     public void setSelectedListingToUpdate(ListingEntity selectedListingToUpdate) {
         this.selectedListingToUpdate = selectedListingToUpdate;
+    }
+
+    /**
+     * @return the categories
+     */
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    /**
+     * @param categories the categories to set
+     */
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 
 }

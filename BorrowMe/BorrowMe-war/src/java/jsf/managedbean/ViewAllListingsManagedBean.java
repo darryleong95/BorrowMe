@@ -20,7 +20,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FileUploadEvent;
-import util.enumeration.CategoryEnum;
 import util.exception.CreateListingException;
 import util.exception.InvalidFileTypeException;
 import util.exception.InvalidListingException;
