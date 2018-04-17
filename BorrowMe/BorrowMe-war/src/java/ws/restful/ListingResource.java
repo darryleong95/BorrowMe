@@ -1,5 +1,7 @@
 package ws.restful;
 //POJO CLASS
+
+import ejb.session.stateless.CustomerSessionBeanLocal;
 import entity.ListingEntity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,135 +30,130 @@ import ws.restful.datamodel.Listing.RetrieveAllListingsRsp;
 import ws.restful.datamodel.Listing.RetrieveListingRsp;
 import ws.restful.datamodel.Listing.UpdateListingReq;
 import ejb.session.stateless.ListingSessionBeanLocal;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
+import util.exception.CreateListingException;
+import util.exception.CustomerNotFoundException;
+import ws.restful.datamodel.Listing.RetrieveByCustomerRsp;
+import ws.restful.datamodel.Listing.UpdateListingRsp;
 
 @Path("Listing") //demarcate the URI to identify resource
 
-public class ListingResource
-{
+public class ListingResource {
+
+    CustomerSessionBeanLocal customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
 
     ListingSessionBeanLocal listingSessionBeanLocal = lookupListingSessionBeanLocal();
+
     @Context
     private UriInfo context;
-    
-    
- 
-    public ListingResource() 
-    {
-        listingSessionBeanLocal = lookupListingSessionBeanLocal();
+
+    public ListingResource() {
+        this.listingSessionBeanLocal = lookupListingSessionBeanLocal();
+        this.customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
     }
 
-    
-    
     @Path("retrieveAllListings") //-> has to specify the method because there are 2 GET Methods
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllListings()
-    {
-        try
-        {
+    public Response retrieveAllListings() {
+        try {
             RetrieveAllListingsRsp retrieveAllListingsRsp = new RetrieveAllListingsRsp(listingSessionBeanLocal.retrieveListingList());
-            //RetrieveAllListingsRsp -> basically is a trivial class, its to wrap object up such that when the JSON Obj goes back to the JS side, the JSON string will be nicely formatted 
-            //List<Listing>
-            //Java class NOT and Entity class
-            //In order for the JAXB to understand how to convert this to a JSON/XML,have to annotate with XMLRootElement.
             return Response.status(Status.OK).entity(retrieveAllListingsRsp).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
-    
-    
+
+    @Path("retrieveByCustomerId/{listerId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response RetrieveByCustomerId(@PathParam("listerId") Long listerId) {
+        try {
+            RetrieveByCustomerRsp result = new RetrieveByCustomerRsp(listingSessionBeanLocal.retrieveListingByCustomerId(listerId));
+            System.out.println("MADE IT THROUGH HERE");
+            return Response.status(Response.Status.OK).entity(result).build();
+        } catch (CustomerNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
     @Path("retrieveListing/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveListing(@PathParam("id") Long id)
-    {
-        try
-        {
+    public Response retrieveListing(@PathParam("id") Long id) {
+        try {
             RetrieveListingRsp retrieveListingRsp = new RetrieveListingRsp(listingSessionBeanLocal.retrieveListingById(id));
-            
+
             return Response.status(Status.OK).entity(retrieveListingRsp).build();
-        }
-        catch(InvalidListingException ex)
-        {
+        } catch (InvalidListingException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
-    
-    
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createListing(JAXBElement<CreateListingReq> jaxbCreateListingReq)
-    {
-        if((jaxbCreateListingReq != null) && (jaxbCreateListingReq.getValue() != null))
-        {
-            try
-            {
+    public Response createCustomer(JAXBElement<CreateListingReq> jaxbCreateListingReq) {
+        if ((jaxbCreateListingReq != null) && (jaxbCreateListingReq.getValue() != null)) {
+            try {
+
                 CreateListingReq createListingReq = jaxbCreateListingReq.getValue();
-                
-                ListingEntity listingEntity = listingSessionBeanLocal.createListing(createListingReq.getListing());
-                CreateListingRsp createListingRsp = new CreateListingRsp(listingEntity);
-                
-                return Response.status(Response.Status.OK).entity(createListingRsp).build();
+                System.out.println("Anything coming through?");
+                System.out.println(createListingReq.getListing().getCustomer());
+                ListingEntity newListing = listingSessionBeanLocal.createListing(createListingReq.getListing());
+                System.out.println("Anything coming through?");
+                CreateListingRsp result = new CreateListingRsp(newListing);
+                System.out.println("Anything coming through?");
+                return Response.status(Response.Status.OK).entity(result).build();
+            } catch (CreateListingException ex) {
+                ws.restful.datamodel.Feedback.ErrorRsp errorRsp = new ws.restful.datamodel.Feedback.ErrorRsp("Error creating Listing");
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             }
-            catch(Exception ex)
-            {
-                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-            }
-        }
-        else
-        {
-            ErrorRsp errorRsp = new ErrorRsp("Invalid create listing request");
-            
+        } else {
+            ws.restful.datamodel.Feedback.ErrorRsp errorRsp = new ws.restful.datamodel.Feedback.ErrorRsp("Invalid create customer request");
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
-    
-    
+
+    @Path("/Update/{listerId}")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateListing(JAXBElement<UpdateListingReq> jaxbUpdateListingReq)
-    {
-        if((jaxbUpdateListingReq != null) && (jaxbUpdateListingReq.getValue() != null))
-        {
-            UpdateListingReq updateListingReq = jaxbUpdateListingReq.getValue();
+    public Response updateCustomer(JAXBElement<UpdateListingReq> jaxbUpdateListingrReq, @PathParam("listerId") Long listerId) {
+        if ((jaxbUpdateListingrReq != null) && (jaxbUpdateListingrReq.getValue() != null)) {
+            try {
+                UpdateListingReq updateListingReq = jaxbUpdateListingrReq.getValue();
 
-            listingSessionBeanLocal.updateListing(updateListingReq.getListing());
+                Boolean isLister = listingSessionBeanLocal.isLister(updateListingReq.getListing(), listerId);
 
-            return Response.status(Response.Status.OK).build();
-            
-        }
-        else
-        {
-            ErrorRsp errorRsp = new ErrorRsp("Invalid update listing request");
-            
+                if (isLister) {
+                    System.out.println("Lsting id: " + updateListingReq.getListing().getListingTitle() + " " + updateListingReq.getListing().getListingId());
+                    ListingEntity updated = listingSessionBeanLocal.updateListing(updateListingReq.getListing());
+                    UpdateListingRsp result = new UpdateListingRsp(updated);
+                    return Response.status(Response.Status.OK).entity(result).build();
+                } else {
+                    System.out.println("LOl");
+                    return null;
+                }
+            } catch (Exception ex) {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+        } else {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid update customer request");
+
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
-    
-    
+
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteListing(@QueryParam("id") Long id) throws InvalidListingException //@QueryParam used instead of @Path -- identified with a ? in the URI
@@ -176,5 +173,14 @@ public class ListingResource
         }
     }
 
-}
+    private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CustomerSessionBeanLocal) c.lookup("java:global/BorrowMe/BorrowMe-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
 
+}

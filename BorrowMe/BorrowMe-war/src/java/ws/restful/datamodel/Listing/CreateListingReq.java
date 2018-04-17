@@ -4,32 +4,22 @@ import entity.ListingEntity;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-
 @XmlRootElement
 @XmlType(name = "createListingReq", propOrder = {
     "listing"
 })
 
-public class CreateListingReq
-{    
+public class CreateListingReq {
+
     private ListingEntity listing;
 
-    
-    
-    public CreateListingReq()
-    {
+    public CreateListingReq() {
     }
 
-    
-    
-    public CreateListingReq(ListingEntity listing)
-    {
+    public CreateListingReq(ListingEntity listing) {
         this.listing = listing;
     }
 
-    
-    
     public ListingEntity getListing() {
         return listing;
     }

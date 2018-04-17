@@ -108,7 +108,7 @@ public class ViewAllListingsManagedBean implements Serializable {
     public void createNewListing(ActionEvent event) {
         try {
             CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
-            newListing.setCustomerEntity(c);
+            newListing.setCustomer(c);
             c.getListingList().add(newListing);
             ListingEntity l = listingSessionBeanLocal.createListing(newListing);
             listings.add(l);

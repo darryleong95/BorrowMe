@@ -3,6 +3,8 @@ package ejb.session.stateless;
 import entity.CustomerEntity;
 import entity.ListingEntity;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -12,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import util.exception.CreateListingException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InvalidListingException;
 
 @Stateless
@@ -28,11 +31,15 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     public ListingEntity createListing(ListingEntity newListing) throws CreateListingException {
         try {
             if (newListing.getImages().isEmpty()) {
+                System.out.println("Inside image");
                 newListing.getImages().add("./images/noimage.png");
+                System.out.println("Helllo");
             }
-            CustomerEntity c = customerSessionBeanLocal.retrieveCustomerByCustomerId(newListing.getCustomerEntity().getCustomerId());
+            System.out.println("Customer Id: " + newListing.getCustomer().getCustomerId());
+            CustomerEntity c = customerSessionBeanLocal.retrieveCustomerByCustomerId(newListing.getCustomer().getCustomerId());
             c.getListingList().add(newListing);
-            newListing.setCustomerEntity(c);
+            System.out.println("Created");
+            newListing.setCustomer(c);
             em.persist(newListing);
             em.merge(c);
             em.flush();
@@ -70,6 +77,26 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     }
 
     @Override
+    public Boolean isLister(ListingEntity listing, Long listingId) {
+        try {
+            ListingEntity retrievedResult = retrieveListingById(listingId);
+            System.out.println(retrievedResult.getCustomer().getCustomerId());
+            System.out.println("*****************************************************");
+            if (listing.getListingId() != null) {
+                ListingEntity result = retrieveListingById(listing.getListingId());
+                System.out.println(result.getCustomer().getCustomerId());
+                if (result.getCustomer().getCustomerId() == retrievedResult.getCustomer().getCustomerId()) {
+                    return true;
+                }
+            }
+
+        } catch (InvalidListingException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return false;
+    }
+
+    @Override
     public void deleteListing(Long listingId) throws InvalidListingException {
         ListingEntity listingEntity = em.find(ListingEntity.class, listingId);
         try {
@@ -88,6 +115,25 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             l.getRequestList().size();
         }
         return query.getResultList();
+    }
+    
+    @Override
+    public List<ListingEntity> retrieveListingByCustomerId(Long id) throws CustomerNotFoundException{
+        try {
+            System.out.println("MADE IT TO SESSION BEAN");
+            CustomerEntity ce = customerSessionBeanLocal.retrieveCustomerByCustomerId(id);
+            Query query = em.createQuery("SELECT s FROM ListingEntity s WHERE s.customerEntity = :inCustomerId");
+            query.setParameter("inCustomerId", ce);
+            List<ListingEntity> results = query.getResultList();
+            for(int i = 0; i < results.size(); i++){
+                results.get(i).getImages().size();
+                results.get(i).getPaymentEntities().size();
+                results.get(i).getRequestList().size();
+            }
+            return results;
+        } catch (CustomerNotFoundException ex) {
+            throw new CustomerNotFoundException("Customer not found exception thrown");
+        }
     }
 
     @Override

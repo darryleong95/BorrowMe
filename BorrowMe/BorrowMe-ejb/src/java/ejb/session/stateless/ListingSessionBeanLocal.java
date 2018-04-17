@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.ListingEntity;
 import java.util.List;
 import util.exception.CreateListingException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InvalidListingException;
 
 public interface ListingSessionBeanLocal {
@@ -20,4 +21,8 @@ public interface ListingSessionBeanLocal {
     public List<ListingEntity> retrieveListingList();
 
     public ListingEntity retrieveListingById(Long listingId) throws InvalidListingException;
+
+    public Boolean isLister(ListingEntity listing, Long listingId);
+
+    public List<ListingEntity> retrieveListingByCustomerId(Long id) throws CustomerNotFoundException;
 }

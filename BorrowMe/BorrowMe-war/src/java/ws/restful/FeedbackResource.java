@@ -106,7 +106,7 @@ public class FeedbackResource {
     private FeedbackSessionBeanLocal lookupFeedbackSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (FeedbackSessionBeanLocal) c.lookup("java:global/RestfulTest/RestfulTest-ejb/FeedbackSessionBean!ejb.session.stateless.FeedbackSessionBeanLocal");
+            return (FeedbackSessionBeanLocal) c.lookup("java:global/BorrowMe/BorrowMe-ejb/FeedbackSessionBean!ejb.session.stateless.FeedbackSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

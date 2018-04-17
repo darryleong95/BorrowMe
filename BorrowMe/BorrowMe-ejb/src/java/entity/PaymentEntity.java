@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class PaymentEntity implements Serializable {
@@ -87,6 +88,7 @@ public class PaymentEntity implements Serializable {
         return "entity.Payment[ id=" + paymentEntityId + " ]";
     }
 
+    @XmlTransient
     public RequestEntity getRequestEntity() {
         return requestEntity;
     }

@@ -3,36 +3,26 @@ package ws.restful.datamodel.Listing;
 import entity.ListingEntity;
 import javax.xml.bind.annotation.XmlType;
 
-
-
 @XmlType(name = "createListingRsp", propOrder = {
-    "id"
+    "listing"
 })
 
-public class CreateListingRsp
-{    
+public class CreateListingRsp {
+
     private ListingEntity listingEntity;
 
-    
-    
-    public CreateListingRsp()
-    {
+    public CreateListingRsp() {
     }
 
-    
-    
-    public CreateListingRsp(ListingEntity listingEntity)
-    {
+    public CreateListingRsp(ListingEntity listingEntity) {
         this.listingEntity = listingEntity;
     }
 
-    
-    
-    public ListingEntity getListingEntity() {
+    public ListingEntity getListing() {
         return listingEntity;
     }
 
-    public void setListingEntity(ListingEntity listingEntity) {
+    public void setListing(ListingEntity listingEntity) {
         this.listingEntity = listingEntity;
     }
 }

@@ -70,7 +70,7 @@ public class PaymentResource {
     private PaymentSessionBeanLocal lookupPaymentSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (PaymentSessionBeanLocal) c.lookup("java:global/RestfulTest/RestfulTest-ejb/PaymentSessionBean!ejb.session.stateless.PaymentSessionBeanLocal");
+            return (PaymentSessionBeanLocal) c.lookup("java:global/BorrowMe/BorrowMe-ejb/PaymentSessionBean!ejb.session.stateless.PaymentSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

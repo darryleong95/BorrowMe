@@ -1,27 +1,28 @@
 package ws.restful.datamodel.Customer;
 
+import entity.CustomerEntity;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "createCustomerRsp", propOrder = {
-    "id"
+    "customer"
 })
 
 public class CreateCustomerRsp {
 
-    private Long id;
+    private CustomerEntity customer;
 
     public CreateCustomerRsp() {
     }
 
-    public CreateCustomerRsp(Long id) {
-        this.id = id;
+    public CreateCustomerRsp(CustomerEntity customer) {
+        this.customer = customer;
     }
 
-    public Long getId() {
-        return id;
+    public CustomerEntity getCustomer() {
+        return customer;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
     }
 }

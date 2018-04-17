@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class RequestEntity implements Serializable {
@@ -44,20 +45,19 @@ public class RequestEntity implements Serializable {
     private Boolean borrowerLeftFeedback;
     @Column(nullable = false)
     private Boolean lenderLeftFeedback;
-    
+
     @ManyToOne
     private ListingEntity listingEntity;
 
     @ManyToOne
     private CustomerEntity customerEntity;
-    
+
     @OneToOne
     private PaymentEntity paymentEntity;
-    
+
     @OneToMany(mappedBy = "requestEntity")
     private List<FeedbackEntity> feedbackList;
 
-    
     public RequestEntity() {
         acknowledged = false;
         accepted = false;
@@ -65,7 +65,7 @@ public class RequestEntity implements Serializable {
         overdue = false;
         borrowerLeftFeedback = false;
         lenderLeftFeedback = false;
-        
+
         feedbackList = new ArrayList<>();
     }
 
@@ -86,7 +86,16 @@ public class RequestEntity implements Serializable {
         this.paymentEntity = paymentEntity;
         this.feedbackList = feedbackList;
     }
-    
+
+    @XmlTransient
+    public List<FeedbackEntity> getFeedbackList() {
+        return feedbackList;
+    }
+
+    public void setFeedbackList(List<FeedbackEntity> feedbackList) {
+        this.feedbackList = feedbackList;
+    }
+
     public ListingEntity getListingEntity() {
         return listingEntity;
     }
@@ -103,6 +112,7 @@ public class RequestEntity implements Serializable {
         this.customerEntity = customerEntity;
     }
 
+    @XmlTransient
     public PaymentEntity getPaymentEntity() {
         return paymentEntity;
     }
@@ -252,5 +262,4 @@ public class RequestEntity implements Serializable {
         this.lenderLeftFeedback = lenderLeftFeedback;
     }
 
-   
 }

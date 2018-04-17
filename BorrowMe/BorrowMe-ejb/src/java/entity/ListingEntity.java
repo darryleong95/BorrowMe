@@ -101,14 +101,15 @@ public class ListingEntity implements Serializable {
     }
 
 
-    public CustomerEntity getCustomerEntity() {
+    public CustomerEntity getCustomer() {
         return customerEntity;
     }
 
-    public void setCustomerEntity(CustomerEntity customerEntity) {
+    public void setCustomer(CustomerEntity customerEntity) {
         this.customerEntity = customerEntity;
     }
 
+    @XmlTransient
     public List<RequestEntity> getRequestList() {
         return requestList;
     }
@@ -149,8 +150,8 @@ public class ListingEntity implements Serializable {
     public String toString() {
         return "entity.ListingEntity[ id=" + listingId + " ]";
     }
-
-
+    
+    @XmlTransient
     public List<PaymentEntity> getPaymentEntities() {
         return paymentEntities;
     }

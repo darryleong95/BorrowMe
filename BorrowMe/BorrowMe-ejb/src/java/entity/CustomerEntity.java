@@ -26,23 +26,23 @@ public class CustomerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, nullable = true)
     private String firstName;
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, nullable = true)
     private String lastName;
     @Column(length = 32, nullable = false, unique = true) //Should be unique
     private String username;
     @Column(length = 32, nullable = false)
     private String password;
-    @Column(length = 32, nullable = false, unique = true) //Should be unique
+    @Column(length = 32, nullable = true, unique = true) //Should be unique
     private String identificationNo;
-    @Column(length = 32, nullable = false, unique = true) //Should be unique?
+    @Column(length = 32, nullable = true, unique = true) //Should be unique?
     private String contactNo;
     @Column(length = 32, nullable = false, unique = true) //Should be unique
     private String email;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String customerType;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String profileImage;
     
     @OneToMany(mappedBy = "customerEntity")
@@ -87,6 +87,7 @@ public class CustomerEntity implements Serializable {
         this.profileImage = profileImage;
     }
 
+    @XmlTransient
     public List<RequestEntity> getRequestList() {
         return requestList;
     }
@@ -104,6 +105,7 @@ public class CustomerEntity implements Serializable {
         this.listingList = listingList;
     }
 
+    @XmlTransient
     public List<FeedbackEntity> getFeedbackList() {
         return feedbackList;
     }

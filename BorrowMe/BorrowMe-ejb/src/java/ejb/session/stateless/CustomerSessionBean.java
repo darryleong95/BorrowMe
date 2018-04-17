@@ -43,6 +43,18 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     }
     
     @Override
+    public CustomerEntity changePassword(CustomerEntity customer) throws CustomerNotFoundException {
+        if (customer.getCustomerId()!= null) {
+            CustomerEntity customerToUpdate = retrieveCustomerByCustomerId((Long) customer.getCustomerId());
+            customerToUpdate.setPassword(customer.getPassword());
+            System.out.println("***********************************Password has been changed on the session bean***********************************");
+            return retrieveCustomerByCustomerId((Long) customer.getCustomerId());
+        } else {
+            throw new CustomerNotFoundException("ID not provided for customer to be updated");
+        }
+    }
+    
+    @Override
     public CustomerEntity updateCustomer(CustomerEntity customer) throws CustomerNotFoundException {
         if (customer.getCustomerId()!= null) {
             CustomerEntity customerToUpdate = retrieveCustomerByCustomerId((Long) customer.getCustomerId());
@@ -82,7 +94,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             customer.getRequestList().size();
             return customer;
         } else {
-            throw new CustomerNotFoundException("Customer Id " + custId + " does not exist!\n");
+            throw new CustomerNotFoundException("Customer Id " + custId + " does not exist!");
         }
     }
 

@@ -32,5 +32,7 @@ public interface CustomerSessionBeanLocal {
     public List<CustomerEntity> retrieveAllCustomers();
 
     public Boolean doLogin(String username, String password) throws CustomerNotFoundException;
+
+    public CustomerEntity changePassword(CustomerEntity customer) throws CustomerNotFoundException;
     
 }

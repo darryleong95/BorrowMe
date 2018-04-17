@@ -17,13 +17,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
-import util.exception.CreateCustomerException;
 import util.exception.CustomerExistException;
 import util.exception.CustomerNotFoundException;
 import ws.restful.datamodel.Customer.CreateCustomerReq;
@@ -39,7 +38,7 @@ import ws.restful.datamodel.Customer.UpdateCustomerReq;
  *
  * @author User
  */
-@Path("customer")
+@Path("Customer")
 public class CustomerResource {
 
     CustomerSessionBeanLocal customerSessionBean = lookupCustomerSessionBeanLocal();
@@ -70,7 +69,6 @@ public class CustomerResource {
     public Response retrieveCustomer(@PathParam("username") String username) {
         try {
             RetrieveCustomerRsp retrieveCustomerRsp = new RetrieveCustomerRsp(customerSessionBean.retrieveCustomerByUsername(username));
-
             return Response.status(Response.Status.OK).entity(retrieveCustomerRsp).build();
         } catch (CustomerNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
@@ -85,8 +83,13 @@ public class CustomerResource {
     public Response doLogin(@PathParam("username") String username, @PathParam("password") String password) {
         try {
             DoLoginRsp doLoginRsp = new DoLoginRsp(customerSessionBean.doLogin(username, password));
-
-            return Response.status(Response.Status.OK).entity(doLoginRsp).build();
+            if (doLoginRsp.getStatus()) {
+                CustomerEntity returnThis = customerSessionBean.retrieveCustomerByUsername(username);
+                CreateCustomerRsp result = new CreateCustomerRsp(returnThis);
+                return Response.status(Response.Status.OK).entity(result).build();
+            } else {
+                return Response.status(Response.Status.OK).entity(null).build();
+            }
         } catch (CustomerNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
@@ -102,9 +105,10 @@ public class CustomerResource {
             try {
                 CreateCustomerReq createCustomerReq = jaxbCreateCustomerReq.getValue();
                 Long id = customerSessionBean.createCustomer(createCustomerReq.getCustomer());
-                CreateCustomerRsp createCustomerRsp = new CreateCustomerRsp(id);
+                CustomerEntity ce = customerSessionBean.retrieveCustomerByCustomerId(id);
+                CreateCustomerRsp createCustomerRsp = new CreateCustomerRsp(ce);
                 return Response.status(Response.Status.OK).entity(createCustomerRsp).build();
-            } catch (CustomerExistException ex) {
+            } catch (CustomerExistException | CustomerNotFoundException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
@@ -121,11 +125,38 @@ public class CustomerResource {
         if ((jaxbUpdateCustomerReq != null) && (jaxbUpdateCustomerReq.getValue() != null)) {
             try {
                 UpdateCustomerReq updateCustomerReq = jaxbUpdateCustomerReq.getValue();
-
                 CustomerEntity updated = customerSessionBean.updateCustomer(updateCustomerReq.getCustomer());
+                RetrieveCustomerRsp retrieveCustomerRsp = new RetrieveCustomerRsp(customerSessionBean.retrieveCustomerByUsername(updated.getUsername()));
+                return Response.status(Response.Status.OK).entity(retrieveCustomerRsp).build();
+            } catch (CustomerNotFoundException ex) {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            } catch (Exception ex) {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+        } else {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid update customer request");
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("changePassword")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response changePassword(JAXBElement<UpdateCustomerReq> jaxbUpdateCustomerReq) {
+        if ((jaxbUpdateCustomerReq != null) && (jaxbUpdateCustomerReq.getValue() != null)) {
+            try {
+                UpdateCustomerReq updateCustomerReq = jaxbUpdateCustomerReq.getValue();
+
+                CustomerEntity updated = customerSessionBean.changePassword(updateCustomerReq.getCustomer());
 
                 RetrieveCustomerRsp retrieveCustomerRsp = new RetrieveCustomerRsp(customerSessionBean.retrieveCustomerByUsername(updated.getUsername()));
-
+                System.out.println("**************Password updated successfully******************");
                 return Response.status(Response.Status.OK).entity(retrieveCustomerRsp).build();
             } catch (CustomerNotFoundException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
@@ -146,7 +177,7 @@ public class CustomerResource {
     private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (CustomerSessionBeanLocal) c.lookup("java:global/RestfulTest/RestfulTest-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
+            return (CustomerSessionBeanLocal) c.lookup("java:global/BorrowMe/BorrowMe-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
