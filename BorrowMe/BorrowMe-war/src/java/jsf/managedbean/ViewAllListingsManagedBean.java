@@ -109,8 +109,8 @@ public class ViewAllListingsManagedBean implements Serializable {
     public void createNewListing(ActionEvent event) {
         try {
             CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
-            c.getListingList().add(newListing);
             newListing.setCustomerEntity(c);
+            c.getListingList().add(newListing);
             ListingEntity l = listingSessionBeanLocal.createListing(newListing);
             listings.add(l);
             filteredListings.add(l);
@@ -188,16 +188,10 @@ public class ViewAllListingsManagedBean implements Serializable {
         this.filteredListings = filteredListings;
     }
 
-    /**
-     * @return the categories
-     */
     public List<String> getCategories() {
         return categories;
     }
 
-    /**
-     * @param categories the categories to set
-     */
     public void setCategories(List<String> categories) {
         this.categories = categories;
     }

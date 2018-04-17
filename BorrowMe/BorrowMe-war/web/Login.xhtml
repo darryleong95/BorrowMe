@@ -12,27 +12,33 @@
 
             <p:growl autoUpdate="true"/>
 
-            <h:panelGrid columns="2" style="margin-bottom:10px; margin:0px auto" cellspacing="7px">
 
-                <p:outputLabel value="Login to BorrowMe!" style="font-weight:bold"/>
-                <p:outputLabel/>
+            <p:panel header="Login" style="margin-left:auto; margin-right:auto; vertical-align:middle; width:40%">
 
-                <p:outputLabel for="username" value="Username:"/>
-                <p:inputText id="username" value="#{loginManagedBean.username}" required="true" requiredMessage="Username is required">
-                    <f:validateLength minimum="4" />
-                </p:inputText>
-                <p:outputLabel for="password" value="Password:"/>
-                <p:password id="password" value="#{loginManagedBean.password}" required="true" requiredMessage="Password is required">
-                    <f:validateLength minimum="4" />
-                </p:password>
-                <h:outputLabel/>
-                <p:commandButton value="Login" update="@form" actionListener="#{loginManagedBean.login}" icon="ui-icon-key" />&nbsp;
 
-                <p:commandLink id="register" onclick="PF('dialogRegister').show()">
-                    <h:outputText value="Register as a new user!" />
-                </p:commandLink>
+                <h:panelGrid columns="2" style="margin-bottom:10px; margin:0px auto" cellspacing="7px">
 
-            </h:panelGrid>
+                    <p:outputLabel value="Login to BorrowMe!" style="font-weight:bold"/>
+                    <p:outputLabel/>
+
+                    <p:outputLabel for="username" value="Username:"/>
+                    <p:inputText id="username" value="#{loginManagedBean.username}" required="true" requiredMessage="Username is required">
+                        <f:validateLength minimum="4" />
+                    </p:inputText>
+                    <p:outputLabel for="password" value="Password:"/>
+                    <p:password id="password" value="#{loginManagedBean.password}" required="true" requiredMessage="Password is required">
+                        <f:validateLength minimum="4" />
+                    </p:password>
+                    <h:outputLabel/>
+                    <p:commandButton value="Login" update="@form" actionListener="#{loginManagedBean.login}" icon="ui-icon-key" />&nbsp;
+
+                    <p:commandLink id="register" onclick="PF('dialogRegister').show()">
+                        <h:outputText value="Register as a new user!" />
+                    </p:commandLink>
+
+                </h:panelGrid>
+
+            </p:panel>
 
         </h:form>
 

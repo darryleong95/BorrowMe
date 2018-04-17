@@ -27,11 +27,11 @@
                     Listings:
                 </f:facet>
 
-                <p:panel header="#{listing.listingId}" style="text-align:center" >
+                <p:panel header="#{listing.listingId}" style="width: 250px; text-align:center; margin:0 auto" >
 
-<!--onclick="rc()"-->
+                    <!--onclick="rc()"-->
 
-                    <h:panelGrid  columns="1"  style="width:100%; text-align:center">
+                    <h:panelGrid  columns="1"  style="margin:0 auto; text-align:center;">
                         <f:attribute name="image" value="#{listing.firstImage}" />
                         <p:graphicImage style="height: 200px;width:200px;" value="#{listing.firstImage}" />
                         <h:outputText value="#{listing.listingTitle}" style="font-weight:bold" />
@@ -40,15 +40,9 @@
                         <h:outputText value="#{listing.category}"/>
                         <h:outputLabel value="$#{listing.costPerDay}/day" style="font-weight:bold" />
 
-                        <p:remoteCommand name="rc" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
+                        <p:commandButton value="View Listing" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
                             <f:attribute name="listingIdToView" value="#{listing.listingId}" />
-                        </p:remoteCommand>
-
-             
-                            <p:commandButton value="View Listing" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
-                                <f:attribute name="listingIdToView" value="#{listing.listingId}" />
-                            </p:commandButton>
-
+                        </p:commandButton>
 
                     </h:panelGrid>
                 </p:panel>
