@@ -104,7 +104,7 @@ public class CustomerResource {
         if ((jaxbCreateCustomerReq != null) && (jaxbCreateCustomerReq.getValue() != null)) {
             try {
                 CreateCustomerReq createCustomerReq = jaxbCreateCustomerReq.getValue();
-                Long id = customerSessionBean.createCustomer(createCustomerReq.getCustomer());
+                Long id = customerSessionBean.createCustomer(createCustomerReq.getCustomerEntity());
                 CustomerEntity ce = customerSessionBean.retrieveCustomerByCustomerId(id);
                 CreateCustomerRsp createCustomerRsp = new CreateCustomerRsp(ce);
                 return Response.status(Response.Status.OK).entity(createCustomerRsp).build();
@@ -125,7 +125,7 @@ public class CustomerResource {
         if ((jaxbUpdateCustomerReq != null) && (jaxbUpdateCustomerReq.getValue() != null)) {
             try {
                 UpdateCustomerReq updateCustomerReq = jaxbUpdateCustomerReq.getValue();
-                CustomerEntity updated = customerSessionBean.updateCustomer(updateCustomerReq.getCustomer());
+                CustomerEntity updated = customerSessionBean.updateCustomer(updateCustomerReq.getCustomerEntity());
                 RetrieveCustomerRsp retrieveCustomerRsp = new RetrieveCustomerRsp(customerSessionBean.retrieveCustomerByUsername(updated.getUsername()));
                 return Response.status(Response.Status.OK).entity(retrieveCustomerRsp).build();
             } catch (CustomerNotFoundException ex) {
@@ -153,7 +153,7 @@ public class CustomerResource {
             try {
                 UpdateCustomerReq updateCustomerReq = jaxbUpdateCustomerReq.getValue();
 
-                CustomerEntity updated = customerSessionBean.changePassword(updateCustomerReq.getCustomer());
+                CustomerEntity updated = customerSessionBean.changePassword(updateCustomerReq.getCustomerEntity());
 
                 RetrieveCustomerRsp retrieveCustomerRsp = new RetrieveCustomerRsp(customerSessionBean.retrieveCustomerByUsername(updated.getUsername()));
                 System.out.println("**************Password updated successfully******************");

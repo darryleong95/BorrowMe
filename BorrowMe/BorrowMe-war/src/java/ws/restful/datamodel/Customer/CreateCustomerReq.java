@@ -4,37 +4,27 @@ import entity.CustomerEntity;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-
 @XmlRootElement
 @XmlType(name = "createCustomerReq", propOrder = {
-    "customer"
+    "customerEntity"
 })
 
-public class CreateCustomerReq
-{    
-    private CustomerEntity customer;
+public class CreateCustomerReq {
 
-    
-    
-    public CreateCustomerReq()
-    {
+    private CustomerEntity customerEntity;
+
+    public CreateCustomerReq() {
     }
 
-    
-    
-    public CreateCustomerReq(CustomerEntity customer)
-    {
-        this.customer = customer;
+    public CreateCustomerReq(CustomerEntity customerEntity) {
+        this.customerEntity = customerEntity;
     }
 
-    
-    
-    public CustomerEntity getCustomer() {
-        return customer;
+    public CustomerEntity getCustomerEntity() {
+        return customerEntity;
     }
 
-    public void setCustomer(CustomerEntity customer) {
-        this.customer = customer;
+    public void setCustomerEntity(CustomerEntity customerEntity) {
+        this.customerEntity = customerEntity;
     }
 }

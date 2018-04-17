@@ -3,8 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/josh/Desktop/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/CustomerResource.java</file>
-            <file>file:/C:/Users/josh/Desktop/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/ListingResource.java</file>
+            <file>file:/C:/Netbeanslife/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewProfileManagedBean.java</file>
+            <file>file:/C:/Netbeanslife/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/ListingResource.java</file>
+            <file>file:/C:/Netbeanslife/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewListingManagedBean.java</file>
+            <file>file:/C:/Netbeanslife/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/datamodel/Listing/CreateListingReq.java</file>
+            <file>file:/C:/Netbeanslife/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/CustomerResource.java</file>
+            <file>file:/C:/Netbeanslife/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewAllListingsManagedBean.java</file>
         </group>
     </open-files>
 </project-private>

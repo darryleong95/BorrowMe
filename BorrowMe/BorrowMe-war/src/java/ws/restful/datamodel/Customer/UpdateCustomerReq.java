@@ -8,27 +8,27 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
 @XmlType(name = "updateCustomerReq", propOrder = {
-    "customer"
+    "customerEntity"
 })
 
 public class UpdateCustomerReq 
 {
-    private CustomerEntity customer;
+    private CustomerEntity customerEntity;
     
     public UpdateCustomerReq() 
     {
     }
  
-    public UpdateCustomerReq(CustomerEntity customer)
+    public UpdateCustomerReq(CustomerEntity customerEntity)
     {
-        this.customer = customer;
+        this.customerEntity = customerEntity;
     }
     
-    public CustomerEntity getCustomer() {
-        return customer;
+    public CustomerEntity getCustomerEntity() {
+        return customerEntity;
     }
 
-    public void setCustomer(CustomerEntity customer) {
-        this.customer = customer;
+    public void setCustomerEntity(CustomerEntity customerEntity) {
+        this.customerEntity = customerEntity;
     }
 }

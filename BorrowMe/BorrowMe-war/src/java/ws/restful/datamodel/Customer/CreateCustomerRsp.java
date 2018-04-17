@@ -4,25 +4,25 @@ import entity.CustomerEntity;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "createCustomerRsp", propOrder = {
-    "customer"
+    "customerEntity"
 })
 
 public class CreateCustomerRsp {
 
-    private CustomerEntity customer;
+    private CustomerEntity customerEntity;
 
     public CreateCustomerRsp() {
     }
 
-    public CreateCustomerRsp(CustomerEntity customer) {
-        this.customer = customer;
+    public CreateCustomerRsp(CustomerEntity customerEntity) {
+        this.customerEntity = customerEntity;
     }
 
-    public CustomerEntity getCustomer() {
-        return customer;
+    public CustomerEntity getCustomerEntity() {
+        return customerEntity;
     }
 
-    public void setCustomer(CustomerEntity customer) {
-        this.customer = customer;
+    public void setCustomerEntity(CustomerEntity customerEntity) {
+        this.customerEntity = customerEntity;
     }
 }
