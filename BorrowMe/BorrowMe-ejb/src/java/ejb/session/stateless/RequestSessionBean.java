@@ -6,6 +6,9 @@ import entity.PaymentEntity;
 import entity.RequestEntity;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -102,6 +105,33 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
 //        }
 
     }
+    
+        @Override
+        public RequestEntity createRequestAPI(RequestEntity rq, Long requesterId, Long listingId, Date startDate, Date endDate) throws CreateRequestException{
+        try {
+            CustomerEntity customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(requesterId);
+            
+            ListingEntity listing = listingSessionBeanLocal.retrieveListingById(listingId);
+            
+            System.out.println("Listing Entity: "  + listing.getListingTitle());
+            
+            rq.setCustomerEntity(customer);
+            rq.setListingEntity(listing);
+            rq.setStartDate(startDate);
+            rq.setEndDate(endDate);
+            Long noDays = endDate.getTime() - startDate.getTime();
+            System.out.println ("Days: " + TimeUnit.DAYS.convert(noDays, TimeUnit.MILLISECONDS));
+            int days = (int) TimeUnit.DAYS.convert(noDays, TimeUnit.MILLISECONDS);
+            rq.setNoOfDays(days);
+            em.persist(rq);   
+            em.flush();
+            em.refresh(rq);
+            
+            return rq;
+        } catch (CustomerNotFoundException | InvalidListingException ex) {
+            throw new CreateRequestException("An unexpected error has occurred: " + ex.getMessage());
+        }
+    }
 
     @Override
     public RequestEntity updateRequest(RequestEntity request) {
@@ -136,6 +166,14 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
         } else {
             throw new RequestNotFoundException("Request ID: " + requestID + " does not exist!");
         }
+    }
+    
+    @Override
+    public List<RequestEntity> retrieveRequestByListingId(Long listingId) {
+        Query query = em.createQuery("SELECT r FROM RequestEntity r WHERE r.listingId = :inListingID");
+        query.setParameter("inListingID", listingId);
+        System.out.println("**************Query successful**************");
+        return query.getResultList();
     }
 
     @Override

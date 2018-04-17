@@ -29,4 +29,10 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>cupertino</param-value>
     </context-param>
+    <ejb-local-ref>
+        <ejb-ref-name>ListingSessionBeanLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.session.stateless.ListingSessionBeanLocal</local>
+        <ejb-link>BorrowMe-ejb.jar#ListingSessionBean</ejb-link>
+    </ejb-local-ref>
 </web-app>

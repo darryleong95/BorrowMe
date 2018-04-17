@@ -11,9 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import util.enumeration.CustomerTypeEnum;
 
 @NamedQueries({
     @NamedQuery(name = "selectAllCustomers", query = "SELECT c FROM CustomerEntity c")

@@ -1,38 +1,34 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ws.restful.datamodel.Request;
 
 import entity.RequestEntity;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-
-@XmlType(name = "createBookRsp", propOrder = {
-    "id"
+@XmlRootElement
+@XmlType(name = "createRequestRsp", propOrder = {
+    "request"
 })
-
-public class CreateRequestRsp
-{    
-    private RequestEntity requestEntity;
-
+public class CreateRequestRsp {
+    private RequestEntity request;
     
-    
-    public CreateRequestRsp()
-    {
+    public CreateRequestRsp(){
+        
     }
-
     
-    
-    public CreateRequestRsp(RequestEntity requestEntity)
-    {
-        this.requestEntity = requestEntity;
+    public CreateRequestRsp(RequestEntity request){
+        this.request = request;
     }
-
     
-    
-    public RequestEntity getRequestEntity() {
-        return requestEntity;
+    public void setRequest(RequestEntity request){
+        this.request = request;
     }
-
-    public void setRequestEntity(RequestEntity requestEntity) {
-        this.requestEntity = requestEntity;
+    
+    public RequestEntity getRequest(){
+        return this.request;
     }
 }
