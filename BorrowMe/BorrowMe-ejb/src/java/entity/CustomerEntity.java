@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import util.enumeration.CustomerTypeEnum;
 
 @NamedQueries({
@@ -42,7 +44,7 @@ public class CustomerEntity implements Serializable {
     private String customerType;
     @Column(nullable = false)
     private String profileImage;
-
+    
     @OneToMany(mappedBy = "customerEntity")
     private List<RequestEntity> requestList;
 
@@ -92,7 +94,8 @@ public class CustomerEntity implements Serializable {
     public void setRequestList(List<RequestEntity> requestList) {
         this.requestList = requestList;
     }
-
+    
+    @XmlTransient
     public List<ListingEntity> getListingList() {
         return listingList;
     }

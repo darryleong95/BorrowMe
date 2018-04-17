@@ -20,6 +20,7 @@ public class ApplicationConfig extends Application
     private void addRestResourceClasses(Set<Class<?>> resources)
     {
         resources.add(ws.restful.CustomerResource.class);
+        resources.add(ws.restful.DebugExceptionMapper.class);
         resources.add(ws.restful.FeedbackResource.class);
         resources.add(ws.restful.ListingResource.class);
         resources.add(ws.restful.PaymentResource.class);
