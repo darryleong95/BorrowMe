@@ -14,7 +14,7 @@ import util.exception.InvalidListingException;
 public interface ListingSessionBeanLocal {
     public ListingEntity createListing(ListingEntity listingEntity) throws CreateListingException;
 
-    public ListingEntity updateListing(ListingEntity listingEntity);
+    public ListingEntity updateListing(ListingEntity listingEntity) throws InvalidListingException;
 
     public void deleteListing(Long listingId) throws InvalidListingException;
 

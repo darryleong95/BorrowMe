@@ -123,7 +123,7 @@ public class ListingResource {
         }
     }
 
-    @Path("/Update/{listerId}")
+    @Path("{listerId}")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -136,14 +136,18 @@ public class ListingResource {
 
                 if (isLister) {
                     System.out.println("Lsting id: " + updateListingReq.getListing().getListingTitle() + " " + updateListingReq.getListing().getListingId());
+                    
+                    System.out.println("what");
+                    System.out.println(updateListingReq.getListing());
                     ListingEntity updated = listingSessionBeanLocal.updateListing(updateListingReq.getListing());
+                    
                     UpdateListingRsp result = new UpdateListingRsp(updated);
                     return Response.status(Response.Status.OK).entity(result).build();
                 } else {
                     System.out.println("LOl");
                     return null;
                 }
-            } catch (Exception ex) {
+            } catch (InvalidListingException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();

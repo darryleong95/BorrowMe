@@ -170,10 +170,16 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
     
     @Override
     public List<RequestEntity> retrieveRequestByListingId(Long listingId) {
-        Query query = em.createQuery("SELECT r FROM RequestEntity r WHERE r.listingId = :inListingID");
-        query.setParameter("inListingID", listingId);
-        System.out.println("**************Query successful**************");
-        return query.getResultList();
+        try {
+            ListingEntity ls = listingSessionBeanLocal.retrieveListingById(listingId);
+            Query query = em.createQuery("SELECT r FROM RequestEntity r WHERE r.listingEntity = :inListingID");
+            query.setParameter("inListingID", ls);
+            System.out.println("**************Query successful**************");
+            return query.getResultList();
+        } catch (InvalidListingException ex) {
+            Logger.getLogger(RequestSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override

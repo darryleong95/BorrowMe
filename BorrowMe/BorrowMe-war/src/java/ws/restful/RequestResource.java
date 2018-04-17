@@ -95,7 +95,7 @@ public class RequestResource {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response requestReceived(@PathParam("customerId") Long customerId) throws CustomerNotFoundException {
+    public Response requestReceived(@PathParam("customerId") Long customerId) {
         try {
             List<ListingEntity> listings = listingSessionBeanLocal.retrieveListingByCustomerId(customerId);
             System.out.println("*************Listing size: " + listings.size() + "********************");
@@ -112,8 +112,9 @@ public class RequestResource {
             RequestMadeRsp reqMadeRsp = new RequestMadeRsp(requests);
             return Response.status(Response.Status.OK).entity(reqMadeRsp).build();
         } catch (CustomerNotFoundException ex) {
-            throw new CustomerNotFoundException("Customer not found exception: " + ex.getMessage());
+            Logger.getLogger(RequestResource.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     private RequestSessionBeanLocal lookupRequestSessionBeanLocal() {
