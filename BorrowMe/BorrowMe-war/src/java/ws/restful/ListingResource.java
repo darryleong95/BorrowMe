@@ -106,7 +106,8 @@ public class ListingResource {
 
                 CreateListingReq createListingReq = jaxbCreateListingReq.getValue();
                 System.out.println("Anything coming through?");
-                System.out.println(createListingReq.getListing().getCustomer());
+                System.out.println(createListingReq.getListing());
+                System.out.println(">..................>");
                 ListingEntity newListing = listingSessionBeanLocal.createListing(createListingReq.getListing());
                 System.out.println("Anything coming through?");
                 CreateListingRsp result = new CreateListingRsp(newListing);

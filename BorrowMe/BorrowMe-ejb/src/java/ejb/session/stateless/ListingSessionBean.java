@@ -35,11 +35,11 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
                 newListing.getImages().add("./images/noimage.png");
                 System.out.println("Helllo");
             }
-            System.out.println("Customer Id: " + newListing.getCustomer().getCustomerId());
-            CustomerEntity c = customerSessionBeanLocal.retrieveCustomerByCustomerId(newListing.getCustomer().getCustomerId());
+            System.out.println("Customer Id: " + newListing.getCustomerEntity().getCustomerId());
+            CustomerEntity c = customerSessionBeanLocal.retrieveCustomerByCustomerId(newListing.getCustomerEntity().getCustomerId());
             c.getListingList().add(newListing);
             System.out.println("Created");
-            newListing.setCustomer(c);
+            newListing.setCustomerEntity(c);
             em.persist(newListing);
             em.merge(c);
             em.flush();
@@ -80,12 +80,12 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     public Boolean isLister(ListingEntity listing, Long listingId) {
         try {
             ListingEntity retrievedResult = retrieveListingById(listingId);
-            System.out.println(retrievedResult.getCustomer().getCustomerId());
+            System.out.println(retrievedResult.getCustomerEntity().getCustomerId());
             System.out.println("*****************************************************");
             if (listing.getListingId() != null) {
                 ListingEntity result = retrieveListingById(listing.getListingId());
-                System.out.println(result.getCustomer().getCustomerId());
-                if (result.getCustomer().getCustomerId() == retrievedResult.getCustomer().getCustomerId()) {
+                System.out.println(result.getCustomerEntity().getCustomerId());
+                if (result.getCustomerEntity().getCustomerId() == retrievedResult.getCustomerEntity().getCustomerId()) {
                     return true;
                 }
             }

@@ -101,11 +101,11 @@ public class ListingEntity implements Serializable {
     }
 
 
-    public CustomerEntity getCustomer() {
+    public CustomerEntity getCustomerEntity() {
         return customerEntity;
     }
 
-    public void setCustomer(CustomerEntity customerEntity) {
+    public void setCustomerEntity(CustomerEntity customerEntity) {
         this.customerEntity = customerEntity;
     }
 
