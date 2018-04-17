@@ -61,7 +61,8 @@ public class SecurityFilter implements Filter {
                 || path.equals("/ViewListing.xhtml")
                 || path.equals("/ViewProfile.xhtml")
                 || path.startsWith("/images")
-                || path.startsWith("/javax.faces.resource")) {
+                || path.startsWith("/javax.faces.resource")
+                || path.startsWith("/Resources")) {
             return true;
         } else {
             return false;
