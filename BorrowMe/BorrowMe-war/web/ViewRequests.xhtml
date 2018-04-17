@@ -14,7 +14,15 @@
 
                         <p:messages id="messages" redisplay="false" closable="true" />
 
-                        <p:dataTable id="dataTableAllRequestsMade" widgetVar="dataTableAllRequestsMade" value="#{viewRequestsManagedBean.requestsMade}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
+                        <p:panel rendered="#{empty viewRequestsManagedBean.requestsMade}" header="No requests yet!" style="margin-left:auto; margin-right:auto; vertical-align:middle; width:auto">
+
+                            <h:panelGrid columns="2" style="margin-bottom:10px; margin:0px auto" cellspacing="7px">
+                                <p:outputLabel value="You have made no requests yet!"/>
+                            </h:panelGrid>
+
+                        </p:panel>
+
+                        <p:dataTable rendered="#{not empty viewRequestsManagedBean.requestsMade}" id="dataTableAllRequestsMade" widgetVar="dataTableAllRequestsMade" value="#{viewRequestsManagedBean.requestsMade}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
                                      filteredValue="#{viewRequestsManagedBean.filteredRequestsMade}"
                                      rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
@@ -53,18 +61,18 @@
                                 <h:outputText value="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" />
                             </p:column>
 
-                            <p:column headerText="Status:" rendered="#{requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
-                                <h:outputText value="Accepted!"/>
-                                <br/>
-                                <h:outputText value="Payment Already Made!" rendered="#{requestEntity.payment}"/>
+                            <p:column headerText="Status:" rendered="#{requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains" style="text-align: center">
+                                <h:outputText value="Accepted!"/><br/>
+                                <br/>                     
+                                <h:outputText value="Payment Already Made!" rendered="#{requestEntity.payment}"/><br/>
                                 <p:commandButton value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form">
                                     <f:attribute name="requestEntity" value="#{requestEntity}"/>
-                                </p:commandButton>
+                                </p:commandButton><br/>
                                 <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and !requestEntity.borrowerLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                     <f:attribute name="requestEntity" value="#{requestEntity}" />
-                                </p:commandButton>
-                                <br/>
-                                <h:outputText value="Feedback Already Made!" rendered="#{requestEntity.borrowerLeftFeedback}"/>
+                                </p:commandButton><br/>
+                               
+                                <h:outputText value="Feedback Already Made!" rendered="#{requestEntity.borrowerLeftFeedback}"/><br/>
                             </p:column>
 
                             <p:column headerText="Status:" rendered="#{!requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
@@ -83,6 +91,14 @@
             </p:tab>
 
             <p:tab title="Requests Made for My Items">
+
+                <p:panel rendered="#{empty viewRequestsManagedBean.listings}" header="No requests yet!" style="margin-left:auto; margin-right:auto; vertical-align:middle; width:40%">
+
+                    <h:panelGrid columns="2" style="margin-bottom:10px; margin:0px auto" cellspacing="7px">
+                        <p:outputLabel value="You have no listings!"/>
+                    </h:panelGrid>
+
+                </p:panel>
 
                 <p:repeat value="#{viewRequestsManagedBean.listings}" varStatus="status" var="listing" >
 
@@ -149,9 +165,9 @@
 
                                     </p:dataTable>
 
-                                  
+
                                 </h:form>
-                                
+
                                 <h:outputText value="No requests have been made on this listing yet! :(" rendered="#{empty listing.requestList}" />
 
 

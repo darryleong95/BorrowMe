@@ -15,19 +15,20 @@
 
         <p:layout fullPage="true">
 
-            <p:layoutUnit position="north">
+            <p:layoutUnit position="north" style="border:0">
 
-                <p:graphicImage value="./images/logo.png" style="height:100px; width:auto; margin-left:auto; margin-right:auto;"/>
-
+                <center> <p:graphicImage value="./images/logo.png" style="height:125px; width:auto; margin-left:auto; margin-right:auto; "/>
+                </center>
             </p:layoutUnit>
 
-            <p:layoutUnit size="200" position="west" style="overflow:hidden !important;">
+            <p:layoutUnit size="225" position="west" style="overflow:hidden !important; border:0">
 
                 <h3>Main Menu</h3>
+                <br/>
 
                 <h:form>
 
-                    <p:menu style="width:100%" >
+                    <p:menu style="width:90%" >
 
                         <p:submenu label="System">
                             <p:menuitem value="Home" outcome="index" icon="ui-icon-home" />
@@ -36,14 +37,11 @@
                         </p:submenu>
 
                         <p:submenu label="BorrowMe Portal">
+                                  <p:menuitem actionListener="#{indexManagedBean.redirectOwnProfile}" value="Profile" icon="ui-icon-person" rendered="#{sessionScope['isLogin']}"/>
+                     
                             <p:menuitem value="View All Listings" outcome="ViewAllListings.xhtml" icon="ui-icon-cart" />
-                            <p:menuitem value="View Requests" outcome="ViewRequests.xhtml" icon="ui-icon-arrowreturnthick-1-w " rendered="#{sessionScope['isLogin']}" />
-                            <p:menuitem value="Profile Management" outcome="ViewProfile.xhtml" icon="ui-icon-person" rendered="#{sessionScope['isLogin']}"/>
-
-                        </p:submenu>
-
-
-
+                            <p:menuitem value="Requests Management" outcome="ViewRequests.xhtml" icon="ui-icon-arrowreturnthick-1-w " rendered="#{sessionScope['isLogin']}" />
+                         </p:submenu>
                     </p:menu>
 
                 </h:form>
@@ -56,7 +54,7 @@
 
             </p:layoutUnit>
 
-            <p:layoutUnit position="south" style="padding-top: 0px; margin-top: -10px;" >
+            <p:layoutUnit position="south" style="padding-top: 0px; margin-top: -10px; border:0" >
 
                 <h6>&copy; BorrowMe - IS3106 Group 14</h6>
 

@@ -16,19 +16,18 @@
 
                 <h:form id="formViewListing">
 
-                    <p:panelGrid style="margin: 0 auto; height:50px; width:50px" id="panelGridViewListing">
+                    <p:panelGrid style="margin: 0 auto; width: auto; border:0" id="panelGridViewListing">
 
                         <p:row>
-                            <p:column colspan="2" >
+                            <p:column style="column-width:auto" >
                                 <p:galleria value="#{viewListingManagedBean.listingToView.images}" var="image" panelWidth="313" panelHeight="313" showCaption="false">
-                                    <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:100%; width:100%"/>
+                                    <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:90%; width:90%"/>
                                 </p:galleria>
                             </p:column>
-                            
-                            <p:column colspan="3" style="vertical-align: top; width:50%">
+
+                            <p:column style="column-width: 200px; vertical-align: top;">
                                 <p:panelGrid style="height:100%; width:100%">
                                     <p:row>
-
                                         <p:column colspan="2">
                                             <h:outputText style="font-weight:bold; font-size:25px" value="#{viewListingManagedBean.listingToView.listingTitle}" />
                                         </p:column>
@@ -39,10 +38,12 @@
                                             <p:graphicImage style="height: 50px;width:50px; border-radius:100px " value="#{viewListingManagedBean.listingToView.customerEntity.profileImage}" />
                                         </p:column>
                                         <p:column>
-                                            <h:outputText value="by #{viewListingManagedBean.listingToView.customerEntity.username}"></h:outputText>
+                                            <p:commandLink actionListener="#{indexManagedBean.redirectProfile}" value="by #{viewListingManagedBean.listingToView.customerEntity.username}">
+                                                <f:attribute name="profileIdToView" value="#{viewListingManagedBean.listingToView.customerEntity.customerId}" />
+                                            </p:commandLink>
                                         </p:column>
                                     </p:row>
-                                    
+
                                     <p:row>
                                         <p:column>
                                             <ui:include src="./images/description.svg" />&nbsp;
@@ -76,7 +77,7 @@
                                                 <p:commandButton value="Book Rental" onclick="PF('dialogRequest').show()" icon="ui-icon-key" />
                                             </h:form>
                                             <h:form rendered="#{sessionScope['currentCustomerEntity'].username == viewListingManagedBean.listingToView.customerEntity.username}">
-                                                <p:commandButton value="View Requests" onclick="PF('dialogViewRequests').show()" icon="ui-icon-key" />
+
                                                 <p:commandButton value="Update Listing" onclick="PF('dialogUpdateListing').show()" icon="ui-icon-brush">
                                                     <f:setPropertyActionListener value="#{viewListingManagedBean.listingToView}" target="#{viewListingManagedBean.selectedListingToUpdate}" />
                                                 </p:commandButton>
@@ -165,9 +166,12 @@
 
                         </p:panelGrid>
 
-                        <p:panelGrid  rendered="#{!sessionScope['isLogin']}">
-                            <p:outputLabel value="NOT LOGGED IN!!!!!"></p:outputLabel>
+                        <p:panelGrid  rendered="#{!sessionScope['isLogin']}" style="text-align:center">
+                            <p:outputLabel style="text-align:center" value="Please log in to make rental request!"></p:outputLabel>
+                            <br/><br/>
+                            <h:link style="text-align:center; text-decoration: underline;" outcome="Login.xhtml" value="Log in here!"/>
                         </p:panelGrid>
+                        <br/>
 
                     </p:dialog>
 

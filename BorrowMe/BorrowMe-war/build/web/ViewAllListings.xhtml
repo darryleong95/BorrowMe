@@ -27,7 +27,7 @@
                     Listings:
                 </f:facet>
 
-                <p:panel header="#{listing.listingId}" style="width: 250px; text-align:center; margin:0 auto" >
+                <p:panel header="#{listing.listingId}" style="width:auto; text-align:center; margin:0 auto" >
 
                     <!--onclick="rc()"-->
 
@@ -55,7 +55,7 @@
 
                 <p:messages id="messagesCreateNewListing" redisplay="false" />
 
-                <p:panelGrid rendered="#{sessionScope['isLogin']}">
+                <p:panelGrid rendered="#{sessionScope['isLogin']}" style="border:0 !important">
 
                     <p:row>
                         <p:column>
