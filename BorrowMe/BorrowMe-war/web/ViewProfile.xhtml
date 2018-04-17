@@ -28,56 +28,34 @@
 
                                         <f:facet name="header">
                                             <p:row style="padding:20px">
-                                                <p:graphicImage style="height:250px; width: 250px; border-radius:300px;" value="#{viewProfileManagedBean.selectedProfileToView.profileImage}"/>
+                                                <p:graphicImage style="height:100px; width: 100px; border-radius:300px;" value="#{viewProfileManagedBean.selectedProfileToView.profileImage}"/>
                                                 <br/>
                                             </p:row>
                                         </f:facet>
 
+                                        <!--                                        <p:row>
+                                                                                    <p:column colspan="1">
+                                                                                        <h:outputText value="ID:" />
+                                                                                    </p:column>
+                                                                                    <p:column colspan="1">
+                                                                                        <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.customerId}" />
+                                                                                    </p:column>
+                                                                                </p:row>-->
                                         <p:row>
-                                            <p:column colspan="1">
-                                                <h:outputText value="ID:" />
-                                            </p:column>
-                                            <p:column colspan="1">
-                                                <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.customerId}" />
-                                            </p:column>
+                                            <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.username}" />
                                         </p:row>
-                                        <p:row>
-                                            <p:column colspan="1">
-                                                <h:outputText value="Username:" />
 
-                                            </p:column>
-                                            <p:column colspan="1">
-                                                <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.username}" />
-                                            </p:column>
-                                        </p:row>
-                                        
                                         <p:row>
-                                            <p:column colspan="1">
-                                                <h:outputText value="Customer Type:" />
+                                            <br/>
+                                            <br/>
+                                            <p:commandButton update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" icon="ui-icon-pencil" title="Update Profile" value="Update Profile">
+                                                <f:setPropertyActionListener value="#{viewProfileManagedBean.selectedProfileToView}" target="#{viewProfileManagedBean.updateProfile}" />
+                                            </p:commandButton>
+                                        </p:row>
 
-                                            </p:column>
-                                            <p:column colspan="1">
-                                                <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.customerType}" />
-                                            </p:column>
-                                        </p:row>
-                                        
-                                        <p:row>
-                                            <p:column colspan="2">
-                                                <p:commandButton update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" icon="ui-icon-pencil" title="Update Profile" value="Update Profile">
-                                                    <f:setPropertyActionListener value="#{viewProfileManagedBean.selectedProfileToView}" target="#{viewProfileManagedBean.updateProfile}" />
-                                                </p:commandButton>
-                                            </p:column>
-                                        </p:row>
-                                        
-                                        <p:row>
-                                            <p:column colspan="2">
-                                                <p:commandButton update="formRegisterPremium" oncomplete="PF('dialogRegisterPremium').show()" icon="ui-icon-heart" title="Register for Premium" value="Register for Premium">
-                                                    <f:setPropertyActionListener value="#{viewProfileManagedBean.selectedProfileToView}" target="#{viewProfileManagedBean.registerPremium}" />
-                                                </p:commandButton>
-                                            </p:column>
-                                        </p:row>
-                                        
-                                        
+
+
+
                                     </p:panelGrid>
                                 </p:column>
                                 <p:column rowspan="5">
@@ -86,7 +64,7 @@
                                         <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewProfileManagedBean.customerListings}" var="listing"  columns="3" layout="grid"
                                                     rows="12" paginator="true"
                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                    rowsPerPageTemplate="6,12,16">
+                                                    rowsPerPageTemplate="6,12,16"  rendered="#{not empty viewProfileManagedBean.customerListings}">
                                             <p:panel header="#{listing.listingId}" style= "width:200px;text-align:center" >
 
                                                 <!--onclick="rc()"-->
@@ -109,11 +87,13 @@
                                                     <p:commandButton value="View Listing" actionListener="#{viewProfileManagedBean.redirectListing}" >
                                                         <f:attribute name="listingIdToView" value="#{listing.listingId}" />
                                                     </p:commandButton>
-
-
                                                 </h:panelGrid>
+                                                
+                                               
                                             </p:panel>
                                         </p:dataGrid>
+                                         <p:outputLabel value="User has no listings :(" rendered="#{empty viewProfileManagedBean.customerListings}"/>
+                                                
                                     </h:form>
                                 </p:column>
                             </p:row>
@@ -255,7 +235,7 @@
                     </p:dialog>
 
                 </h:form>
-                
+
                 <h:form id="formRegisterPremium">
 
                     <p:dialog id="dialogRegisterPremium" widgetVar="dialogRegisterPremium" header="Register Premium" closable="true">

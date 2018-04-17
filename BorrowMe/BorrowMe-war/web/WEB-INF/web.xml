@@ -25,4 +25,8 @@
         <error-code>404</error-code>
         <location>/error.xhtml</location>
     </error-page>
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>cupertino</param-value>
+    </context-param>
 </web-app>

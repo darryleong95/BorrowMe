@@ -18,39 +18,32 @@
             <p:layoutUnit position="north">
 
                 <h1>Borrowme</h1>
-                
+
 
             </p:layoutUnit>
 
-            <p:layoutUnit size="200" position="west">
+            <p:layoutUnit size="200" position="west" style="overflow:hidden !important;">
 
                 <h3>Main Menu</h3>
-                
 
                 <h:form>
 
-                    <p:menu>
+                    <p:menu style="width:100%" >
 
                         <p:submenu label="System">
                             <p:menuitem value="Home" outcome="index" icon="ui-icon-home" />
-                            <p:menuitem value="Login" outcome="Login.xhtml" icon="ui-icon-home" rendered="#{!sessionScope['isLogin']}" />
+                            <p:menuitem value="Login and Register" outcome="Login.xhtml" icon="ui-icon-home" rendered="#{!sessionScope['isLogin']}" />
                             <p:menuitem value="Logout" actionListener="#{loginManagedBean.logout}" icon="ui-icon-unlocked" rendered="#{sessionScope['isLogin']}" />
                         </p:submenu>
 
-                        <p:submenu label="Admin Portal">
+                        <p:submenu label="BorrowMe Portal">
                             <p:menuitem value="View All Listings" outcome="ViewAllListings.xhtml" icon="ui-icon-cart" />
-                            <p:menuitem value="View Requests" outcome="ViewRequests.xhtml" icon="ui-icon-arrowreturnthick-1-w " />
-                        </p:submenu>
-
-                        <p:submenu label="Operations Portal">
-                            <p:menuitem value="View Profile" outcome="ViewProfile.xhtml" icon="ui-icon-person" />
+                            <p:menuitem value="View Requests" outcome="ViewRequests.xhtml" icon="ui-icon-arrowreturnthick-1-w " rendered="#{sessionScope['isLogin']}" />
+                            <p:menuitem value="Profile Management" outcome="ViewProfile.xhtml" icon="ui-icon-person" rendered="#{sessionScope['isLogin']}"/>
 
                         </p:submenu>
 
-                        <p:submenu label="General">
-                            <p:menuitem value="About" outcome="index" icon="ui-icon-info" />
-                            <p:menuitem value="Help" outcome="index" icon="ui-icon-help" />
-                        </p:submenu>
+
 
                     </p:menu>
 
@@ -58,7 +51,7 @@
 
             </p:layoutUnit>
 
-            <p:layoutUnit position="center" >
+            <p:layoutUnit position="center" style="border:0" >
 
                 <ui:insert name="content">Content</ui:insert>
 

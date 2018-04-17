@@ -39,7 +39,8 @@
 }
 
 div.ui-growl {
-   left: 10;
+   right: 10;
+   position:right;
 }
 
 
@@ -106,6 +107,7 @@ a:hover {
     margin: 0.5% 0.5% 0.5% 0.5%;
     padding: 3px 3px 3px 3px;
     float: right;
+    border:0;
 }
 
 .footer {
@@ -153,4 +155,14 @@ a:hover {
 .img{
     height: 100px;
     width:100px;
+}
+
+.centeredPanel{
+    width:500px;
+    height:500px;
+    position:absolute;
+    left:50%; 
+    top:50%; 
+    margin-left:-250px; 
+    margin-top:-250px; 
 }

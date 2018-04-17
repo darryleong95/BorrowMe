@@ -11,14 +11,14 @@
         <!--<p:graphicImage style="height: 200px;width:200px;" value="./images/noimage.png" />-->
 
         <h:form>
-            <p:menubar>
+            <p:menubar style="width:88%; margin:0 auto">
                 <p:menuitem value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon="ui-icon-plusthick" />
             </p:menubar>
             <br/>
         </h:form> 
 
         <h:form id="formAllListings">
-            <p:dataGrid id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewAllListingsManagedBean.listings}" var="listing"  columns="3" layout="grid"
+            <p:dataGrid style="height:90%; width:90%; margin:0 auto" id="dataGridAllListings" widgetVar="dataGridListings" value="#{viewAllListingsManagedBean.listings}" var="listing"  columns="3" layout="grid"
                         rows="12" paginator="true"
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         rowsPerPageTemplate="6,12,16">
@@ -139,8 +139,10 @@
 
                 </p:panelGrid>
 
-                <p:panelGrid  rendered="#{!sessionScope['isLogin']}">
-                    <p:outputLabel value="NOT LOGGED IN!!!!!"></p:outputLabel>
+                <p:panelGrid  rendered="#{!sessionScope['isLogin']}" style="text-align:center">
+                    <p:outputLabel style="text-align:center" value="Please log in to add a listing!"></p:outputLabel>
+                    <br/><br/>
+                    <h:link style="text-align:center; text-decoration: underline;" outcome="Login.xhtml" value="Log in here!"/>
                 </p:panelGrid>
                 <br/>
 
