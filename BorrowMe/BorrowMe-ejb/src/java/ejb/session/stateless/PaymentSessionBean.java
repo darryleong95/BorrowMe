@@ -2,6 +2,8 @@ package ejb.session.stateless;
 
 import entity.PaymentEntity;
 import entity.RequestEntity;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,11 +41,28 @@ public class PaymentSessionBean implements PaymentSessionBeanLocal {
     }
 
     @Override
-    public PaymentEntity makePayment(Long id, Double paymentAmount) throws PaymentNotFoundException {
-        PaymentEntity payment = retrievePayment(id);
-        payment.setTotalAmount(paymentAmount);
-        payment.setStatus(true);
-        return retrievePayment(payment.getPaymentEntityId());
+    public PaymentEntity makePayment(Long requestId) throws PaymentNotFoundException {
+        try {
+            System.out.println("1");
+            RequestEntity request = requestSessionBeanLocal.retrieveRequestByID(requestId);
+            System.out.println("2");
+            PaymentEntity payment = request.getPaymentEntity();
+            System.out.println("3");
+            Double amount = request.getListingEntity().getCostPerDay();
+            System.out.println("4");
+            int noDays = request.getNoOfDays();
+            Double total = (Double) (noDays * amount);
+            request.setPayment(true);
+            System.out.println("Number of Days: " + noDays);
+            System.out.println("Cost per Day: " + amount);
+            payment.setTotalAmount(total);
+            payment.setStatus(true);
+            System.out.println("Successfully");
+            return retrievePayment(payment.getPaymentEntityId());
+        } catch (RequestNotFoundException ex) {
+            Logger.getLogger(PaymentSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override

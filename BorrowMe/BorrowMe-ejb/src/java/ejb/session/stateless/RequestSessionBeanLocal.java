@@ -27,4 +27,6 @@ public interface RequestSessionBeanLocal {
 
     public List<RequestEntity> retrieveRequestByListingId(Long listingId);
 
+    public RequestEntity acceptRequest(Long requestId) throws RequestNotFoundException;
+
 }

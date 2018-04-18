@@ -16,6 +16,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -27,6 +28,7 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 import util.exception.CreateRequestException;
 import util.exception.CustomerNotFoundException;
+import util.exception.RequestNotFoundException;
 import ws.restful.datamodel.Request.CreateRequestReq;
 import ws.restful.datamodel.Request.CreateRequestRsp;
 import ws.restful.datamodel.Listing.ErrorRsp;
@@ -115,6 +117,22 @@ public class RequestResource {
             Logger.getLogger(RequestResource.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    @Path("acceptRequest/{requestId}")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response acceptRequest(@PathParam("requestId") Long requestId) throws RequestNotFoundException {
+        try {
+            RequestEntity request = requestSessionBeanLocal.acceptRequest(requestId);
+            System.out.println("gets here");
+            CreateRequestRsp result = new CreateRequestRsp(request);
+            return Response.status(Response.Status.OK).entity(result).build();
+        } catch (RequestNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("Unable to accept request");
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
     }
 
     private RequestSessionBeanLocal lookupRequestSessionBeanLocal() {
