@@ -27,4 +27,6 @@ public interface RequestSessionBeanLocal {
 
     public List<RequestEntity> retrieveRequestByListingId(Long listingId);
 
+    public boolean checkItemAvailability(RequestEntity req);
+
 }

@@ -4,7 +4,10 @@ import entity.CustomerEntity;
 import entity.ListingEntity;
 import entity.PaymentEntity;
 import entity.RequestEntity;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -147,6 +150,8 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
                 request.setAccepted(true);
                 request.setPaymentEntity(paymentSessionBeanLocal.retrievePayment(id));
                 em.merge(request);
+            } else {
+                em.merge(request);
             }
         } catch (CreatePaymentException ex) {
             System.out.println("Create payment exception!!!!!");
@@ -196,6 +201,41 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
         Query query = em.createQuery("SELECT c FROM RequestEntity c WHERE c.customerEntity.customerID = :inCustomerID AND c.payment = TRUE AND c.accepted = TRUE");
         query.setParameter("inCustomerID", customerID);
         return query.getResultList();
+    }
+    
+    @Override
+    public boolean checkItemAvailability(RequestEntity req) {
+        Date reqStartDate = req.getStartDate();
+        Date reqEndDate = req.getEndDate();
+        ListingEntity listing = req.getListingEntity();
+        List<Date> thisReq = getDaysBetweenDates(reqStartDate, reqEndDate);
+
+        for (RequestEntity r : listing.getRequestList()) {
+            if (r.getAccepted()) {//req accepted
+                Date otherReqSD = r.getStartDate();
+                Date otherReqED = r.getEndDate();
+
+                for (Date newReqDate : thisReq) {
+                    if (newReqDate.after(otherReqSD) && newReqDate.before(otherReqED)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public static List<Date> getDaysBetweenDates(Date startdate, Date enddate) {
+        List<Date> dates = new ArrayList<Date>();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(startdate);
+
+        while (calendar.getTime().before(enddate)) {
+            Date result = calendar.getTime();
+            dates.add(result);
+            calendar.add(Calendar.DATE, 1);
+        }
+        return dates;
     }
 
 }

@@ -55,7 +55,9 @@
                             <p:outputLabel for="username" value="Username: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="username" value="#{loginManagedBean.newCustomer.username}" required="true" requiredMessage="Username is required" />
+                            <p:inputText id="username" value="#{loginManagedBean.newCustomer.username}" required="true" requiredMessage="Username is required">
+                            <!-- validate length!!-->
+                            </p:inputText>
                         </p:column>
                         <p:column>
                             <p:message for="username" />

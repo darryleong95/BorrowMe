@@ -45,11 +45,10 @@
             </h:panelGrid>
         </h:form>
         
-        <p:dialog id="dialogApproveRequest" widgetVar="dialogApproveRequest" header="Request updated" closable="true">
+        <p:dialog id="dialogApproveRequest" widgetVar="dialogApproveRequest" header="Request updated" closable="true" >
             
-            <p:messages id="messages" redisplay="false" closable="true" />
-            <br/>
-            <h:outputText value="Successfully updated"/><br/>
+            <p:messages id="messages" redisplay="false" closable="true" autoUpdate="true"/>
+            <p:commandButton value="Redirect to Request page" actionListener="#{approveRequestManagedBean.redirectAfterAccRej}" />
             
         </p:dialog>
 
