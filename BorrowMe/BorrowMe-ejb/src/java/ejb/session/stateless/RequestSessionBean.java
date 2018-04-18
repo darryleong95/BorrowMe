@@ -108,28 +108,28 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
 //        }
 
     }
-    
-        @Override
-        public RequestEntity createRequestAPI(RequestEntity rq, Long requesterId, Long listingId, Date startDate, Date endDate) throws CreateRequestException{
+
+    @Override
+    public RequestEntity createRequestAPI(RequestEntity rq, Long requesterId, Long listingId, Date startDate, Date endDate) throws CreateRequestException {
         try {
             CustomerEntity customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(requesterId);
-            
+
             ListingEntity listing = listingSessionBeanLocal.retrieveListingById(listingId);
-            
-            System.out.println("Listing Entity: "  + listing.getListingTitle());
-            
+
+            System.out.println("Listing Entity: " + listing.getListingTitle());
+
             rq.setCustomerEntity(customer);
             rq.setListingEntity(listing);
             rq.setStartDate(startDate);
             rq.setEndDate(endDate);
             Long noDays = endDate.getTime() - startDate.getTime();
-            System.out.println ("Days: " + TimeUnit.DAYS.convert(noDays, TimeUnit.MILLISECONDS));
+            System.out.println("Days: " + TimeUnit.DAYS.convert(noDays, TimeUnit.MILLISECONDS));
             int days = (int) TimeUnit.DAYS.convert(noDays, TimeUnit.MILLISECONDS);
             rq.setNoOfDays(days);
-            em.persist(rq);   
+            em.persist(rq);
             em.flush();
             em.refresh(rq);
-            
+
             return rq;
         } catch (CustomerNotFoundException | InvalidListingException ex) {
             throw new CreateRequestException("An unexpected error has occurred: " + ex.getMessage());
@@ -172,7 +172,7 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
             throw new RequestNotFoundException("Request ID: " + requestID + " does not exist!");
         }
     }
-    
+
     @Override
     public List<RequestEntity> retrieveRequestByListingId(Long listingId) {
         try {
@@ -238,4 +238,23 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
         return dates;
     }
 
+    @Override
+    public RequestEntity acceptRequest(Long requestId) throws RequestNotFoundException {
+        try {
+            RequestEntity request = retrieveRequestByID(requestId);
+            System.out.println(request.getRequestEntityId() + "***********************");
+            PaymentEntity payment = new PaymentEntity();
+            payment.setStatus(false);
+            payment.setListingEntity(request.getListingEntity());
+            request.setAccepted(true);
+            request.setPaymentEntity(payment);
+            em.persist(payment);
+            em.flush();
+            em.refresh(payment);
+            em.merge(request);
+            return request;
+        } catch (RequestNotFoundException ex) {
+            throw new RequestNotFoundException("Request ID: " + requestId + " does not exist!");
+        }
+    }
 }

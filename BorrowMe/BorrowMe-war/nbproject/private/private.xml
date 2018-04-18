@@ -3,12 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/Users/katrina/Desktop/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ApproveRequestManagedBean.java</file>
             <file>file:/Users/katrina/Desktop/BorrowMe/BorrowMe/BorrowMe-war/web/ApproveRequest.xhtml</file>
             <file>file:/Users/katrina/Desktop/BorrowMe/BorrowMe/BorrowMe-war/web/ViewProfile.xhtml</file>
             <file>file:/Users/katrina/Desktop/BorrowMe/BorrowMe/BorrowMe-war/web/ViewRequests.xhtml</file>
             <file>file:/Users/katrina/Desktop/BorrowMe/BorrowMe/BorrowMe-war/web/ViewAllListings.xhtml</file>
             <file>file:/Users/katrina/Desktop/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewRequestsManagedBean.java</file>
+=======
+            <file>file:/C:/Netbeanslife/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/RequestResource.java</file>
+            <file>file:/C:/Netbeanslife/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/CustomerResource.java</file>
+>>>>>>> 439f0f7e98889cd39c5da6214803f691e9a4dc75
         </group>
     </open-files>
 </project-private>

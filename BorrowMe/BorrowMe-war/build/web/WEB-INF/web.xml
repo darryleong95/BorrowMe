@@ -35,4 +35,10 @@
         <local>ejb.session.stateless.ListingSessionBeanLocal</local>
         <ejb-link>BorrowMe-ejb.jar#ListingSessionBean</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>RequestSessionBeanLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.session.stateless.RequestSessionBeanLocal</local>
+        <ejb-link>BorrowMe-ejb.jar#RequestSessionBean</ejb-link>
+    </ejb-local-ref>
 </web-app>

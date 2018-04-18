@@ -29,4 +29,6 @@ public interface RequestSessionBeanLocal {
 
     public boolean checkItemAvailability(RequestEntity req);
 
+    public RequestEntity acceptRequest(Long requestId) throws RequestNotFoundException;
+
 }
