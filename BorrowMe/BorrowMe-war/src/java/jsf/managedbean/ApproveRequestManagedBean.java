@@ -69,23 +69,25 @@ public class ApproveRequestManagedBean implements Serializable {
     }
 
     public void updateRequestStatus(ActionEvent event) {
-        System.out.println("@ update request status method");
-        if (accepted) {
-            System.out.println("boolean turned accepted");
-        } else {
-            System.out.println("boolean turned false");
-        }
+
         request.setAcknowledged(true);
-        if (accepted) {
-           request.setAccepted(true);
+        if (!requestSessionBeanLocal.checkItemAvailability(request)) {
+            request.setAccepted(false);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request auto rejected due to conflict with previously accepted request", null));
+        } else if (requestSessionBeanLocal.checkItemAvailability(request) && accepted) {
+            request.setAccepted(true);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request accepted!", null));
         } else {
             request.setAccepted(false);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request rejected!", null));
         }
         requestSessionBeanLocal.updateRequest(getRequest());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Status successfully set", null));
+
     }
 
- 
+    public void redirectAfterAccRej(ActionEvent event) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("ViewRequests.xhtml");
+    }
 
     public RequestEntity getRequest() {
         return request;

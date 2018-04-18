@@ -71,7 +71,7 @@
                                 <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and !requestEntity.borrowerLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                     <f:attribute name="requestEntity" value="#{requestEntity}" />
                                 </p:commandButton><br/>
-                               
+
                                 <h:outputText value="Feedback Already Made!" rendered="#{requestEntity.borrowerLeftFeedback}"/><br/>
                             </p:column>
 
@@ -124,6 +124,11 @@
                                         <p:column headerText="Listing ID:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
                                             <h:outputText value="#{requestEntity.listingEntity.listingTitle}" style="text-align: center;"/>
                                         </p:column>
+                                        
+                                        <p:column headerText="Requester Username:" sortBy="#{requestEntity.customerEntity.username}" filterBy="#{requestEntity.customerEntity.username}" filterMatchMode="contains">
+                                            <h:outputText value="#{requestEntity.customerEntity.username}" style="text-align: center;"/>
+                                        </p:column>
+                                        
 
                                         <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
                                             <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
@@ -153,14 +158,15 @@
 
                                         <p:column rendered="#{requestEntity.acknowledged}">
                                             <p:outputLabel value="Approved!" rendered="#{requestEntity.accepted}"/>
+                                            <p:outputLabel value="Rejected" rendered="#{!requestEntity.accepted}"/>
                                             <br/>
-                                            <p:outputLabel value="Awaiting Payment!" rendered="#{!requestEntity.payment}"/>
+                                            <p:outputLabel value="Awaiting Payment!" rendered="#{!requestEntity.payment and requestEntity.accepted}"/>
                                             <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />
                                             </p:commandButton>
                                             <br/>
                                             <h:outputText value="Feedback Already Made!" rendered="#{requestEntity.lenderLeftFeedback}"/>
-                                            <p:outputLabel value="Rejected" rendered="#{!requestEntity.accepted}"/>
+
                                         </p:column>
 
                                     </p:dataTable>

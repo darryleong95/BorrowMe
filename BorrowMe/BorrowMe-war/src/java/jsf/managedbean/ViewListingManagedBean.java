@@ -115,19 +115,23 @@ public class ViewListingManagedBean implements Serializable {
 
     public void createRequest(ActionEvent event) {
         try {
-            CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
-            c.getRequestList().add(newRequestEntity);
-            newRequestEntity.setCustomerEntity(c); //borrower
-            listingToView.getRequestList().add(newRequestEntity);
-            newRequestEntity.setListingEntity(listingToView);
-            newRequestEntity.setStartDate(newStartDate);
-            newRequestEntity.setEndDate(newEndDate);
-            newRequestEntity.setNoOfDays(Integer.valueOf(getDateDiffValue()));
-            RequestEntity r = requestSessionBeanLocal.createRequest(newRequestEntity);
-            requests.add(r);
-            filteredRequests.add(r);
-            newRequestEntity = new RequestEntity();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New request created successfully (request ID: " + r.getRequestEntityId() + ")", null));
+                CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
+                c.getRequestList().add(newRequestEntity);
+                newRequestEntity.setCustomerEntity(c); //borrower
+                listingToView.getRequestList().add(newRequestEntity);
+                newRequestEntity.setListingEntity(listingToView);
+                newRequestEntity.setStartDate(newStartDate);
+                newRequestEntity.setEndDate(newEndDate);
+                newRequestEntity.setNoOfDays(Integer.valueOf(getDateDiffValue()));
+                if (requestSessionBeanLocal.checkItemAvailability(newRequestEntity)) {
+                RequestEntity r = requestSessionBeanLocal.createRequest(newRequestEntity);
+                requests.add(r);
+                filteredRequests.add(r);
+                newRequestEntity = new RequestEntity();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New request created successfully (request ID: " + r.getRequestEntityId() + ")", null));
+            } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request rejected! The item is rented out for those dates", null));
+            }
         } catch (CreateRequestException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new request: " + ex.getMessage(), null));
         }
