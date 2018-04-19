@@ -55,7 +55,7 @@ public class RequestEntity implements Serializable {
     @OneToOne
     private PaymentEntity paymentEntity;
 
-    @OneToMany(mappedBy = "requestEntity")
+    @OneToMany
     private List<FeedbackEntity> feedbackList;
 
     public RequestEntity() {

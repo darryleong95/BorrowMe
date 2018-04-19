@@ -120,6 +120,8 @@ public class ViewListingManagedBean implements Serializable {
                 newRequestEntity.setCustomerEntity(c); //borrower
                 listingToView.getRequestList().add(newRequestEntity);
                 newRequestEntity.setListingEntity(listingToView);
+                newStartDate.setHours(12);
+                newEndDate.setHours(12);
                 newRequestEntity.setStartDate(newStartDate);
                 newRequestEntity.setEndDate(newEndDate);
                 newRequestEntity.setNoOfDays(Integer.valueOf(getDateDiffValue()));

@@ -43,7 +43,8 @@
 
                 <p:outputLabel value="Feedback: "/>
                 <p:inputTextarea rows="6" cols="33" value="#{makeFeedbackManagedBean.feedback.review}"/>
-                <p:commandButton value="Submit" update="@form" actionListener="#{makeFeedbackManagedBean.makeFeedback}"  oncomplete="PF('dialogMakeFeedback').show()"/>
+                <p:commandButton value="Submit" update="@form" actionListener="#{makeFeedbackManagedBean.makeFeedback}"  oncomplete="PF('dialogMakeFeedback').show()">
+                </p:commandButton>
                                  
             </h:panelGrid>
         </h:form>

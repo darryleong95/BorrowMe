@@ -42,14 +42,18 @@ public class ListingEntity implements Serializable {
     @OneToMany(mappedBy = "listingEntity")
     private List<PaymentEntity> paymentEntities;
     
+    @OneToMany(mappedBy="listing")
+    private List<FeedbackEntity> feedbacksOnListing;
+    
  
     public ListingEntity() {
         requestList = new ArrayList<RequestEntity>();
         paymentEntities = new ArrayList<PaymentEntity>();
+        feedbacksOnListing = new ArrayList<FeedbackEntity>();
         images = new ArrayList<String>();
     }
 
-    public ListingEntity(String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, String category, List<String> images, CustomerEntity customerEntity, List<RequestEntity> requestList, List<PaymentEntity> paymentEntities) {
+    public ListingEntity(String listingTitle, String listingDescription, Boolean listingAvailable, Double costPerDay, String category, List<String> images, CustomerEntity customerEntity, List<RequestEntity> requestList, List<PaymentEntity> paymentEntities, List<FeedbackEntity> feedbacksOnListing) {
         this.listingTitle = listingTitle;
         this.listingDescription = listingDescription;
         this.listingAvailable = listingAvailable;
@@ -59,10 +63,8 @@ public class ListingEntity implements Serializable {
         this.customerEntity = customerEntity;
         this.requestList = requestList;
         this.paymentEntities = paymentEntities;
+        this.feedbacksOnListing = feedbacksOnListing;
     }
-
-    
-
 
     public String getFirstImage() {
         return images.get(0);
@@ -180,6 +182,14 @@ public class ListingEntity implements Serializable {
      */
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public List<FeedbackEntity> getFeedbacksOnListing() {
+        return feedbacksOnListing;
+    }
+
+    public void setFeedbacksOnListing(List<FeedbackEntity> feedbacksOnListing) {
+        this.feedbacksOnListing = feedbacksOnListing;
     }
     
 }

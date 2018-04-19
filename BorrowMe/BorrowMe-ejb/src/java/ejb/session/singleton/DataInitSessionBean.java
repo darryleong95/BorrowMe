@@ -55,7 +55,8 @@ public class DataInitSessionBean {
         } catch (CustomerNotFoundException ex) {
             try {
                
-                CustomerEntity customer = new CustomerEntity("Darryl", "Leong", "testerAccount", "password", "S9505342D", "91919177", "darryleong95@gmail.com");
+                
+                CustomerEntity customer = new CustomerEntity("Darryl", "Leong", "username", "password", "S9505342D","darryleong95@gmail.com", "91919177");
                 customerSessionBean.createCustomer(customer);
             } catch (CustomerExistException e) {
                 e.printStackTrace();

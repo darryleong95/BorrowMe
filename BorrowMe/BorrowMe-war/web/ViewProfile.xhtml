@@ -110,11 +110,11 @@
                                                  rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="6,12,16">
 
                                         <p:column colspan="1" headerText=" Reviewer Info" style="text-align:center">
-                                            <p:graphicImage style="height: 75px;width:75px; border-radius:100px;" value="#{viewProfileManagedBean.selectedProfileToView.profileImage}" />
+                                            <p:graphicImage style="height: 75px;width:75px; border-radius:100px;" value="#{feedback.reviewer.profileImage}" />
                                             <br/>
 
-                                            <p:commandLink actionListener="#{indexManagedBean.redirectProfile}" value="by #{viewProfileManagedBean.selectedProfileToView.username}">
-                                                <f:attribute name="profileIdToView" value="#{viewProfileManagedBean.selectedProfileToView.customerId}" />
+                                            <p:commandLink actionListener="#{indexManagedBean.redirectProfile}" value="by #{feedback.reviewer.username}">
+                                                <f:attribute name="profileIdToView" value="#{feedback.reviewer.customerId}" />
                                             </p:commandLink>
                                         </p:column>
                                         <p:column colspan="3" headerText="Review">
