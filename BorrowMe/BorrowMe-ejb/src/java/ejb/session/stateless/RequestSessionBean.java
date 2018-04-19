@@ -186,23 +186,22 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
         }
         return null;
     }
+    
 
     @Override
-    public List<RequestEntity> retrieveRequestListByCustomerID(Long customerID
-    ) {
+    public List<RequestEntity> retrieveRequestListByCustomerID(Long customerID) {
         Query query = em.createQuery("SELECT c FROM RequestEntity c WHERE c.customerEntity.customerId = :inCustomerID");
         query.setParameter("inCustomerID", customerID);
         return query.getResultList();
     }
 
     @Override
-    public List<RequestEntity> retrieveBorrowHistoryList(Long customerID
-    ) {
+    public List<RequestEntity> retrieveBorrowHistoryList(Long customerID) {
         Query query = em.createQuery("SELECT c FROM RequestEntity c WHERE c.customerEntity.customerID = :inCustomerID AND c.payment = TRUE AND c.accepted = TRUE");
         query.setParameter("inCustomerID", customerID);
         return query.getResultList();
     }
-    
+
     @Override
     public boolean checkItemAvailability(RequestEntity req) {
         Date reqStartDate = req.getStartDate();
@@ -252,6 +251,18 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
             em.flush();
             em.refresh(payment);
             em.merge(request);
+            return request;
+        } catch (RequestNotFoundException ex) {
+            throw new RequestNotFoundException("Request ID: " + requestId + " does not exist!");
+        }
+    }
+
+    @Override
+    public RequestEntity openedRequest(Long requestId) throws RequestNotFoundException {
+        try {
+            RequestEntity request = retrieveRequestByID(requestId);
+            request.setIsOpened(true);
+            System.out.println("**********Successfully set isOpened to: " + request.getIsOpened() + "**********");
             return request;
         } catch (RequestNotFoundException ex) {
             throw new RequestNotFoundException("Request ID: " + requestId + " does not exist!");

@@ -67,6 +67,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
                 listingToUpdate.setListingTitle(listingEntity.getListingTitle());
                 listingToUpdate.setListingDescription(listingEntity.getListingDescription());
                 listingToUpdate.setCostPerDay(listingEntity.getCostPerDay());
+                listingToUpdate.setCategory(listingEntity.getCategory());
                 listingToUpdate.setImages(listingEntity.getImages());
                 listingToUpdate.setListingAvailable(listingEntity.getListingAvailable());
             }
