@@ -9,8 +9,6 @@ import entity.FeedbackEntity;
 import entity.ListingEntity;
 import entity.RequestEntity;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -58,6 +56,7 @@ public class MakeFeedbackManagedBean implements Serializable {
             customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(c.getCustomerId());
             System.out.println("retrieved customer successfully from context; approverequest managed bean");
             RequestEntity requestEntity = (RequestEntity) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("requestEntity");
+
 //            if (requestEntity == null) {
 //                System.out.println("requestentity is null");
 //            } else if (requestEntity.getRequestEntityId() == null) {
@@ -78,22 +77,23 @@ public class MakeFeedbackManagedBean implements Serializable {
 
     public void makeFeedback(ActionEvent event) {
         try {
-            CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
-            c.getFeedbackList().add(newFeedback);
-            newFeedback.setCustomerEntity(c);
-            request.setCustomerEntity(c);
+            CustomerEntity reviewer = customer;
+            newFeedback.setReviewer(reviewer);
             newFeedback.setRequestEntity(request);
+            newFeedback.setListing(request.getListingEntity());
+            if (request.getCustomerEntity().getCustomerId().equals(reviewer.getCustomerId())) {
+                System.out.println("im the rentee " + reviewer.getUsername() + ", reviewing the renter");
+                CustomerEntity reviewee = request.getListingEntity().getCustomerEntity();
+                System.out.println("reviewee is: " + reviewee.getUsername());
+                newFeedback.setReviewee(reviewee);
+            } else {
+                System.out.println("else im the renter + " + reviewer.getUsername() + ", reviewing the rentee");
+                CustomerEntity reviewee = request.getCustomerEntity();
+                System.out.println("reviewee is: " + reviewee.getUsername());
+                newFeedback.setReviewee(reviewee);
+            }
             Long newFeedbackId = feedbackSessionBeanLocal.createFeedback(newFeedback);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New feedback created successfully (feedback ID: " + newFeedbackId + ")", null));
-
-            if (c.getCustomerId() != request.getCustomerEntity().getCustomerId()) { //lender left fdbk
-                request.setLenderLeftFeedback(Boolean.TRUE);
-                System.err.println("set");
-            } else { //borrower left feedback
-                request.setBorrowerLeftFeedback(Boolean.TRUE);
-            }
-            requestSessionBeanLocal.updateRequest(request);
-            
         } catch (FeedbackExistException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new feedback: " + ex.getMessage(), null));
         }

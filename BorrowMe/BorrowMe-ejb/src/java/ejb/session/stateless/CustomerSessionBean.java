@@ -10,7 +10,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import util.enumeration.CustomerTypeEnum;
 import util.exception.CustomerExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
@@ -64,8 +63,6 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             customerToUpdate.setPassword(customer.getPassword());
             customerToUpdate.setUsername(customer.getUsername());
             customerToUpdate.setIdentificationNo(customer.getIdentificationNo());
-            customerToUpdate.setProfileImage(customer.getProfileImage());
-            customerToUpdate.setCustomerType(customer.getCustomerType());
             System.out.println("***********************************Check***********************************");
             return retrieveCustomerByCustomerId((Long) customer.getCustomerId());
         } else {
@@ -90,7 +87,8 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         CustomerEntity customer = em.find(CustomerEntity.class, custId);
         if (customer != null) {
             customer.getListingList().size();
-            customer.getFeedbackList().size();
+            customer.getFeedbacksGiven().size();
+            customer.getFeedbacksReceived().size();
             customer.getRequestList().size();
             return customer;
         } else {

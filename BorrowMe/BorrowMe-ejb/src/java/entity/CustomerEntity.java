@@ -49,14 +49,17 @@ public class CustomerEntity implements Serializable {
     @OneToMany(mappedBy = "customerEntity")
     private List<ListingEntity> listingList;
 
-    //List of feedback of a lender
-    @OneToMany(mappedBy = "customerEntity")
-    private List<FeedbackEntity> feedbackList;
+    @OneToMany(mappedBy = "reviewer")
+    private List<FeedbackEntity> feedbacksGiven;
+    
+    @OneToMany(mappedBy="reviewee")
+    private List<FeedbackEntity> feedbacksReceived;
 
     public CustomerEntity() {
         requestList = new ArrayList<>();
         listingList = new ArrayList<>();
-        feedbackList = new ArrayList<>();
+        feedbacksGiven = new ArrayList<>();
+        feedbacksReceived = new ArrayList<>();
         customerType = ("ORDINARY");
         profileImage = "./images/defaultprofilepic.png";
     }
@@ -70,11 +73,24 @@ public class CustomerEntity implements Serializable {
         this.identificationNo = identificationNo;
         this.contactNo = contactNo;
         this.email = email;
+    }
+    
+    
+    
+    public CustomerEntity(String firstName, String lastName, String username, String password, String identificationNo, String contactNo, String email, String customerType, String profileImage, List<RequestEntity> requestList, List<ListingEntity> listingList, List<FeedbackEntity> feedbacksGiven, List<FeedbackEntity> feedbacksReceived) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.identificationNo = identificationNo;
+        this.contactNo = contactNo;
+        this.email = email;
         this.customerType = customerType;
         this.profileImage = profileImage;
         this.requestList = requestList;
         this.listingList = listingList;
-        this.feedbackList = feedbackList;
+        this.feedbacksGiven = feedbacksGiven;
+        this.feedbacksReceived = feedbacksReceived;
     }
 
     public String getProfileImage() {
@@ -104,12 +120,21 @@ public class CustomerEntity implements Serializable {
     }
 
     @XmlTransient
-    public List<FeedbackEntity> getFeedbackList() {
-        return feedbackList;
+    public List<FeedbackEntity> getFeedbacksGiven() {
+        return feedbacksGiven;
     }
 
-    public void setFeedbackList(List<FeedbackEntity> feedbackList) {
-        this.feedbackList = feedbackList;
+    public void setFeedbackList(List<FeedbackEntity> feedbacksGiven) {
+        this.feedbacksGiven = feedbacksGiven;
+    }
+    
+     @XmlTransient
+    public List<FeedbackEntity> getFeedbacksReceived() {
+        return feedbacksGiven;
+    }
+
+    public void setFeedbacksReceived(List<FeedbackEntity> feedbacksReceived) {
+        this.feedbacksReceived = feedbacksReceived;
     }
 
     public String getFirstName() {

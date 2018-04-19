@@ -43,13 +43,13 @@
 
                             <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
                                 <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
-                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                    <f:convertDateTime timeZone="Singapore" type="both" pattern="dd-MM-YYYY"/>
                                 </h:outputText>
                             </p:column>
 
                             <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
                                 <h:outputText value="#{requestEntity.endDate}" >
-                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                    <f:convertDateTime timeZone="Singapore" type="both" pattern="dd-MM-YYYY"/>
                                 </h:outputText>
                             </p:column>
 
@@ -132,13 +132,13 @@
 
                                         <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
                                             <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
-                                                <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                                <f:convertDateTime timeZone="Singapore" type="both" pattern="dd-MM-YYYY"/>
                                             </h:outputText>
                                         </p:column>
 
                                         <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
                                             <h:outputText value="#{requestEntity.endDate}" >
-                                                <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                                                <f:convertDateTime timeZone="Singapore" type="both" pattern="dd-MM-YYYY"/>
                                             </h:outputText>
                                         </p:column>
                                         <p:column headerText="Number of Days:" sortBy="#{requestEntity.noOfDays}" filterBy="#{requestEntity.noOfDays}" filterMatchMode="contains">

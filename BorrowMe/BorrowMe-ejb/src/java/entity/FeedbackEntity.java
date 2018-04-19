@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -13,10 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-/**
- *
- * @author User
- */
 @Entity
 public class FeedbackEntity implements Serializable {
 
@@ -31,19 +22,26 @@ public class FeedbackEntity implements Serializable {
     
     @ManyToOne
     private RequestEntity requestEntity;
+    
+    @ManyToOne
+    private ListingEntity listing;
 
     @ManyToOne
-    private CustomerEntity customerEntity;
+    private CustomerEntity reviewer;
+    
+    @ManyToOne
+    private CustomerEntity reviewee;
 
     public FeedbackEntity() {
     }
 
-    public FeedbackEntity(Integer rating, String review, RequestEntity requestEntity, CustomerEntity customerEntity) {
-        this();
+    public FeedbackEntity(Integer rating, String review, RequestEntity requestEntity, CustomerEntity reviewer, CustomerEntity reviewee, ListingEntity listing) {
         this.rating = rating;
         this.review = review;
         this.requestEntity = requestEntity;
-        this.customerEntity = customerEntity;
+        this.reviewer = reviewer;
+        this.reviewee = reviewee;
+        this.listing = listing;
     }
 
     @Override
@@ -71,74 +69,60 @@ public class FeedbackEntity implements Serializable {
         return "entity.FeedbackEntity[ id=" + getFeedbackId() + " ]";
     }
 
-    /**
-     * @return the rating
-     */
     public Integer getRating() {
         return rating;
     }
 
-    /**
-     * @param rating the rating to set
-     */
     public void setRating(Integer rating) {
         this.rating = rating;
     }
 
-    /**
-     * @return the review
-     */
     public String getReview() {
         return review;
     }
 
-    /**
-     * @param review the review to set
-     */
     public void setReview(String review) {
         this.review = review;
     }
 
-    /**
-     * @return the requestEntity
-     */
     public RequestEntity getRequestEntity() {
         return requestEntity;
     }
 
-    /**
-     * @param requestEntity the requestEntity to set
-     */
     public void setRequestEntity(RequestEntity requestEntity) {
         this.requestEntity = requestEntity;
     }
 
-    /**
-     * @return the customerEntity
-     */
-    public CustomerEntity getCustomerEntity() {
-        return customerEntity;
-    }
-
-    /**
-     * @param customerEntity the customerEntity to set
-     */
-    public void setCustomerEntity(CustomerEntity customerEntity) {
-        this.customerEntity = customerEntity;
-    }
-
-    /**
-     * @return the feedbackId
-     */
     public Long getFeedbackId() {
         return feedbackId;
     }
 
-    /**
-     * @param feedbackId the feedbackId to set
-     */
     public void setFeedbackId(Long feedbackId) {
         this.feedbackId = feedbackId;
+    }
+
+    public CustomerEntity getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(CustomerEntity reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public CustomerEntity getReviewee() {
+        return reviewee;
+    }
+
+    public void setReviewee(CustomerEntity reviewee) {
+        this.reviewee = reviewee;
+    }
+
+    public ListingEntity getListing() {
+        return listing;
+    }
+
+    public void setListing(ListingEntity listing) {
+        this.listing = listing;
     }
     
 }

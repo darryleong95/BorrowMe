@@ -60,7 +60,7 @@ public class ViewProfileManagedBean implements Serializable {
         }
         //selectedProfileToView = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
         customerListings = selectedProfileToView.getListingList();
-        feedbacksForCustomer = selectedProfileToView.getFeedbackList();
+        feedbacksForCustomer = selectedProfileToView.getFeedbacksReceived();
         System.err.println("feedback list" + feedbacksForCustomer);
         System.err.println("cust" + selectedProfileToView);
     }
