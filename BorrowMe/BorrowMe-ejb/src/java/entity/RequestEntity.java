@@ -40,6 +40,8 @@ public class RequestEntity implements Serializable {
     @Column(nullable = false)
     private Boolean overdue;
     @Column(nullable = false)
+    private Boolean isOpened;
+    @Column(nullable = false)
     private String message;
     @Column(nullable = false)
     private Boolean borrowerLeftFeedback;
@@ -65,11 +67,11 @@ public class RequestEntity implements Serializable {
         overdue = false;
         borrowerLeftFeedback = false;
         lenderLeftFeedback = false;
-
+        isOpened = false;
         feedbackList = new ArrayList<>();
     }
 
-    public RequestEntity(Date startDate, Date endDate, Integer noOfDays, Boolean payment, Boolean acknowledged, Boolean accepted, Boolean overdue, String message, Boolean borrowerLeftFeedback, Boolean lenderLeftFeedback, ListingEntity listingEntity, CustomerEntity customerEntity, PaymentEntity paymentEntity, List<FeedbackEntity> feedbackList) {
+    public RequestEntity(Date startDate, Date endDate, Integer noOfDays, Boolean isOpened ,Boolean payment, Boolean acknowledged, Boolean accepted, Boolean overdue, String message, Boolean borrowerLeftFeedback, Boolean lenderLeftFeedback, ListingEntity listingEntity, CustomerEntity customerEntity, PaymentEntity paymentEntity, List<FeedbackEntity> feedbackList) {
         this();
         this.startDate = startDate;
         this.endDate = endDate;
@@ -79,6 +81,7 @@ public class RequestEntity implements Serializable {
         this.accepted = accepted;
         this.overdue = overdue;
         this.message = message;
+        this.isOpened = isOpened;
         this.borrowerLeftFeedback = borrowerLeftFeedback;
         this.lenderLeftFeedback = lenderLeftFeedback;
         this.listingEntity = listingEntity;
@@ -87,11 +90,19 @@ public class RequestEntity implements Serializable {
         this.feedbackList = feedbackList;
     }
 
+    public Boolean getIsOpened() {
+        return isOpened;
+    }
+
+    public void setIsOpened(Boolean isOpened) {
+        this.isOpened = isOpened;
+    }  
+    
     @XmlTransient
     public List<FeedbackEntity> getFeedbackList() {
         return feedbackList;
     }
-
+   
     public void setFeedbackList(List<FeedbackEntity> feedbackList) {
         this.feedbackList = feedbackList;
     }

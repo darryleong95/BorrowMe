@@ -118,7 +118,7 @@ public class RequestResource {
         }
         return null;
     }
-    
+
     @Path("acceptRequest/{requestId}")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -131,6 +131,21 @@ public class RequestResource {
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (RequestNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp("Unable to accept request");
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+
+    @Path("openedRequest/{requestId}")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response openedRequest(@PathParam("requestId") Long requestId) {
+        try {
+            RequestEntity request = requestSessionBeanLocal.openedRequest(requestId);
+            System.out.println("**********Successfully executed openedRequest function**********");
+            CreateRequestRsp result = new CreateRequestRsp(request);
+            return Response.status(Response.Status.OK).entity(result).build();
+        } catch (RequestNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("Error while opening request");
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }

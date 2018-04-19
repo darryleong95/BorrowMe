@@ -31,4 +31,6 @@ public interface RequestSessionBeanLocal {
 
     public RequestEntity acceptRequest(Long requestId) throws RequestNotFoundException;
 
+    public RequestEntity openedRequest(Long requestId) throws RequestNotFoundException;
+
 }
