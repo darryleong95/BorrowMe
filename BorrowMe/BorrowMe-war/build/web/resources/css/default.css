@@ -166,3 +166,11 @@ a:hover {
     margin-left:-250px; 
     margin-top:-250px; 
 }
+
+.centeredMenuBar.ui-menubar {
+    text-align: center;
+}
+
+.centeredMenuBar .ui-menu-list {
+    display: inline-block;
+}
