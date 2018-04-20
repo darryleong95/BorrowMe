@@ -58,6 +58,10 @@ public class ViewProfileManagedBean implements Serializable {
         } catch (CustomerNotFoundException ex) {
             System.out.println("customer not found in new session bean");
         }
+        
+        
+        System.out.println(selectedProfileToView.getFeedbacksGiven().size() + "; " + selectedProfileToView.getFeedbacksReceived().size());
+        
         //selectedProfileToView = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
         customerListings = selectedProfileToView.getListingList();
         feedbacksForCustomer = selectedProfileToView.getFeedbacksReceived();

@@ -6,7 +6,7 @@
 
     <ui:define name="content">
 
-        <p:tabView dynamic="true" cache="true" effect="fold">
+        <p:tabView dynamic="true" cache="true" effect="fold" style="width:85%; margin: 0 auto">
             <p:tab title="Requests Made for Other's Items">
                 <h:panelGrid columns="2" cellpadding="10">
 
@@ -14,17 +14,18 @@
 
                         <p:messages id="messages" redisplay="false" closable="true" />
 
-                        <p:panel rendered="#{empty viewRequestsManagedBean.requestsMade}" header="No requests yet!" style="margin-left:auto; margin-right:auto; vertical-align:middle; width:auto">
+                        <p:panel rendered="#{empty viewRequestsManagedBean.requestsMade}" header="No requests yet!" style="vertical-align:middle; width:auto; margin:0 auto ">
 
-                            <h:panelGrid columns="2" style="margin-bottom:10px; margin:0px auto" cellspacing="7px">
+                            <h:panelGrid columns="2" cellspacing="7px">
                                 <p:outputLabel value="You have made no requests yet!"/>
                             </h:panelGrid>
 
                         </p:panel>
-
+                        <center>
                         <p:dataTable rendered="#{not empty viewRequestsManagedBean.requestsMade}" id="dataTableAllRequestsMade" widgetVar="dataTableAllRequestsMade" value="#{viewRequestsManagedBean.requestsMade}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
                                      filteredValue="#{viewRequestsManagedBean.filteredRequestsMade}"
-                                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50"
+                                     style="margin:0 auto; text-align: center">
 
                             <f:facet name="header">
                                 <p:outputPanel style="text-align: right;">
@@ -65,8 +66,9 @@
                                 <h:outputText value="Accepted!"/><br/>
                                 <br/>                     
                                 <h:outputText value="Payment Already Made!" rendered="#{requestEntity.payment}"/><br/>
-                                <p:commandButton value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form">
+                                <p:commandButton value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form" >
                                     <f:attribute name="requestEntity" value="#{requestEntity}"/>
+
                                 </p:commandButton><br/>
                                 <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and !requestEntity.borrowerLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                     <f:attribute name="requestEntity" value="#{requestEntity}" />
@@ -85,6 +87,7 @@
 
 
                         </p:dataTable>
+                        </center>
                     </h:form>
                 </h:panelGrid>
 
@@ -115,7 +118,7 @@
                                 <h:form id="formViewPendingRequests">
 
                                     <p:dataTable id="dataTableAllPendingRequests" rendered="#{not empty listing.requestList}" widgetVar="dataTableAllPendingRequests" value="#{listing.requestList}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
-                                                 rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                                                 rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50" style="text-align: center">
 
                                         <p:column headerText="Request ID" sortBy="#{requestEntity.requestEntityId}" filterBy="#{requestEntity.requestEntityId}" filterMatchMode="contains">
                                             <h:outputText value="#{requestEntity.requestEntityId}" />
@@ -124,11 +127,11 @@
                                         <p:column headerText="Listing ID:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
                                             <h:outputText value="#{requestEntity.listingEntity.listingTitle}" style="text-align: center;"/>
                                         </p:column>
-                                        
+
                                         <p:column headerText="Requester Username:" sortBy="#{requestEntity.customerEntity.username}" filterBy="#{requestEntity.customerEntity.username}" filterMatchMode="contains">
                                             <h:outputText value="#{requestEntity.customerEntity.username}" style="text-align: center;"/>
                                         </p:column>
-                                        
+
 
                                         <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
                                             <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
@@ -159,7 +162,7 @@
                                         <p:column rendered="#{requestEntity.acknowledged}">
                                             <p:outputLabel value="Approved!" rendered="#{requestEntity.accepted}"/>
                                             <p:outputLabel value="Rejected" rendered="#{!requestEntity.accepted}"/>
-                                            <br/>
+                                            <br/><br/>
                                             <p:outputLabel value="Awaiting Payment!" rendered="#{!requestEntity.payment and requestEntity.accepted}"/>
                                             <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />

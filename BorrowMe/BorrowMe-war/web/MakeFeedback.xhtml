@@ -11,44 +11,50 @@
         <h:form id="formMakeFeedback">
 
             <p:messages id="messages" redisplay="false" closable="true" />
+            <p:panel header="Leave Feedback" style="width:40%; margin: 0 auto">
 
-            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                <p:outputLabel value="Listing Title: "/>
-                <p:outputLabel value="#{makeFeedbackManagedBean.listing.listingTitle}"/>
+                <p:panelGrid columns="2" style="margin-bottom:10px; border-style:hidden">
+                    <p:outputLabel value="Listing Title: "/>
+                    <p:outputLabel value="#{makeFeedbackManagedBean.listing.listingTitle}"/>
 
-                <p:outputLabel value="Requester: " />
-                <p:outputLabel value="#{makeFeedbackManagedBean.request.customerEntity.username}"/>
+                    <p:outputLabel value="Requester: " />
+                    <p:outputLabel value="#{makeFeedbackManagedBean.request.customerEntity.username}"/>
+                    
+                    <p:outputLabel value="Renter: "/>
+                    <p:outputLabel value="#{makeFeedbackManagedBean.request.listingEntity.customerEntity.username}" />
 
-                <p:outputLabel value="Start Date: "/>
-                <p:outputLabel value="#{makeFeedbackManagedBean.request.startDate}">
-                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
-                </p:outputLabel>
+                    <p:outputLabel value="Start Date: "/>
+                    <p:outputLabel value="#{makeFeedbackManagedBean.request.startDate}">
+                        <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                    </p:outputLabel>
 
-                <p:outputLabel value="End Date: "/>
-                <p:outputLabel value="#{makeFeedbackManagedBean.request.endDate}">
-                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
-                </p:outputLabel>
+                    <p:outputLabel value="End Date: "/>
+                    <p:outputLabel value="#{makeFeedbackManagedBean.request.endDate}">
+                        <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                    </p:outputLabel>
 
-                <p:outputLabel value="Number of Days Rented: "/>
-                <p:outputLabel value="#{makeFeedbackManagedBean.request.noOfDays}"/>
-
-
-                <p:outputLabel value="Earnings: "/>
-                <p:outputLabel value="#{makeFeedbackManagedBean.request.noOfDays * approveRequestManagedBean.request.listingEntity.costPerDay}"/>
-
-
-                <p:outputLabel value="Rating: "/>
-                <p:rating value="#{makeFeedbackManagedBean.feedback.rating}" />
+                    <p:outputLabel value="Number of Days Rented: "/>
+                    <p:outputLabel value="#{makeFeedbackManagedBean.request.noOfDays}"/>
 
 
-                <p:outputLabel value="Feedback: "/>
-                <p:inputTextarea rows="6" cols="33" value="#{makeFeedbackManagedBean.feedback.review}"/>
-                <p:commandButton value="Submit" update="@form" actionListener="#{makeFeedbackManagedBean.makeFeedback}"  oncomplete="PF('dialogMakeFeedback').show()">
-                </p:commandButton>
-                                 
-            </h:panelGrid>
+                    <p:outputLabel value="Earnings: "/>
+                    <p:outputLabel value="#{makeFeedbackManagedBean.request.noOfDays * approveRequestManagedBean.request.listingEntity.costPerDay}"/>
+
+
+                    <p:outputLabel value="Rating: "/>
+                    <p:rating value="#{makeFeedbackManagedBean.feedback.rating}" required="true"/>
+
+
+                    <p:outputLabel value="Feedback: "/>
+                    <p:inputTextarea rows="6" cols="33" value="#{makeFeedbackManagedBean.feedback.review}" required="true"/>
+                    <p:outputLabel/>
+                    <p:commandButton value="Submit" update="@form" actionListener="#{makeFeedbackManagedBean.makeFeedback}"  oncomplete="PF('dialogMakeFeedback').show()">
+                    </p:commandButton>
+
+                </p:panelGrid>
+            </p:panel>
         </h:form>
-        
+
     </ui:define>
 
 </ui:composition>

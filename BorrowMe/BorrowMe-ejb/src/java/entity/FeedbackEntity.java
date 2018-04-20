@@ -25,13 +25,13 @@ public class FeedbackEntity implements Serializable {
     
     @ManyToOne
     private ListingEntity listing;
-
+    
     @ManyToOne
     private CustomerEntity reviewer;
     
     @ManyToOne
     private CustomerEntity reviewee;
-
+    
     public FeedbackEntity() {
     }
 

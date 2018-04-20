@@ -39,8 +39,8 @@
 }
 
 div.ui-growl {
-   right: 10;
-   position:right;
+    right: 10;
+    position:right;
 }
 
 
@@ -48,7 +48,7 @@ div.ui-growl {
 * {
     margin: 0;
     padding: 0;
-    font-family: "verdana", "arial", "sans-serif";
+    font-family: "Trebuchet MS";
 }
 
 body {
@@ -166,3 +166,17 @@ a:hover {
     margin-left:-250px; 
     margin-top:-250px; 
 }
+
+.centeredMenuBar.ui-menubar {
+    text-align: center;
+}
+
+.centeredMenuBar .ui-menu-list {
+    display: inline-block;
+}
+
+.ui-menu-list {
+    align-content: center;
+    font-family: "Arial";
+}
+

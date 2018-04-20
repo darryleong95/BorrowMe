@@ -18,33 +18,24 @@
             <p:layoutUnit position="north" style="border:0">
 
                 <center> <p:graphicImage value="./images/logo.png" style="height:125px; width:auto; margin-left:auto; margin-right:auto; "/>
-                </center>
-            </p:layoutUnit>
-
-            <p:layoutUnit size="225" position="west" style="overflow:hidden !important; border:0">
-
-                <h3>Main Menu</h3>
                 <br/>
 
-                <h:form>
+                    <h:form>  
+                        <p:growl id="messages"/>
 
-                    <p:menu style="width:90%" >
-
-                        <p:submenu label="System">
-                            <p:menuitem value="Home" outcome="index" icon="ui-icon-home" />
+                        <p:menubar style="width: 50%; margin-left:0px; margin-right:0px; text-align: center;">
+                            <p:menuitem value="Home" outcome="index.xhtml" icon="ui-icon-home" />
                             <p:menuitem value="Login and Register" outcome="Login.xhtml" icon="ui-icon-home" rendered="#{!sessionScope['isLogin']}" />
-                            <p:menuitem value="Logout" actionListener="#{loginManagedBean.logout}" icon="ui-icon-unlocked" rendered="#{sessionScope['isLogin']}" />
-                        </p:submenu>
-
-                        <p:submenu label="BorrowMe Portal">
-                                  <p:menuitem actionListener="#{indexManagedBean.redirectOwnProfile}" value="Profile" icon="ui-icon-person" rendered="#{sessionScope['isLogin']}"/>
-                     
+                            <p:menuitem actionListener="#{indexManagedBean.redirectOwnProfile}" value="Profile" icon="ui-icon-person" rendered="#{sessionScope['isLogin']}"/>
                             <p:menuitem value="View All Listings" outcome="ViewAllListings.xhtml" icon="ui-icon-cart" />
                             <p:menuitem value="Requests Management" outcome="ViewRequests.xhtml" icon="ui-icon-arrowreturnthick-1-w " rendered="#{sessionScope['isLogin']}" />
-                         </p:submenu>
-                    </p:menu>
+                            <p:menuitem value="Logout" actionListener="#{loginManagedBean.logout}" icon="ui-icon-unlocked" rendered="#{sessionScope['isLogin']}" />
 
-                </h:form>
+                        </p:menubar>
+
+                    </h:form>
+                </center>
+
 
             </p:layoutUnit>
 

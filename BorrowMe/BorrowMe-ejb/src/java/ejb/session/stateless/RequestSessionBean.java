@@ -70,18 +70,18 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
 
             for (RequestEntity r : requests) {
                 System.out.println("IM INSIDE THE LIST OF REQUESTS TO CHECK AGAINST");
-                // if (r.isAccepted()) {
-                Date otherStartDate = r.getStartDate();
-                Date otherEndDate = r.getEndDate();
-                System.out.println(otherStartDate);
-                if (newStartDate.compareTo(otherStartDate) < 0) {
-                    System.out.println("outerloop");
-                    if (newEndDate.compareTo(otherStartDate) >= 0) {
-                        System.out.println("inner loop, crashed, gonna die");
-                        throw new CreateRequestException("Item unavailable for selected period!");
+                if (r.isAccepted()) {
+                    Date otherStartDate = r.getStartDate();
+                    Date otherEndDate = r.getEndDate();
+                    System.out.println(otherStartDate);
+                    if (newStartDate.compareTo(otherStartDate) < 0) {
+                        System.out.println("outerloop");
+                        if (newEndDate.compareTo(otherStartDate) >= 0) {
+                            System.out.println("inner loop, crashed, gonna die");
+                            throw new CreateRequestException("Item unavailable for selected period!");
+                        }
                     }
                 }
-                //}
             }
 
             c.getRequestList().add(newRequest);
@@ -150,6 +150,31 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
                 request.setAccepted(true);
                 request.setPaymentEntity(paymentSessionBeanLocal.retrievePayment(id));
                 em.merge(request);
+                
+                //TESTING: after accepting one, rejecting other requests that clash with it now
+                ListingEntity l = request.getListingEntity();
+                l = listingSessionBeanLocal.retrieveListingById(l.getListingId());
+                Date otherStartDate = request.getStartDate();
+                Date otherEndDate = request.getEndDate();
+                for (RequestEntity r : l.getRequestList()) {
+                    if (!r.getRequestEntityId().equals(request.getRequestEntityId())) {
+                    System.out.println("removing any other conflicting requests");
+                        Date newStartDate = r.getStartDate();
+                        Date newEndDate = r.getEndDate();
+                        if (newStartDate.compareTo(otherStartDate) <= 0) {
+                            System.out.println("outerloop" + newStartDate);
+                            if (newEndDate.compareTo(otherStartDate) >= 0) {
+                                System.out.println("inner loop, crashed, gonna die");
+                                System.out.println("clashed end date " + otherEndDate);
+                                r = retrieveRequestByID(r.getRequestEntityId());
+                                r.setAcknowledged(Boolean.TRUE);
+                                r.setAccepted(Boolean.FALSE);
+                                em.merge(r);                              
+                            }
+                        }
+                    }
+                }
+
             } else {
                 em.merge(request);
             }
@@ -159,6 +184,8 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
             System.out.println("invalid listing exception!!!!!!");
         } catch (PaymentNotFoundException ex) {
             System.out.println("payment not found!!!!!!");
+        } catch (RequestNotFoundException ex) {
+            System.out.println(ex.getMessage() + " REQUEST CLASHED NOT FOUND");
         }
         return request;
     }
@@ -186,7 +213,6 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
         }
         return null;
     }
-    
 
     @Override
     public List<RequestEntity> retrieveRequestListByCustomerID(Long customerID) {

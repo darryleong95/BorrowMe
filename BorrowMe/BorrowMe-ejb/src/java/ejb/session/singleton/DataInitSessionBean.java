@@ -43,7 +43,7 @@ public class DataInitSessionBean {
     public void postConstruct() {
         try {
             System.out.println("**********INITIALISING DATA**********");
-            CustomerEntity cust = customerSessionBean.retrieveCustomerByUsername("testerAccount");
+            CustomerEntity cust = customerSessionBean.retrieveCustomerByUsername("username");
             //long eg = 1;
             //List<String> images = new ArrayList<String>();
             //images.add("/Users/fabian/GlassFish_Server/glassfish/domains/domain1/docroot/defaultimage.jpg");
@@ -54,10 +54,16 @@ public class DataInitSessionBean {
             //}
         } catch (CustomerNotFoundException ex) {
             try {
-               
                 
                 CustomerEntity customer = new CustomerEntity("Darryl", "Leong", "username", "password", "S9505342D","darryleong95@gmail.com", "91919177");
                 customerSessionBean.createCustomer(customer);
+                /*
+                CustomerEntity customer2 = new CustomerEntity("a", "b", "josh", "password", "c","d", "e");
+                customerSessionBean.createCustomer(customer2);
+                List<String>images = new  ArrayList<String>();
+                ListingEntity listing = new ListingEntity("Genesis","Ragnarok", true, 14.0,)
+*/
+                
             } catch (CustomerExistException e) {
                 e.printStackTrace();
             }

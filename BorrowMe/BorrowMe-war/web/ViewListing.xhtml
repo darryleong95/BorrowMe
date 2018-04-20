@@ -16,16 +16,16 @@
 
                 <h:form id="formViewListing">
 
-                    <p:panelGrid style="margin: 0 auto; width: auto; border:0" id="panelGridViewListing">
+                    <p:panelGrid style="margin: 0 auto; width: auto; border:0 !important;" id="panelGridViewListing">
 
                         <p:row>
-                            <p:column style="column-width:auto" >
+                            <p:column style="column-width:auto; height:500px" >
                                 <p:galleria value="#{viewListingManagedBean.listingToView.images}" var="image" panelWidth="313" panelHeight="313" showCaption="false">
                                     <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:90%; width:90%"/>
                                 </p:galleria>
                             </p:column>
 
-                            <p:column style="column-width: 200px; vertical-align: top;">
+                            <p:column style="column-width: 400px; vertical-align: top;">
                                 <p:panelGrid style="height:100%; width:100%">
                                     <p:row>
                                         <p:column colspan="2">
@@ -72,7 +72,11 @@
                                         </p:column>
                                     </p:row>
                                     <p:row>
-                                        <p:column colspan="2">
+                                        <p:column>
+                                            <p:outputLabel value="Actions:"/>
+
+                                        </p:column>
+                                        <p:column>
                                             <h:form rendered="#{sessionScope['currentCustomerEntity'].username != viewListingManagedBean.listingToView.customerEntity.username}">
                                                 <p:commandButton value="Book Rental" onclick="PF('dialogRequest').show()" icon="ui-icon-key" />
                                             </h:form>
@@ -85,15 +89,24 @@
                                         </p:column>
 
                                     </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            
+                                            
+
+                                            
+
+                                        </p:column>
+
+                                    </p:row>
                                 </p:panelGrid>
                             </p:column>
+                        </p:row>
+                        <p:row>
 
                         </p:row>
 
-                        <!--                    <p:row>
-                                                <p:column  width="50%"><h:outputText value="Title:" style="font-weight:bold"/></p:column>
-                                                <p:column width="50%"> <h:outputText value="#{viewListingManagedBean.listingToView.listingTitle}" /></p:column>
-                                            </p:row>-->
+
 
                     </p:panelGrid>
 
@@ -101,11 +114,23 @@
 
                 <h:form id="formRequest">
 
-                    <p:dialog id="dialogRequest" widgetVar="dialogRequest" header="Make Rental Request" closable="true">
+                    <p:dialog id="dialogRequest" widgetVar="dialogRequest" header="Make Rental Request" closable="true" style="border:0 !important">
 
                         <p:messages id="messagesRequest" redisplay="false" />
 
-                        <p:panelGrid rendered="#{sessionScope['isLogin']}">
+                        <p:panelGrid rendered="#{sessionScope['isLogin']}" style="border:0pxÏ !important" >
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Cost/Per Day:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{viewListingManagedBean.listingToView.costPerDay}"/>
+                                </p:column>
+                                <p:column>
+
+                                </p:column>
+                            </p:row>
 
                             <p:row>
                                 <p:column>
@@ -114,6 +139,7 @@
                                 <p:column>
                                     <p:calendar id="startdate" value="#{viewListingManagedBean.newStartDate}" >
                                         <p:ajax event="dateSelect" update="noOfDays" listener="#{viewListingManagedBean.dateDiff}" />
+                                        <p:ajax event="dateSelect" update="totalCost" listener="#{viewListingManagedBean.dateDiff}" />
                                     </p:calendar>
                                 </p:column>
                                 <p:column>
@@ -128,6 +154,7 @@
                                 <p:column>
                                     <p:calendar id="enddate" value="#{viewListingManagedBean.newEndDate}" >
                                         <p:ajax event="dateSelect" update="noOfDays" listener="#{viewListingManagedBean.dateDiff}" />
+                                        <p:ajax event="dateSelect" update="totalCost" listener="#{viewListingManagedBean.dateDiff}" />
                                     </p:calendar>
                                 </p:column>
                                 <p:column>
@@ -137,15 +164,27 @@
 
                             <p:row>
                                 <p:column>
-                                    <p:outputLabel for="noOfDays" value="Day(s) Rental: " />
+                                    <p:outputLabel for="noOfDays" value="Day(s) Rented: " />
                                 </p:column>
                                 <p:column>
                                     <p:outputLabel id="noOfDays" value="#{viewListingManagedBean.dateDiffValue}" />
                                 </p:column>
                                 <p:column>
+                                    <p:outputLabel value="End day must be the same day or after end date!" rendered="#{viewListingManagedBean.dateDiffValue lt 0}" />
                                     <p:message for="noOfDays" />
                                 </p:column>
                             </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="totalCost" value="Total Cost: " />
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel id="totalCost" value="#{viewListingManagedBean.dateDiffValue * viewListingManagedBean.listingToView.costPerDay}" />
+                                </p:column>
+                                <p:column>
+                                </p:column>
+                            </p:row>
+
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="message" value="Message:" />
@@ -157,6 +196,7 @@
                                     <p:message for="message" />
                                 </p:column>
                             </p:row>
+
                             <p:row>
                                 <p:column colspan="3">
                                     <p:commandButton type="reset" value="Clear" />&nbsp;
@@ -176,60 +216,6 @@
                     </p:dialog>
 
                 </h:form>
-
-                <h:form id="formViewRequests">
-
-                    <p:dialog id="dialogViewRequests" widgetVar="dialogViewRequests" header="View Requests" closable="true">
-
-                        <p:messages id="messages" redisplay="false" closable="true" />
-
-                        <p:dataTable id="dataTableAllRequests" widgetVar="dataTableAllRequests" value="#{viewListingManagedBean.requests}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
-                                     filteredValue="#{viewListingManagedBean.filteredRequests}"
-                                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
-
-                            <f:facet name="header">
-                                <p:outputPanel style="text-align: right;">
-                                    <h:outputText value="Search all fields:" />
-                                    <p:inputText id="globalFilter" onkeyup="PF('dataTableAllRequests').filter()" style="width:300px" placeholder="Enter keyword"/>
-                                </p:outputPanel>
-                            </f:facet>
-
-                            <p:column headerText="Request ID" sortBy="#{requestEntity.requestEntityId}" filterBy="#{requestEntity.requestEntityId}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.requestEntityId}" />
-                            </p:column>
-
-                            <p:column headerText="Requester:" sortBy="#{requestEntity.customerEntity.username}" filterBy="#{requestEntity.customerEntity.username}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.customerEntity.username}" />
-                            </p:column>
-
-                            <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
-                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
-                                </h:outputText>
-                            </p:column>
-
-                            <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.endDate}" >
-                                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
-                                </h:outputText>
-                            </p:column>
-
-                            <p:column headerText="Message:" sortBy="#{requestEntity.message}" filterBy="#{requestEntity.message}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.message}" />
-                            </p:column>
-
-                            <p:column headerText="Action" >
-                                <p:selectBooleanButton id="approval"  value="#{viewListingManagedBean.accepted}" onLabel="Accepted" offLabel="Rejected" onIcon="ui-icon-check" offIcon="ui-icon-close">
-                                </p:selectBooleanButton>
-                            </p:column>
-
-                        </p:dataTable>
-
-
-                    </p:dialog>
-
-                </h:form>
-
 
                 <h:form id="formUpdateListing">
 
