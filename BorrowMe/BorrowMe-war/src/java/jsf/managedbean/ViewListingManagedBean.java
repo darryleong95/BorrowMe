@@ -42,7 +42,7 @@ public class ViewListingManagedBean implements Serializable {
     private RequestEntity newRequestEntity;
     private Date newStartDate;
     private Date newEndDate;
-    private String dateDiffValue;
+    private int dateDiffValue;
     private List<RequestEntity> requests;
     private List<RequestEntity> filteredRequests;
     private boolean accepted;
@@ -53,7 +53,7 @@ public class ViewListingManagedBean implements Serializable {
     public ViewListingManagedBean() {
         listingToView = new ListingEntity();
         newRequestEntity = new RequestEntity();
-        dateDiffValue = "(num of days rented must be >= 1!)";
+        dateDiffValue = 0;
         requests = new ArrayList<RequestEntity>();
         filteredRequests = new ArrayList<RequestEntity>();
         selectedListingToUpdate = new ListingEntity();
@@ -105,7 +105,7 @@ public class ViewListingManagedBean implements Serializable {
                 long diff = d2.getTime() - d1.getTime();
                 long diffDays = diff / (24 * 60 * 60 * 1000) + 1;
 
-                setDateDiffValue(String.valueOf(diffDays));
+                setDateDiffValue((int) diffDays);
 
             } catch (Exception ex) {
                 System.out.println("ERROR AT DATE DIFF: " + ex.getMessage());
@@ -240,11 +240,11 @@ public class ViewListingManagedBean implements Serializable {
         this.newEndDate = newEndDate;
     }
 
-    public String getDateDiffValue() {
+    public int getDateDiffValue() {
         return dateDiffValue;
     }
 
-    public void setDateDiffValue(String dateDiffValue) {
+    public void setDateDiffValue(int dateDiffValue) {
         this.dateDiffValue = dateDiffValue;
     }
 

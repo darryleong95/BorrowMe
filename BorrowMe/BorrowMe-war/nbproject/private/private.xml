@@ -3,19 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/datamodel/Customer/DoLoginRsp.java</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewRequests.xhtml</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewAllListings.xhtml</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/Error.xhtml</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewRequestsManagedBean.java</file>
             <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewProfileManagedBean.java</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/CustomerResource.java</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/Login.xhtml</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ApproveRequest.xhtml</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewProfile.xhtml</file>
             <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/MakeFeedbackManagedBean.java</file>
             <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewListing.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewListingManagedBean.java</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/Error.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/resources/css/default.css</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewProfile.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/FeedbackResource.java</file>
             <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/MakeFeedback.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/ws/restful/datamodel/Customer/CreateCustomerRsp.java</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/template/defaultTemplate.xhtml</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewListingManagedBean.java</file>
         </group>
     </open-files>
 </project-private>

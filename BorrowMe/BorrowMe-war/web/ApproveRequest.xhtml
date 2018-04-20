@@ -8,48 +8,54 @@
 
     <ui:define name="content">
 
+
         <h:form>
+            <center>
+                <p:panel header="Approve Request" style="width:40%; margin-left: 0px; margin-right:0px">
 
-            
+                    <p:panelGrid columns="2" style="margin: 0; border-style: none">
 
-            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                <p:outputLabel value="Listing Title: "/>
-                <p:outputLabel value="#{approveRequestManagedBean.request.listingEntity.listingTitle}"/>
+                        <p:outputLabel value="Listing Title: "/>
+                        <p:outputLabel value="#{approveRequestManagedBean.request.listingEntity.listingTitle}"/>
 
-                <p:outputLabel value="Requester: " />
-                <p:outputLabel value="#{approveRequestManagedBean.request.customerEntity.username}"/>
+                        <p:outputLabel value="Requester: " />
+                        <p:outputLabel value="#{approveRequestManagedBean.request.customerEntity.username}"/>
 
-                <p:outputLabel value="Start Date: "/>
-                <p:outputLabel value="#{approveRequestManagedBean.request.startDate}">
-                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
-                </p:outputLabel>
+                        <p:outputLabel value="Start Date: "/>
+                        <p:outputLabel value="#{approveRequestManagedBean.request.startDate}">
+                            <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                        </p:outputLabel>
 
-                <p:outputLabel value="End Date: "/>
-                <p:outputLabel value="#{approveRequestManagedBean.request.endDate}">
-                    <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
-                </p:outputLabel>
+                        <p:outputLabel value="End Date: "/>
+                        <p:outputLabel value="#{approveRequestManagedBean.request.endDate}">
+                            <f:convertDateTime type="both" pattern="dd-MM-YYYY"/>
+                        </p:outputLabel>
 
-                <p:outputLabel value="Number of Days Rented: "/>
-                <p:outputLabel value="#{approveRequestManagedBean.request.noOfDays}"/>
+                        <p:outputLabel value="Number of Days Rented: "/>
+                        <p:outputLabel value="#{approveRequestManagedBean.request.noOfDays}"/>
 
-                <p:outputLabel value="Earnings: "/>
-                <p:outputLabel value="#{approveRequestManagedBean.request.noOfDays * approveRequestManagedBean.request.listingEntity.costPerDay}"/>
+                        <p:outputLabel value="Earnings: "/>
+                        <p:outputLabel value="#{approveRequestManagedBean.request.noOfDays * approveRequestManagedBean.request.listingEntity.costPerDay}"/>
 
-                <p:outputLabel for="status" value="Approve/Reject:" />
-                <p:selectOneMenu id="status" value="#{approveRequestManagedBean.accepted}" required="true" style="width:125px">
-                    <f:selectItem itemLabel="Select One" itemValue=""  />
-                    <f:selectItem itemLabel="Accept" itemValue="true" />
-                    <f:selectItem itemLabel="Reject" itemValue="false" />
-                </p:selectOneMenu>
-                <p:commandButton value="Submit" update="@form" actionListener="#{approveRequestManagedBean.updateRequestStatus}" oncomplete="PF('dialogApproveRequest').show()"/>
-            </h:panelGrid>
+                        <p:outputLabel for="status" value="Approve/Reject:" />
+                        <p:selectOneMenu id="status" value="#{approveRequestManagedBean.accepted}" required="true" style="width:125px">
+                            <f:selectItem itemLabel="Select One" itemValue=""  />
+                            <f:selectItem itemLabel="Accept" itemValue="true" />
+                            <f:selectItem itemLabel="Reject" itemValue="false" />
+                        </p:selectOneMenu>
+                        <p:outputLabel />
+                        <p:commandButton value="Submit" update="@form" actionListener="#{approveRequestManagedBean.updateRequestStatus}" oncomplete="PF('dialogApproveRequest').show()"/>
+
+                    </p:panelGrid>
+                </p:panel>
+            </center>
         </h:form>
-        
         <p:dialog id="dialogApproveRequest" widgetVar="dialogApproveRequest" header="Request updated" closable="true" >
-            
+
             <p:messages id="messages" redisplay="false" closable="true" autoUpdate="true"/>
+            <br/>
             <p:commandButton value="Redirect to Request page" actionListener="#{approveRequestManagedBean.redirectAfterAccRej}" />
-            
+
         </p:dialog>
 
     </ui:define>
