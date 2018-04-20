@@ -130,7 +130,7 @@ public class CustomerEntity implements Serializable {
     
      @XmlTransient
     public List<FeedbackEntity> getFeedbacksReceived() {
-        return feedbacksGiven;
+        return feedbacksReceived;
     }
 
     public void setFeedbacksReceived(List<FeedbackEntity> feedbacksReceived) {

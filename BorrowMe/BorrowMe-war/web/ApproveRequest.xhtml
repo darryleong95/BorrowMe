@@ -13,7 +13,7 @@
             <center>
                 <p:panel header="Approve Request" style="width:40%; margin-left: 0px; margin-right:0px">
 
-                    <p:panelGrid columns="2" style="margin: 0; border-style: none">
+                    <p:panelGrid columns="2" style="margin: 0 auto !important; border: 0">
 
                         <p:outputLabel value="Listing Title: "/>
                         <p:outputLabel value="#{approveRequestManagedBean.request.listingEntity.listingTitle}"/>
@@ -43,6 +43,10 @@
                             <f:selectItem itemLabel="Accept" itemValue="true" />
                             <f:selectItem itemLabel="Reject" itemValue="false" />
                         </p:selectOneMenu>
+                         <p:outputLabel/>
+                        <p:outputLabel value="Note that accepting this request automatically rejects any other requests that clashes with this!"/>
+                      
+                        
                         <p:outputLabel />
                         <p:commandButton value="Submit" update="@form" actionListener="#{approveRequestManagedBean.updateRequestStatus}" oncomplete="PF('dialogApproveRequest').show()"/>
 

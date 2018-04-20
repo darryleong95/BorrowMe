@@ -19,13 +19,13 @@
                     <p:panelGrid style="margin: 0 auto; width: auto; border:0 !important;" id="panelGridViewListing">
 
                         <p:row>
-                            <p:column style="column-width:auto" >
+                            <p:column style="column-width:auto; height:500px" >
                                 <p:galleria value="#{viewListingManagedBean.listingToView.images}" var="image" panelWidth="313" panelHeight="313" showCaption="false">
                                     <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:90%; width:90%"/>
                                 </p:galleria>
                             </p:column>
 
-                            <p:column style="column-width: 200px; vertical-align: top;">
+                            <p:column style="column-width: 400px; vertical-align: top;">
                                 <p:panelGrid style="height:100%; width:100%">
                                     <p:row>
                                         <p:column colspan="2">
@@ -72,7 +72,11 @@
                                         </p:column>
                                     </p:row>
                                     <p:row>
-                                        <p:column colspan="2">
+                                        <p:column>
+                                            <p:outputLabel value="Actions:"/>
+
+                                        </p:column>
+                                        <p:column>
                                             <h:form rendered="#{sessionScope['currentCustomerEntity'].username != viewListingManagedBean.listingToView.customerEntity.username}">
                                                 <p:commandButton value="Book Rental" onclick="PF('dialogRequest').show()" icon="ui-icon-key" />
                                             </h:form>
@@ -85,15 +89,24 @@
                                         </p:column>
 
                                     </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            
+                                            
+
+                                            
+
+                                        </p:column>
+
+                                    </p:row>
                                 </p:panelGrid>
                             </p:column>
+                        </p:row>
+                        <p:row>
 
                         </p:row>
 
-                        <!--                    <p:row>
-                                                <p:column  width="50%"><h:outputText value="Title:" style="font-weight:bold"/></p:column>
-                                                <p:column width="50%"> <h:outputText value="#{viewListingManagedBean.listingToView.listingTitle}" /></p:column>
-                                            </p:row>-->
+
 
                     </p:panelGrid>
 
@@ -155,7 +168,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:outputLabel id="noOfDays" value="#{viewListingManagedBean.dateDiffValue}" />
-                                       </p:column>
+                                </p:column>
                                 <p:column>
                                     <p:outputLabel value="End day must be the same day or after end date!" rendered="#{viewListingManagedBean.dateDiffValue lt 0}" />
                                     <p:message for="noOfDays" />

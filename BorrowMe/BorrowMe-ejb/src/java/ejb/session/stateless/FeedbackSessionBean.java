@@ -44,19 +44,27 @@ public class FeedbackSessionBean implements FeedbackSessionBeanLocal {
             reviewee = customerSessionBeanLocal.retrieveCustomerByCustomerId(reviewee.getCustomerId());
             listing = listingSessionBeanLocal.retrieveListingById(listing.getListingId());
 
+            feedback.setReviewee(reviewee);
+            feedback.setReviewer(reviewer);
+            feedback.setListing(listing);
+            feedback.setRequestEntity(request);
             if (!reviewer.getCustomerId().equals(request.getCustomerEntity().getCustomerId())) { //lender left fdbk
                 request.setLenderLeftFeedback(Boolean.TRUE);
             } else { //borrower left feedback
                 request.setBorrowerLeftFeedback(Boolean.TRUE);
                 listing.getFeedbacksOnListing().add(feedback);
+                //request only has a list of feedback from borrowers who rented it!
+                //feedback from renter about renters not needed to show
+                            request.getFeedbackList().add(feedback);
+            
             }
 
             reviewer.getFeedbacksGiven().add(feedback);
             System.out.println("reviewer id " + reviewer.getCustomerId() + "getFeedbacksGivenUpdated");
             reviewee.getFeedbacksReceived().add(feedback);
             System.out.println("reviewee id" + reviewee.getCustomerId() + "getFeedbacksReceived updated");
+            listing.getFeedbacksOnListing().add(feedback);
 
-            em.merge(feedback);
             em.flush();
             em.refresh(feedback);
 
