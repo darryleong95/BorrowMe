@@ -32,6 +32,8 @@ import ws.restful.datamodel.Feedback.CreateFeedbackReq;
 import ws.restful.datamodel.Feedback.CreateFeedbackRsp;
 import ws.restful.datamodel.Feedback.ErrorRsp;
 import ws.restful.datamodel.Feedback.RetrieveByListingIdRsp;
+import ws.restful.datamodel.Feedback.RetrieveByRevieweeIdRsp;
+import ws.restful.datamodel.Feedback.RetrieveByReviewerIdRsp;
 import ws.restful.datamodel.Feedback.RetrieveFeedbackRsp;
 import ws.restful.datamodel.Feedback.UpdateFeedbackReq;
 
@@ -93,7 +95,39 @@ public class FeedbackResource {
         }
     }
     
+    @Path("retrieveReviewer/{customerId}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)   
+    public Response retrieveByReviewerId(@PathParam("customerId") Long customerId) {
+        try {
+            List<FeedbackEntity> feedbacks = feedbackSessionBean.retrieveFeedbackByReviewerId(customerId);
+            RetrieveByReviewerIdRsp retrieveFeedbackRsp = new RetrieveByReviewerIdRsp(feedbacks);
+            return Response.status(Response.Status.OK).entity(retrieveFeedbackRsp).build();
+        } catch (Exception ex) {
+            ws.restful.datamodel.Listing.ErrorRsp errorRsp = new ws.restful.datamodel.Listing.ErrorRsp(ex.getMessage());
 
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("retrieveReviewee/{customerId}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)   
+    public Response retrieveByRevieweeId(@PathParam("customerId") Long customerId) {
+        try {
+            List<FeedbackEntity> feedbacks = feedbackSessionBean.retrieveFeedbackByRevieweeId(customerId);
+            RetrieveByRevieweeIdRsp retrieveFeedbackRsp = new RetrieveByRevieweeIdRsp(feedbacks);
+            return Response.status(Response.Status.OK).entity(retrieveFeedbackRsp).build();
+        } catch (Exception ex) {
+            ws.restful.datamodel.Listing.ErrorRsp errorRsp = new ws.restful.datamodel.Listing.ErrorRsp(ex.getMessage());
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
+    /*
     @Path("feedbackAsBorrower")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -124,6 +158,7 @@ public class FeedbackResource {
         }
     }
     
+*/
 //    @Path("feedbackAsLender")
 //    @POST
 //    @Consumes(MediaType.APPLICATION_JSON)

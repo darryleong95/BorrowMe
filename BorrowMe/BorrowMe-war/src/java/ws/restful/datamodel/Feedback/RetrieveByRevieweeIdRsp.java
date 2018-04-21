@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ws.restful.datamodel.Feedback;
 
 import entity.FeedbackEntity;
@@ -9,18 +13,17 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author josh
  */
-
-@XmlType(name = "retrieveByListingIdRsp", propOrder = {
+@XmlType(name = "retrieveByRevieweeIdRsp", propOrder = {
     "feedbacks"
 })
-public class RetrieveByListingIdRsp {
+public class RetrieveByRevieweeIdRsp {
     
     private List<FeedbackEntity> feedbacks;
 
-    public RetrieveByListingIdRsp() {
+    public RetrieveByRevieweeIdRsp() {
     }
 
-    public RetrieveByListingIdRsp(List<FeedbackEntity> feedbacks) {
+    public RetrieveByRevieweeIdRsp(List<FeedbackEntity> feedbacks) {
         this.feedbacks = feedbacks;
     }
 
