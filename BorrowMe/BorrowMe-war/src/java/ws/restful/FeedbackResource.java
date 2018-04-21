@@ -7,6 +7,7 @@ package ws.restful;
 
 import ejb.session.stateless.FeedbackSessionBeanLocal;
 import entity.FeedbackEntity;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -14,6 +15,7 @@ import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
@@ -22,11 +24,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
+import util.exception.CustomerNotFoundException;
 import util.exception.FeedbackExistException;
 import util.exception.FeedbackNotFoundException;
+import util.exception.InvalidListingException;
 import ws.restful.datamodel.Feedback.CreateFeedbackReq;
 import ws.restful.datamodel.Feedback.CreateFeedbackRsp;
 import ws.restful.datamodel.Feedback.ErrorRsp;
+import ws.restful.datamodel.Feedback.RetrieveByListingIdRsp;
 import ws.restful.datamodel.Feedback.RetrieveFeedbackRsp;
 import ws.restful.datamodel.Feedback.UpdateFeedbackReq;
 
@@ -58,11 +63,10 @@ public class FeedbackResource {
         if((jaxbCreateFeedbackReq != null) && (jaxbCreateFeedbackReq.getValue() != null)) {
             try {
                 CreateFeedbackReq createFeedbackReq = jaxbCreateFeedbackReq.getValue();
-                Long id = feedbackSessionBean.createFeedback(createFeedbackReq.getFeedback());
-                FeedbackEntity feedback = feedbackSessionBean.retrieveFeedbackById(id);
+                FeedbackEntity feedback = feedbackSessionBean.createFeedbackAPI(createFeedbackReq.getFeedback(), reviewerId, revieweeId,listingId);
                 CreateFeedbackRsp createFeedbackRsp = new CreateFeedbackRsp(feedback);
                 return Response.status(Response.Status.OK).entity(createFeedbackRsp).build();
-            } catch (FeedbackExistException | FeedbackNotFoundException ex) {
+            } catch (CustomerNotFoundException | InvalidListingException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             } 
@@ -71,6 +75,22 @@ public class FeedbackResource {
                 ErrorRsp errorRsp = new ErrorRsp("Invalid create feedback request");
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();                    
             }
+    }
+    
+    @Path("retrieveByListingId/{listingId}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)   
+    public Response retrieveByListingId(@PathParam("listingId") Long listingId) {
+        try {
+            List<FeedbackEntity> feedbacks = feedbackSessionBean.retrieveFeedbackByListingId(listingId);
+            RetrieveByListingIdRsp retrieveFeedbackRsp = new RetrieveByListingIdRsp(feedbacks);
+            return Response.status(Response.Status.OK).entity(retrieveFeedbackRsp).build();
+        } catch (Exception ex) {
+            ws.restful.datamodel.Listing.ErrorRsp errorRsp = new ws.restful.datamodel.Listing.ErrorRsp(ex.getMessage());
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
     }
     
 
