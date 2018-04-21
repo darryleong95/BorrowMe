@@ -7,93 +7,103 @@
     <ui:define name="content">
 
         <p:tabView dynamic="true" cache="true" effect="fold" style="width:85%; margin: 0 auto">
-            <p:tab title="Requests Made for Other's Items">
+            <p:tab title="My requests made (on others' items)">
                 <h:panelGrid style="text-align:center" columns="2" cellpadding="6">
 
                     <h:form id="formViewMadeRequests">
 
                         <p:messages id="messages" redisplay="false" closable="true" />
 
-                        <p:panel rendered="#{empty viewRequestsManagedBean.requestsMade}" header="No requests yet!" style="vertical-align:middle; width:auto; margin:0 auto ">
+                        <p:panel rendered="#{empty viewRequestsManagedBean.requestsMade}" header="No requests yet!" style="width:500px; margin:0 auto; display:inline-block ">
 
-                            <h:panelGrid columns="2" cellspacing="7px">
+                            <h:panelGrid>
                                 <p:outputLabel value="You have made no requests yet!"/>
                             </h:panelGrid>
 
                         </p:panel>
                         <center>
-                        <p:dataTable rendered="#{not empty viewRequestsManagedBean.requestsMade}" id="dataTableAllRequestsMade" widgetVar="dataTableAllRequestsMade" value="#{viewRequestsManagedBean.requestsMade}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
-                                     filteredValue="#{viewRequestsManagedBean.filteredRequestsMade}"
-                                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50"
-                                     style="margin:0 auto; text-align:center">
+                            <p:dataTable rendered="#{not empty viewRequestsManagedBean.requestsMade}" id="dataTableAllRequestsMade" widgetVar="dataTableAllRequestsMade" value="#{viewRequestsManagedBean.requestsMade}" var="requestEntity" rowKey="#{requestEntity.requestEntityId}" rowIndexVar="row"
+                                         filteredValue="#{viewReuestsManagedBean.filteredRequestsMade}"
+                                         rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50"
+                                         style="margin:0 auto; margin-left:0px; margin-right:0px; text-align:center">
 
-                            <f:facet name="header">
-                                <p:outputPanel style="text-align: right;">
-                                    <h:outputText value="Search all fields:" />
-                                    <p:inputText id="globalFilter" onkeyup="PF('dataTableAllRequestsMade').filter()" style="width:300px" placeholder="Enter keyword"/>
-                                </p:outputPanel>
-                            </f:facet>
+                                <f:facet name="header">
+                                    <p:outputPanel style="text-align: right;">
+                                        <h:outputText value="Search all fields:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('dataTableAllRequestsMade').filter()" style="width:300px" placeholder="Enter keyword"/>
+                                    </p:outputPanel>
+                                </f:facet>
 
-                            <p:column headerText="Request ID" sortBy="#{requestEntity.requestEntityId}" filterBy="#{requestEntity.requestEntityId}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.requestEntityId}" />
-                            </p:column>
+                                <p:column headerText="Request ID" sortBy="#{requestEntity.requestEntityId}" filterBy="#{requestEntity.requestEntityId}" filterMatchMode="contains">
+                                    <h:outputText value="#{requestEntity.requestEntityId}" />
+                                </p:column>
 
-                            <p:column headerText="Listing:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.listingEntity.listingTitle}" style="text-align: center;"/>
-                            </p:column>
+                                <p:column headerText="Listing:" sortBy="#{requestEntity.listingEntity.listingTitle}" filterBy="#{requestEntity.listingEntity.listingTitle}" filterMatchMode="contains">
+                                    <h:outputText value="#{requestEntity.listingEntity.listingTitle}" style="text-align: center;"/>
+                                </p:column>
 
-                            <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
-                                    <f:convertDateTime timeZone="Singapore" type="both" pattern="dd-MM-YYYY"/>
-                                </h:outputText>
-                            </p:column>
+                                <p:column headerText="Start Date:" sortBy="#{requestEntity.startDate}" filterBy="#{requerstEntity.startDate}" filterMatchMode="contains">
+                                    <h:outputText value="#{requestEntity.startDate}" style="text-align: center;">
+                                        <f:convertDateTime timeZone="Singapore" type="both" pattern="dd-MM-YYYY"/>
+                                    </h:outputText>
+                                </p:column>
 
-                            <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.endDate}" >
-                                    <f:convertDateTime timeZone="Singapore" type="both" pattern="dd-MM-YYYY"/>
-                                </h:outputText>
-                            </p:column>
+                                <p:column headerText="End Date:" sortBy="#{requestEntity.endDate}" filterBy="#{requestEntity.endDate}" filterMatchMode="contains">
+                                    <h:outputText value="#{requestEntity.endDate}" >
+                                        <f:convertDateTime timeZone="Singapore" type="both" pattern="dd-MM-YYYY"/>
+                                    </h:outputText>
+                                </p:column>
 
-                            <p:column headerText="Message:" sortBy="#{requestEntity.message}" filterBy="#{requestEntity.message}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.message}" />
-                            </p:column>
+                                <p:column headerText="Message:" sortBy="#{requestEntity.message}" filterBy="#{requestEntity.message}" filterMatchMode="contains">
+                                    <h:outputText value="#{requestEntity.message}" />
+                                </p:column>
 
-                            <p:column headerText="Total Cost:" sortBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterMatchMode="contains">
-                                <h:outputText value="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" />
-                            </p:column>
+                                <p:column headerText="Total Cost:" sortBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterBy="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" filterMatchMode="contains">
+                                    <h:outputText value="#{requestEntity.noOfDays * requestEntity.listingEntity.costPerDay}" />
+                                </p:column>
 
-                            <p:column headerText="Status:" rendered="#{requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains" style="text-align: center">
-                                <h:outputText value="Accepted!"/><br/>
-                                <br/>                     
-                                <h:outputText value="Payment Already Made!" rendered="#{requestEntity.payment}"/><br/>
-                                <p:commandButton value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form" >
-                                    <f:attribute name="requestEntity" value="#{requestEntity}"/>
+                                <p:column headerText="Status:" rendered="#{requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains" style="text-align: center">
+                                    <h:outputText value="Accepted!"/><br/>
+                                    <br/>                     
+                                    <h:outputText value="Payment Already Made!" rendered="#{requestEntity.payment}"/><br/>
+                                    <p:commandButton value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form" >
+                                        <f:attribute name="requestEntity" value="#{requestEntity}"/>
 
-                                </p:commandButton><br/>
-                                <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and !requestEntity.borrowerLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
-                                    <f:attribute name="requestEntity" value="#{requestEntity}" />
-                                </p:commandButton><br/>
+                                    </p:commandButton><br/>
+                                    <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and !requestEntity.borrowerLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
+                                        <f:attribute name="requestEntity" value="#{requestEntity}" />
+                                    </p:commandButton><br/>
 
-                                <h:outputText value="Feedback Already Made!" rendered="#{requestEntity.borrowerLeftFeedback}"/><br/>
-                            </p:column>
+                                    <h:outputText value="Feedback Already Made!" rendered="#{requestEntity.borrowerLeftFeedback}"/><br/>
+                                </p:column>
 
-                            <p:column headerText="Status:" rendered="#{!requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
-                                <h:outputText value="Rejected"/>
-                            </p:column>
+                                <p:column headerText="Status:" rendered="#{!requestEntity.accepted and requestEntity.acknowledged}" filterMatchMode="contains">
+                                    <h:outputText value="Rejected"/>
+                                </p:column>
 
-                            <p:column headerText="Status:" rendered="#{!requestEntity.acknowledged}" filterMatchMode="contains">
-                                <h:outputText value="Pending"/>
-                            </p:column>
+                                <p:column headerText="Status:" rendered="#{!requestEntity.acknowledged}" filterMatchMode="contains">
+                                    <h:outputText value="Pending"/>
+                                    <br/><br/>
+                                    <p:commandButton value="Delete" icon="ui-icon-trash" actionListener="#{viewRequestsManagedBean.deleteRequest}" update="@form">
+                                        <f:attribute name="requestToDelete" value="#{requestEntity}" />
+                                        <p:confirm header="Confirmation" message="Are you sure you want to delete this request?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
 
 
-                        </p:dataTable>
+                                </p:column>
+
+                            </p:dataTable>
                         </center>
                     </h:form>
                 </h:panelGrid>
 
             </p:tab>
 
-            <p:tab title="Requests Made for My Items">
+            <p:tab title="Approve/Reject requests for my own listings">
 
                 <p:panel rendered="#{empty viewRequestsManagedBean.listings}" header="No requests yet!" style="margin-left:auto; margin-right:auto; vertical-align:middle; width:40%">
 
@@ -164,7 +174,7 @@
                                             <p:outputLabel value="Rejected" rendered="#{!requestEntity.accepted}"/>
                                             <br/><br/>
                                             <p:outputLabel value="Awaiting Payment!" rendered="#{!requestEntity.payment and requestEntity.accepted}"/>
-                                            <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
+                                            <p:commandButton value='Payment received! Make Feedback' rendered="#{requestEntity.payment and requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />
                                             </p:commandButton>
                                             <br/>

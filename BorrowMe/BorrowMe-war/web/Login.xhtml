@@ -128,7 +128,9 @@
                             <p:outputLabel for="email" value="Email: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="email" value="#{loginManagedBean.newCustomer.email}" required="true" requiredMessage="Email is required" />
+                            <p:inputText id="email" value="#{loginManagedBean.newCustomer.email}" required="true" requiredMessage="Email is required" >
+                                 <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                            </p:inputText>
                         </p:column>
                         <p:column>
                             <p:message for="email" />

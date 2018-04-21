@@ -25,6 +25,7 @@ import util.exception.CreatePaymentException;
 import util.exception.CreateRequestException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidListingException;
+import util.exception.ListingNoFeedbackException;
 import util.exception.PaymentNotFoundException;
 import util.exception.RequestNotFoundException;
 
@@ -342,6 +343,24 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
             return request;
         } catch (RequestNotFoundException ex) {
             throw new RequestNotFoundException("Request ID: " + requestId + " does not exist!");
+        }
+    }
+    
+    @Override
+    public void deleteRequest(Long requestId) throws RequestNotFoundException, CustomerNotFoundException, InvalidListingException{
+        try {
+            RequestEntity request = retrieveRequestByID(requestId);
+            CustomerEntity c = customerSessionBeanLocal.retrieveCustomerByCustomerId(request.getCustomerEntity().getCustomerId());
+            c.getRequestList().remove(request);
+            ListingEntity l = listingSessionBeanLocal.retrieveListingById(request.getListingEntity().getListingId());
+            l.getRequestList().remove(request);
+            em.detach(l);
+        } catch (RequestNotFoundException ex) {
+            throw new RequestNotFoundException("Request ID: " + requestId + "does not exist");
+        } catch (CustomerNotFoundException ex) {
+            throw new CustomerNotFoundException("Customer ID of request deleted does not exist");
+        } catch (InvalidListingException ex) {
+            throw new InvalidListingException("invalid listing exception of request deleted");
         }
     }
 }
