@@ -82,14 +82,10 @@ public class CustomerResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response doLogin(@PathParam("username") String username, @PathParam("password") String password) {
         try {
-            DoLoginRsp doLoginRsp = new DoLoginRsp(customerSessionBean.doLogin(username, password));
-            if (doLoginRsp.getStatus()) {
-                CustomerEntity returnThis = customerSessionBean.retrieveCustomerByUsername(username);
-                CreateCustomerRsp result = new CreateCustomerRsp(returnThis);
-                return Response.status(Response.Status.OK).entity(result).build();
-            } else {
-                return Response.status(Response.Status.OK).entity(null).build();
-            }
+            Boolean pass = customerSessionBean.doLogin(username, password);
+            CustomerEntity customer = customerSessionBean.retrieveCustomerByUsername(username);
+            DoLoginRsp doLoginRsp = new DoLoginRsp(pass, customer);
+            return Response.status(Response.Status.OK).entity(doLoginRsp).build();
         } catch (CustomerNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
@@ -143,7 +139,7 @@ public class CustomerResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
+
     @Path("changePassword")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

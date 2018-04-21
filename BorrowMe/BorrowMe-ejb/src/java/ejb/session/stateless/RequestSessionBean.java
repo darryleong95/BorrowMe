@@ -141,12 +141,14 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
                     System.out.println("AES: " + aes);
                     System.out.println("AEE: " + aee);
                     if (aes >= 0 || aee <= 0) {
-                    } else{
+                    } else {
                         allow = false;
                     }
                 }
             }
-            if(requests.size() == 0){ allow = true; }
+            if (requests.size() == 0) {
+                allow = true;
+            }
             if (allow) {
                 Date now = new Date();
                 Long noDaysStart = now.getTime() - startDate.getTime();
@@ -252,16 +254,20 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
 
     @Override
     public List<RequestEntity> retrieveRequestByListingId(Long listingId) {
-        try {
-            ListingEntity ls = listingSessionBeanLocal.retrieveListingById(listingId);
-            Query query = em.createQuery("SELECT r FROM RequestEntity r WHERE r.listingEntity = :inListingID");
-            query.setParameter("inListingID", ls);
-            System.out.println("**************Query successful**************");
-            return query.getResultList();
-        } catch (InvalidListingException ex) {
-            Logger.getLogger(RequestSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        System.out.println("Testttttt");
+        Query query = em.createQuery("SELECT r FROM RequestEntity r WHERE r.listingEntity.listingId = :inListingId");
+        System.out.println("Testing");
+        query.setParameter("inListingId", listingId);
+        List<RequestEntity> requests = query.getResultList();
+        System.out.println("Made it before the loop");
+        for (int i = 0; i < requests.size(); i++) {
+            System.out.println("Made it here");
+            System.out.println("Request ID of individual results: " + requests.get(i).getRequestEntityId());
+            requests.get(i).getFeedbackList().size();
         }
-        return null;
+
+        System.out.println("**************Query successful**************");
+        return query.getResultList();
     }
 
     @Override
@@ -300,6 +306,19 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
         return true;
     }
 
+    @Override
+    public Boolean deleteRequest(Long requestId) throws RequestNotFoundException {
+        try {
+            System.out.println("Request ID received: " + requestId);
+            RequestEntity request = retrieveRequestByID(requestId);
+            System.out.println(request.getEndDate());
+            em.remove(request);
+            return true;
+        } catch (RequestNotFoundException ex) {
+            throw new RequestNotFoundException("RequestID provided was not valid: " + ex.getMessage());
+        }
+    }
+
     public static List<Date> getDaysBetweenDates(Date startdate, Date enddate) {
         List<Date> dates = new ArrayList<Date>();
         Calendar calendar = new GregorianCalendar();
@@ -318,15 +337,69 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
         try {
             RequestEntity request = retrieveRequestByID(requestId);
             System.out.println(request.getRequestEntityId() + "***********************");
+
+            Date start = request.getStartDate();
+            Date end = request.getEndDate();
+            System.out.println("Mid function flag");
+            System.out.println("Listing ID: " + request.getListingEntity().getListingId());
+            List<RequestEntity> requests = retrieveRequestByListingId(request.getListingEntity().getListingId());
+            System.out.println("Request result size: " + requests.size());
+            for (int i = 0; i < requests.size(); i++) {
+                RequestEntity req = requests.get(i);
+                //dates of req to reject
+                Date toRejectStart = req.getStartDate();
+                Date toRejectEnd = req.getEndDate();
+                //check to see whether dates overlap
+                System.out.println("Made it here");
+                Long overlapFront = toRejectStart.getTime() - end.getTime();
+                Long overlapEnd = toRejectEnd.getTime() - start.getTime();
+                int aes = (int) TimeUnit.DAYS.convert(overlapFront, TimeUnit.MILLISECONDS);
+                int aee = (int) TimeUnit.DAYS.convert(overlapEnd, TimeUnit.MILLISECONDS);
+                System.out.println("Existing Start date: " + toRejectStart);
+                System.out.println("Existing End date: " + toRejectEnd);
+                System.out.println("AES: " + aes);
+                System.out.println("AEE: " + aee);
+                if (aes >= 0 || aee <= 0) {
+                    //no overlap, don't do anything
+                    System.out.println("Not Rejected Request: " + req.getRequestEntityId());
+                } else {
+                    //overlap exists, reject requests
+                    if (req.getRequestEntityId() != request.getRequestEntityId()) {
+                        System.out.println("Rejecting Request: " + req.getRequestEntityId());
+                        req.setAcknowledged(true);
+                        req.setAccepted(false);
+                        em.merge(req);
+                    }
+                }
+            }
+
             PaymentEntity payment = new PaymentEntity();
             payment.setStatus(false);
             payment.setListingEntity(request.getListingEntity());
             request.setAccepted(true);
+            request.setAcknowledged(true);
             request.setPaymentEntity(payment);
+
             em.persist(payment);
             em.flush();
             em.refresh(payment);
             em.merge(request);
+            return request;
+        } catch (RequestNotFoundException ex) {
+            throw new RequestNotFoundException("Request ID: " + requestId + " does not exist!");
+        }
+    }
+
+    @Override
+    public RequestEntity rejectRequest(Long requestId) throws RequestNotFoundException {
+        try {
+            RequestEntity request = retrieveRequestByID(requestId);
+            System.out.println(request.getRequestEntityId() + "***********************");
+            request.setAccepted(false);
+            request.setAcknowledged(true);
+            em.flush();
+            em.merge(request);
+            System.out.println("Set acknowledged to true and Accepted to false");
             return request;
         } catch (RequestNotFoundException ex) {
             throw new RequestNotFoundException("Request ID: " + requestId + " does not exist!");
