@@ -8,8 +8,6 @@
 
     <ui:define name="content">
 
-        <!--<p:graphicImage style="height: 200px;width:200px;" value="./images/noimage.png" />-->
-
         <h:form>
             <p:menubar style="width:88%; margin:0 auto">
                 <p:menuitem value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon="ui-icon-plusthick" />
@@ -27,25 +25,30 @@
                     Listings:
                 </f:facet>
 
-                <p:panel header="#{listing.listingId}" style="width:auto; text-align:center; margin:0 auto" >
+                <p:panel header="#{listing.listingId}" style="width:100%">
 
-                    <!--onclick="rc()"-->
 
-                    <h:panelGrid  columns="1"  style="margin:0 auto; text-align:center;">
-                        <f:attribute name="image" value="#{listing.firstImage}" />
-                        <p:graphicImage style="height: 200px;width:200px;" value="#{listing.firstImage}" />
-                        <h:outputText value="#{listing.listingTitle}" style="font-weight:bold" />
-                        <h:outputText value="By #{listing.customerEntity.username}" style="font-style: italic;"/>
-                        <br/>
-                        <h:outputText value="#{listing.category}"/>
-                        <h:outputLabel value="$#{listing.costPerDay}/day" style="font-weight:bold" />
+                    <h:panelGrid  columns="1" width="50%" style="text-align:center; margin: 0 auto">
+                       
 
-                        <p:commandButton value="View Listing" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
-                            <f:attribute name="listingIdToView" value="#{listing.listingId}" />
-                        </p:commandButton>
+                            <f:attribute name="image" value="#{listing.firstImage}" />
+                            <p:graphicImage style="height: 200px;width:200px;" value="#{listing.firstImage}" />
+                            <h:outputText value="#{listing.listingTitle}" style="font-weight:bold" />
+                            <h:outputText value="By #{listing.customerEntity.username}" style="font-style: italic;"/>
+                            <br/>
+                            <h:outputText value="#{listing.category}"/>
+                            <h:outputLabel value="$#{listing.costPerDay}/day" style="font-weight:bold" />
 
+                            <p:commandButton value="View Listing" actionListener="#{viewAllListingsManagedBean.redirectListing}" >
+                                <f:attribute name="listingIdToView" value="#{listing.listingId}" />
+                            </p:commandButton>
+                       
                     </h:panelGrid>
+
                 </p:panel>
+
+
+
             </p:dataGrid>
         </h:form>
 

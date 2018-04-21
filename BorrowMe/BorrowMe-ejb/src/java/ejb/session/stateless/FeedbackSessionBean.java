@@ -4,14 +4,21 @@ import entity.CustomerEntity;
 import entity.FeedbackEntity;
 import entity.ListingEntity;
 import entity.RequestEntity;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
+import util.exception.CustomerNotFoundException;
 import util.exception.FeedbackExistException;
 import util.exception.FeedbackNotFoundException;
+import util.exception.InvalidListingException;
 
 @Stateless
 @Local(FeedbackSessionBeanLocal.class)
@@ -108,13 +115,66 @@ public class FeedbackSessionBean implements FeedbackSessionBeanLocal {
             throw new FeedbackNotFoundException("Feedback " + id + " does not exist");
         }
     }
+    
+    @Override
+    public FeedbackEntity createFeedbackAPI(FeedbackEntity feedback, Long reviewerId, Long revieweeId, Long listingId) throws CustomerNotFoundException, InvalidListingException {
+        if(reviewerId != revieweeId){
+            CustomerEntity reviewer = customerSessionBeanLocal.retrieveCustomerByCustomerId(reviewerId);
+            CustomerEntity reviewee = customerSessionBeanLocal.retrieveCustomerByCustomerId(revieweeId);   
+            ListingEntity listing = listingSessionBeanLocal.retrieveListingById(listingId);
+            List<RequestEntity> requests = new ArrayList<>();
+            requests = requestSessionBeanLocal.retrieveRequestListByCustomerID(reviewerId);
+            RequestEntity request;
+            for(int i = 0; i < requests.size(); i++) {
+                RequestEntity j = requests.get(i);
+                if(j.getListingEntity().getListingId() == listingId) {
+                    request = j; 
+                    feedback.setRequestEntity(request);
+                }
+            }
+            feedback.setListing(listing);
+            feedback.setReviewer(reviewer);
+            feedback.setReviewee(reviewee);
+            em.persist(feedback);
+            em.flush();
+            em.refresh(feedback);
+            return feedback;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<FeedbackEntity> retrieveFeedbackByReviewerId(Long customerId) {
+        Query query = em.createQuery("SELECT c FROM FeedbackEntity c WHERE c.reviewer.customerId = :inCustomerId");
+        query.setParameter("inCustomerId", customerId);
+        return query.getResultList();   
+    }
+ 
+    @Override
+    public List<FeedbackEntity> retrieveFeedbackByRevieweeId(Long customerId) {
+        Query query = em.createQuery("SELECT c FROM FeedbackEntity c WHERE c.reviewee.customerId = :inCustomerId");
+        query.setParameter("inCustomerId", customerId);
+        return query.getResultList();   
+    }
+
+    @Override
+    public List<FeedbackEntity> retrieveFeedbackByListingId(Long listingId) {
+        try {
+            ListingEntity ls = listingSessionBeanLocal.retrieveListingById(listingId);
+            Query query = em.createQuery("SELECT c FROM FeedbackEntity c WHERE c.listing = :inListingID");
+            query.setParameter("inListingID", ls);
+            return query.getResultList();
+        } catch (InvalidListingException ex) {
+            Logger.getLogger(RequestSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }  
 
     public void persist(Object object) {
         em.persist(object);
     }
 
-    public void persist1(Object object) {
-        em.persist(object);
-    }
+    
 
 }

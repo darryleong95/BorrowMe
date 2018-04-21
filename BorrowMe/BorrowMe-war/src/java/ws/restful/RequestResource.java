@@ -177,7 +177,7 @@ public class RequestResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteRequest(@PathParam("requestId") Long requestId){
         try {
-            Boolean result = requestSessionBeanLocal.deleteRequest(requestId);
+            Boolean result = requestSessionBeanLocal.deleteRequestAPI(requestId);
             System.out.println("Reults: " + result);
             DeleteRequestRsp deleteRequestRsp = new DeleteRequestRsp(result);
             return Response.status(Response.Status.OK).entity(deleteRequestRsp).build();

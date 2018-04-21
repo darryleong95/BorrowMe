@@ -11,12 +11,15 @@
         <h:panelGroup rendered="#{!sessionScope['isLogin']}">
 
             <br/>
-            <center> <h2>Welcome to</h2>
-                <h2>BORROW ME</h2><br/>
-
-                <h4>Please log in to use functionalities!</h4><br/>
-                
-                <p:graphicImage value="./images/BorrowMePoster.jpg" style="height: 1200px; width: auto"/>
+            <center> 
+                <p:panel header="Welcome to BorrowMe!" style="width: 50%; border:0">
+                    <p:outputLabel value="Here at BorrowMe," style="font-size:16px"/><br/>
+                      <p:outputLabel value="users can list and rent items from other users!" style="font-size:16px"/>
+                    <br/><br/>
+                    <p:outputLabel value="Please log in to use functionalities!" style="font-size:16px"/>
+                    <br/><br/>
+                    <p:graphicImage value="./images/BorrowMePoster.jpg" style="height: 1000px; width: auto"/>   
+                </p:panel>
                 
             </center>
 
@@ -24,16 +27,18 @@
 
         <h:panelGroup rendered="#{sessionScope['isLogin']}">
 
-            <br/>
-            <center> <h2>Welcome to</h2>
-                <h2>Borrow Me</h2><br/>
-
-                <h4>Go to the left to use access use cases!</h4><br/>
-                
-                <p:graphicImage value="./images/BorrowMePoster.jpg" style="height: 1200px; width: auto"/>
-                
+               <br/>
+            <center> 
+                <p:panel header="Welcome to BorrowMe!" style="width: 50%; border:0">
+                    <p:outputLabel value="Here at BorrowMe," style="font-size:16px"/><br/>
+                      <p:outputLabel value="users can list and rent items from other users!" style="font-size:16px"/>
+                   <br/><br/>
+                    <p:outputLabel value="Please access use cases at the menu above!" style="font-size:16px"/>
+                    <br/><br/>
+                    <p:graphicImage value="./images/BorrowMePoster.jpg" style="height: 1000px; width: auto"/>   
+                </p:panel>
             </center>
-
+  
         </h:panelGroup>
 
     </ui:define>

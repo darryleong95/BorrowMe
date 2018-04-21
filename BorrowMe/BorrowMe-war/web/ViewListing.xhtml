@@ -16,19 +16,20 @@
 
                 <h:form id="formViewListing">
 
-                    <p:panelGrid style="margin: 0 auto; width: auto; border:0 !important;" id="panelGridViewListing">
+                    <p:panelGrid style="width: 700px; margin: 0 auto; border:0px" id="panelGridViewListing">
 
                         <p:row>
-                            <p:column style="column-width:auto; height:500px" >
+                            <p:column rowspan="2" style="column-width:auto; height:500px" >
                                 <p:galleria value="#{viewListingManagedBean.listingToView.images}" var="image" panelWidth="313" panelHeight="313" showCaption="false">
                                     <p:graphicImage value="#{image}"  alt="Image Description for #{image}" title="#{image}" style="height:90%; width:90%"/>
                                 </p:galleria>
                             </p:column>
 
-                            <p:column style="column-width: 400px; vertical-align: top;">
-                                <p:panelGrid style="height:100%; width:100%">
+                            <p:column style="width:400px">
+
+                                <p:panelGrid style="height:auto; width:400px">
                                     <p:row>
-                                        <p:column colspan="2">
+                                        <p:column colspan="2" headerText="Listing Details">
                                             <h:outputText style="font-weight:bold; font-size:25px" value="#{viewListingManagedBean.listingToView.listingTitle}" />
                                         </p:column>
                                     </p:row>
@@ -87,25 +88,42 @@
                                                 </p:commandButton>
                                             </h:form>
                                         </p:column>
-
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2">
-                                            
-                                            
-
-                                            
-
-                                        </p:column>
-
                                     </p:row>
                                 </p:panelGrid>
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column colspan="2">
+                                <p:dataTable  rendered="#{not empty viewListingManagedBean.listingToView.feedbacksOnListing}"  id="dataTableListingFeedback" widgetVar="dataTableListingFeedback" value="#{viewListingManagedBean.listingToView.feedbacksOnListing}" var="feedback"
+                                             rows="1" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="6,12,16">
+                                   
+                                    <p:column style="width:40%; text-align:center" headerText=" Reviewer Info">
+                                        <p:graphicImage style="height: auto;width:75px; border-radius:100px;" value="#{feedback.reviewer.profileImage}" />
+                                        <br/>
+                                        <p:commandLink actionListener="#{indexManagedBean.redirectProfile}" value="by #{feedback.reviewer.username}">
+                                            <f:attribute name="profileIdToView" value="#{feedback.reviewer.customerId}" />
+                                        </p:commandLink>
+                                    </p:column>
+                                    <p:column headerText="Review" style="width:250px">
+                                        <p:outputLabel value="Rating:"/>
+                                        <p:rating value="#{feedback.rating}" readonly="true" />
+                                        <br/>
+                                        <h:outputText value="#{feedback.review}"/>
+                                    </p:column>
+
+                                </p:dataTable>
+
+                                <p:panel rendered="#{empty viewListingManagedBean.listingToView.feedbacksOnListing}">
+                                    <p:outputLabel value="Listing has no feedbacks"/>
+                                </p:panel>
+
+
+
+                            </p:column>
+
+
 
                         </p:row>
-
 
 
                     </p:panelGrid>

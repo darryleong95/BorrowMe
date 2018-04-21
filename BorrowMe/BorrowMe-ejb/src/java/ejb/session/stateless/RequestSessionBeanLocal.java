@@ -9,6 +9,7 @@ import entity.RequestEntity;
 import java.util.Date;
 import java.util.List;
 import util.exception.CreateRequestException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InvalidListingException;
 import util.exception.RequestNotFoundException;
 
@@ -34,8 +35,11 @@ public interface RequestSessionBeanLocal {
 
     public RequestEntity openedRequest(Long requestId) throws RequestNotFoundException;
 
-    public Boolean deleteRequest(Long requestId) throws RequestNotFoundException;
+    public Boolean deleteRequestAPI(Long requestId) throws RequestNotFoundException;
 
     public RequestEntity rejectRequest(Long requestId) throws RequestNotFoundException;
+    
+    public void deleteRequest(Long requestId) throws RequestNotFoundException, CustomerNotFoundException, InvalidListingException;
+
 
 }

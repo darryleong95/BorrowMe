@@ -183,7 +183,7 @@ public class ListingEntity implements Serializable {
     public void setCategory(String category) {
         this.category = category;
     }
-
+    @XmlTransient
     public List<FeedbackEntity> getFeedbacksOnListing() {
         return feedbacksOnListing;
     }

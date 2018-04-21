@@ -11,7 +11,7 @@
             <p:layoutUnit position="center">
                 <div style="width:100%">
 
-                    <p:panelGrid style="margin: 0 auto; width: 80%;">
+                    <p:panelGrid style="margin: 0 auto; width: 900px; height:auto">
 
                         <f:facet name="header">
                             <p:row>
@@ -35,14 +35,6 @@
                                             </p:row>
                                         </f:facet>
 
-                                        <!--                                        <p:row>
-                                                                                    <p:column colspan="1">
-                                                                                        <h:outputText value="ID:" />
-                                                                                    </p:column>
-                                                                                    <p:column colspan="1">
-                                                                                        <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.customerId}" />
-                                                                                    </p:column>
-                                                                                </p:row>-->
                                         <p:row>
                                             <h:outputText value="#{viewProfileManagedBean.selectedProfileToView.username}" />
                                         </p:row>
@@ -107,9 +99,9 @@
                                 <p:column>
 
                                     <p:dataTable rendered="#{not empty viewProfileManagedBean.feedbacksForCustomer}" style="height:100%; width: 100%" id="dataTableCustomerFeedback" widgetVar="dataTableCustomerFeedback" value="#{viewProfileManagedBean.feedbacksForCustomer}" var="feedback"
-                                                 rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="6,12,16">
+                                                 rows="1" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="6,12,16">
 
-                                        <p:column colspan="1" headerText=" Reviewer Info" style="text-align:center">
+                                        <p:column headerText=" Reviewer Info" style="text-align:center; width:40%">
                                             <p:graphicImage style="height: 75px;width:75px; border-radius:100px;" value="#{feedback.reviewer.profileImage}" />
                                             <br/>
 
@@ -117,7 +109,7 @@
                                                 <f:attribute name="profileIdToView" value="#{feedback.reviewer.customerId}" />
                                             </p:commandLink>
                                         </p:column>
-                                        <p:column colspan="3" headerText="Review">
+                                        <p:column style="width:250px" headerText="Review">
                                             <p:outputLabel value="Rating:"/>
                                             <p:rating value="#{feedback.rating}" readonly="true" />
                                             <br/>
@@ -125,8 +117,8 @@
                                         </p:column>
                                     </p:dataTable>
 
-                                    <p:panel>
-                                        <p:outputLabel rendered="#{empty viewProfileManagedBean.feedbacksForCustomer}" value="Customer has no feedbacks"/>
+                                    <p:panel rendered="#{empty viewProfileManagedBean.feedbacksForCustomer}">
+                                        <p:outputLabel value="Customer has no feedbacks"/>
                                     </p:panel>
 
                                 </p:column>

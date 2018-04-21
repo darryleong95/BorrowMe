@@ -41,7 +41,7 @@ public class ApproveRequestManagedBean implements Serializable {
         request = new RequestEntity();
         customer = new CustomerEntity();
         listing = new ListingEntity();
-    }
+           }
 
     @PostConstruct
     public void postConstruct() {

@@ -18,6 +18,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import util.exception.CustomerNotFoundException;
+import util.exception.InvalidListingException;
 import util.exception.RequestNotFoundException;
 
 @Named(value = "viewRequestsManagedBean")
@@ -78,7 +79,7 @@ public class ViewRequestsManagedBean implements Serializable {
 
     public void makePayment(ActionEvent event) {
         selectedRequest = (RequestEntity) event.getComponent().getAttributes().get("requestEntity");
-        
+
         paymentSessionBeanLocal.updatePayment(selectedRequest.getPaymentEntity());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment of " + selectedRequest.getPaymentEntity().getTotalAmount() + " is successfully made!", null));
     }
@@ -90,7 +91,22 @@ public class ViewRequestsManagedBean implements Serializable {
 
         FacesContext.getCurrentInstance().getExternalContext().redirect("MakeFeedback.xhtml");
     }
-  
+
+    public void deleteRequest(ActionEvent event) {
+        try {
+            RequestEntity requestToDelete = (RequestEntity) event.getComponent().getAttributes().get("requestToDelete");
+            requestSessionBeanLocal.deleteRequest(requestToDelete.getRequestEntityId());
+            requestsMade.remove(requestToDelete);
+            filteredRequestsMade.remove(requestToDelete);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request deleted successfully", null));
+        } catch (CustomerNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting request(customer not found): " + ex.getMessage(), null));
+        } catch (RequestNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting request (invalid request): " + ex.getMessage(), null));
+        } catch (InvalidListingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting request (invalid listing): " + ex.getMessage(), null));
+        }
+    }
 
     public CustomerEntity getCustomer() {
         return customer;
