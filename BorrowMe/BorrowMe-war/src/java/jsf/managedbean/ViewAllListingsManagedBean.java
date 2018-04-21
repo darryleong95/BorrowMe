@@ -63,16 +63,28 @@ public class ViewAllListingsManagedBean implements Serializable {
 
     public void handleFileUpload(FileUploadEvent event) throws InvalidFileTypeException {
         try {
-            String newFilePath = System.getProperty("user.dir").replace("/config", "/docroot/") + event.getFile().getFileName();
+            String newFilePath = System.getProperty("user.dir");
+                  System.err.println("********** " + System.getProperty("user.dir"));
+            
+            //IF WINDOWS
+            if (System.getProperty("user.dir").contains("AppData")) {
+                System.out.println("THIS IS A WINDOWS MACHINE!");
+                newFilePath = newFilePath.substring(0,newFilePath.length()-7) + "/docroot/" + event.getFile().getFileName();
+            } else {
+                System.out.println("Its a mac");
+                newFilePath = System.getProperty("user.dir").replace("/config", "/docroot/") + event.getFile().getFileName();
+            }
+            
+            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
 
             if (!newFilePath.endsWith(".jpg") && !newFilePath.endsWith(".jpeg") && !newFilePath.endsWith(".png")) {
                 throw new InvalidFileTypeException("Invalid file type uploaded; only accept jpg jpeg png");
             }
 
             //String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-            System.err.println("********** " + System.getProperty("user.dir"));
+      
             System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+            
             File file = new File(newFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
 

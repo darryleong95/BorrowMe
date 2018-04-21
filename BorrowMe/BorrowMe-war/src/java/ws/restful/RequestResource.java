@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -61,14 +62,27 @@ public class RequestResource {
 
             try {
                 CreateRequestReq createRequestReq = jaxbCreateRequestReq.getValue();
-                System.err.println("********** Date: " + createRequestReq.getStartDateStr());
-                System.err.println("********** Date: " + createRequestReq.getEndDateStr());
                 Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(createRequestReq.getStartDateStr());
                 Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(createRequestReq.getEndDateStr());
-                RequestEntity rq = requestSessionBeanLocal.createRequestAPI(createRequestReq.getRequest(), requesterId, listingId, startDate, endDate);
-                System.out.println("******************************************************");
-                CreateRequestRsp rsp = new CreateRequestRsp(rq);
-                return Response.status(Response.Status.OK).entity(rsp).build();
+                Date now = new Date();
+                Long noDaysStart = now.getTime() - startDate.getTime();
+                Long noDaysEnd = endDate.getTime() - startDate.getTime();
+                int dayStart = (int) TimeUnit.DAYS.convert(noDaysStart, TimeUnit.MILLISECONDS);
+                int dayEnd = (int) TimeUnit.DAYS.convert(noDaysEnd, TimeUnit.MILLISECONDS);
+                System.out.println("Current Date: " + now);
+                System.out.println("Start Date: " + startDate);
+                System.out.println("End Date: " + endDate);
+                System.out.println("Days from current date: " + dayStart);
+                System.out.println("Days inbetween: " + dayEnd);
+                if (dayStart < 0 && dayEnd > 0) {
+                    RequestEntity rq = requestSessionBeanLocal.createRequestAPI(createRequestReq.getRequest(), requesterId, listingId, startDate, endDate);
+                    System.out.println("******************************************************");
+                    CreateRequestRsp rsp = new CreateRequestRsp(rq);
+                    return Response.status(Response.Status.OK).entity(rsp).build();
+                } else {
+                    //request failed
+                    return Response.status(Response.Status.OK).entity(null).build();
+                }
             } catch (ParseException | CreateRequestException ex) {
                 ex.printStackTrace();
             }

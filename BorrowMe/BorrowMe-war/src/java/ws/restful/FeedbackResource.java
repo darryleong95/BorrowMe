@@ -15,12 +15,18 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
+import util.exception.FeedbackExistException;
 import util.exception.FeedbackNotFoundException;
+import ws.restful.datamodel.Feedback.CreateFeedbackReq;
+import ws.restful.datamodel.Feedback.CreateFeedbackRsp;
+import ws.restful.datamodel.Feedback.ErrorRsp;
 import ws.restful.datamodel.Feedback.RetrieveFeedbackRsp;
 import ws.restful.datamodel.Feedback.UpdateFeedbackReq;
 
@@ -41,8 +47,33 @@ public class FeedbackResource {
         this.feedbackSessionBean = lookupFeedbackSessionBeanLocal();
     }
 
-//Update feedback not create.
+    @Path("{reviewerId}/{revieweeId}/{listingId}")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createFeedback(JAXBElement<CreateFeedbackReq> jaxbCreateFeedbackReq,
+            @PathParam("reviewerId")Long reviewerId,
+            @PathParam("revieweeId")Long revieweeId,
+            @PathParam("listingId")Long listingId) {
+        if((jaxbCreateFeedbackReq != null) && (jaxbCreateFeedbackReq.getValue() != null)) {
+            try {
+                CreateFeedbackReq createFeedbackReq = jaxbCreateFeedbackReq.getValue();
+                Long id = feedbackSessionBean.createFeedback(createFeedbackReq.getFeedback());
+                FeedbackEntity feedback = feedbackSessionBean.retrieveFeedbackById(id);
+                CreateFeedbackRsp createFeedbackRsp = new CreateFeedbackRsp(feedback);
+                return Response.status(Response.Status.OK).entity(createFeedbackRsp).build();
+            } catch (FeedbackExistException | FeedbackNotFoundException ex) {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            } 
+        }
+            else {
+                ErrorRsp errorRsp = new ErrorRsp("Invalid create feedback request");
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();                    
+            }
+    }
     
+
     @Path("feedbackAsBorrower")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
