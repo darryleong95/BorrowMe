@@ -34,5 +34,7 @@ public interface CustomerSessionBeanLocal {
     public Boolean doLogin(String username, String password) throws CustomerNotFoundException;
 
     public CustomerEntity changePassword(CustomerEntity customer) throws CustomerNotFoundException;
+
+    public void mergeCustomer(CustomerEntity customer);
     
 }

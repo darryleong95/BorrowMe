@@ -132,6 +132,7 @@ public class ViewProfileManagedBean implements Serializable {
 
             String absolutePath = "http://localhost:8080/" + event.getFile().getFileName();
             selectedProfileToView.setProfileImage(absolutePath);
+            customerSessionBeanLocal.mergeCustomer(selectedProfileToView);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         } catch (IOException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));

@@ -174,7 +174,7 @@
                                             <p:outputLabel value="Rejected" rendered="#{!requestEntity.accepted}"/>
                                             <br/><br/>
                                             <p:outputLabel value="Awaiting Payment!" rendered="#{!requestEntity.payment and requestEntity.accepted}"/>
-                                            <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
+                                            <p:commandButton value='Payment received! Make Feedback' rendered="#{requestEntity.payment and requestEntity.accepted and !requestEntity.lenderLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                                 <f:attribute name="requestEntity" value="#{requestEntity}" />
                                             </p:commandButton>
                                             <br/>

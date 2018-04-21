@@ -133,5 +133,10 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         
         return customer;
     }
+    
+    @Override
+    public void mergeCustomer(CustomerEntity customer) {
+        em.merge(customer);
+    }
 
 }
