@@ -180,3 +180,23 @@ a:hover {
     font-family: "Arial";
 }
 
+div.menu{
+    text-align: center;
+}
+.menu div.ui-menubar {
+    text-align: center;
+}
+.menu .ui-menu-list{
+    width:100%;
+    display: inline-flex;
+}
+div.menu>ul.ui-menu-list>li>a{
+    width: 100%;
+}
+div.menu>ul.ui-menu-list>li{
+    width: 100%;
+}
+.ui-menuitem-text{
+    float: none!important;
+}
+

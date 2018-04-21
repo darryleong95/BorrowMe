@@ -23,7 +23,7 @@
                     <h:form>  
                         <p:growl id="messages"/>
 
-                        <p:menubar style="width: 50%; margin-left:0px; margin-right:0px; text-align: center;">
+                        <p:menubar style="width: 600px; margin-left:0px; margin-right:0px; text-align: center; align-content: center; float:none !important">
                             <p:menuitem value="Home" outcome="index.xhtml" icon="ui-icon-home" />
                             <p:menuitem value="Login and Register" outcome="Login.xhtml" icon="ui-icon-home" rendered="#{!sessionScope['isLogin']}" />
                             <p:menuitem actionListener="#{indexManagedBean.redirectOwnProfile}" value="Profile" icon="ui-icon-person" rendered="#{sessionScope['isLogin']}"/>
