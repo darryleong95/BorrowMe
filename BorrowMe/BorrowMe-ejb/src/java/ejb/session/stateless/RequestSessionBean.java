@@ -4,6 +4,8 @@ import entity.CustomerEntity;
 import entity.ListingEntity;
 import entity.PaymentEntity;
 import entity.RequestEntity;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -110,29 +112,77 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
     }
 
     @Override
-    public RequestEntity createRequestAPI(RequestEntity rq, Long requesterId, Long listingId, Date startDate, Date endDate) throws CreateRequestException {
+    public RequestEntity createRequestAPI(RequestEntity rq, Long requesterId, Long listingId, String startDateStr, String endDateStr) throws CreateRequestException, InvalidListingException {
         try {
+            Boolean allow = true;
             CustomerEntity customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(requesterId);
 
             ListingEntity listing = listingSessionBeanLocal.retrieveListingById(listingId);
 
             System.out.println("Listing Entity: " + listing.getListingTitle());
+            Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDateStr);
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDateStr);
 
-            rq.setCustomerEntity(customer);
-            rq.setListingEntity(listing);
-            rq.setStartDate(startDate);
-            rq.setEndDate(endDate);
-            Long noDays = endDate.getTime() - startDate.getTime();
-            System.out.println("Days: " + TimeUnit.DAYS.convert(noDays, TimeUnit.MILLISECONDS));
-            int days = (int) TimeUnit.DAYS.convert(noDays, TimeUnit.MILLISECONDS);
-            rq.setNoOfDays(days);
-            em.persist(rq);
-            em.flush();
-            em.refresh(rq);
-
-            return rq;
-        } catch (CustomerNotFoundException | InvalidListingException ex) {
+            //Check to see whether request was already made
+            List<RequestEntity> requests = retrieveRequestByListingId(listingId);
+            System.out.println("Request size: " + requests.size());
+            for (int i = 0; i < requests.size(); i++) {
+                Long customerId = requests.get(i).getCustomerEntity().getCustomerId();
+                if (customerId == customer.getCustomerId()) {
+                    //check to see whether dates overlap
+                    Date existingStartDate = requests.get(i).getStartDate();
+                    Date existingEndDate = requests.get(i).getEndDate();
+                    Long front = existingStartDate.getTime() - endDate.getTime();
+                    Long end = existingEndDate.getTime() - startDate.getTime();
+                    int aes = (int) TimeUnit.DAYS.convert(front, TimeUnit.MILLISECONDS);
+                    int aee = (int) TimeUnit.DAYS.convert(end, TimeUnit.MILLISECONDS);
+                    System.out.println("Existing Start date: " + existingStartDate);
+                    System.out.println("Existing End date: " + existingEndDate);
+                    System.out.println("AES: " + aes);
+                    System.out.println("AEE: " + aee);
+                    if (aes >= 0 || aee <= 0) {
+                    } else{
+                        allow = false;
+                    }
+                }
+            }
+            if(requests.size() == 0){ allow = true; }
+            if (allow) {
+                Date now = new Date();
+                Long noDaysStart = now.getTime() - startDate.getTime();
+                Long noDaysEnd = endDate.getTime() - startDate.getTime();
+                int dayStart = (int) TimeUnit.DAYS.convert(noDaysStart, TimeUnit.MILLISECONDS);
+                int dayEnd = (int) TimeUnit.DAYS.convert(noDaysEnd, TimeUnit.MILLISECONDS);
+                System.out.println("Current Date: " + now);
+                System.out.println("Start Date: " + startDate);
+                System.out.println("End Date: " + endDate);
+                System.out.println("Days from current date: " + dayStart);
+                System.out.println("Days inbetween: " + dayEnd);
+                if (dayStart <= 0 && dayEnd > 0) {
+                    rq.setCustomerEntity(customer);
+                    rq.setListingEntity(listing);
+                    rq.setStartDate(startDate);
+                    rq.setEndDate(endDate);
+                    Long noDays = endDate.getTime() - startDate.getTime();
+                    System.out.println("Days: " + TimeUnit.DAYS.convert(noDays, TimeUnit.MILLISECONDS));
+                    int days = (int) TimeUnit.DAYS.convert(noDays, TimeUnit.MILLISECONDS);
+                    rq.setNoOfDays(days);
+                    em.persist(rq);
+                    em.flush();
+                    em.refresh(rq);
+                    return rq;
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        } catch (CustomerNotFoundException ex) {
             throw new CreateRequestException("An unexpected error has occurred: " + ex.getMessage());
+        } catch (ParseException ex) {
+            throw new CreateRequestException("Parse exception" + ex.getMessage());
+        } catch (InvalidListingException ex) {
+            throw new InvalidListingException("Invalid listing exception:" + ex.getMessage());
         }
     }
 
@@ -150,7 +200,7 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
                 request.setAccepted(true);
                 request.setPaymentEntity(paymentSessionBeanLocal.retrievePayment(id));
                 em.merge(request);
-                
+
                 //TESTING: after accepting one, rejecting other requests that clash with it now
                 ListingEntity l = request.getListingEntity();
                 l = listingSessionBeanLocal.retrieveListingById(l.getListingId());
@@ -158,7 +208,7 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
                 Date otherEndDate = request.getEndDate();
                 for (RequestEntity r : l.getRequestList()) {
                     if (!r.getRequestEntityId().equals(request.getRequestEntityId())) {
-                    System.out.println("removing any other conflicting requests");
+                        System.out.println("removing any other conflicting requests");
                         Date newStartDate = r.getStartDate();
                         Date newEndDate = r.getEndDate();
                         if (newStartDate.compareTo(otherStartDate) <= 0) {
@@ -169,7 +219,7 @@ public class RequestSessionBean implements RequestSessionBeanLocal {
                                 r = retrieveRequestByID(r.getRequestEntityId());
                                 r.setAcknowledged(Boolean.TRUE);
                                 r.setAccepted(Boolean.FALSE);
-                                em.merge(r);                              
+                                em.merge(r);
                             }
                         }
                     }

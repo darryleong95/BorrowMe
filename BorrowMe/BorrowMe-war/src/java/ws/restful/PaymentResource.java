@@ -51,7 +51,6 @@ public class PaymentResource {
     public Response makePayment(@PathParam("requestId") Long requestId) {
         try {
             PaymentEntity result = paymentSessionBeanLocal.makePayment(requestId);
-            System.out.println("11");
             MakePaymentReq makePaymentReq = new MakePaymentReq(result);
             return Response.status(Response.Status.OK).entity(makePaymentReq).build();
         } catch (PaymentNotFoundException ex) {

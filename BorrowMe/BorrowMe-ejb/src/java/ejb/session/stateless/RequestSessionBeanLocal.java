@@ -9,6 +9,7 @@ import entity.RequestEntity;
 import java.util.Date;
 import java.util.List;
 import util.exception.CreateRequestException;
+import util.exception.InvalidListingException;
 import util.exception.RequestNotFoundException;
 
 public interface RequestSessionBeanLocal {
@@ -23,7 +24,7 @@ public interface RequestSessionBeanLocal {
 
     public RequestEntity retrieveRequestByID(Long requestID) throws RequestNotFoundException;
 
-    public RequestEntity createRequestAPI(RequestEntity rq, Long requesterId, Long listingId, Date startDate, Date endDate) throws CreateRequestException;
+    public RequestEntity createRequestAPI(RequestEntity rq, Long requesterId, Long listingId, String startDateStr, String endDateStr) throws CreateRequestException, InvalidListingException;
 
     public List<RequestEntity> retrieveRequestByListingId(Long listingId);
 

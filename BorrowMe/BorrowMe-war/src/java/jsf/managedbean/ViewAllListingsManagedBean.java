@@ -64,7 +64,6 @@ public class ViewAllListingsManagedBean implements Serializable {
     public void handleFileUpload(FileUploadEvent event) throws InvalidFileTypeException {
         try {
             String newFilePath = System.getProperty("user.dir").replace("/config", "/docroot/") + event.getFile().getFileName();
-
             if (!newFilePath.endsWith(".jpg") && !newFilePath.endsWith(".jpeg") && !newFilePath.endsWith(".png")) {
                 throw new InvalidFileTypeException("Invalid file type uploaded; only accept jpg jpeg png");
             }
@@ -95,6 +94,7 @@ public class ViewAllListingsManagedBean implements Serializable {
             fileOutputStream.close();
             inputStream.close();
             String absolutePath = "http://localhost:8080/" + event.getFile().getFileName();
+            System.out.println("Absolute path: " + absolutePath);
             newListing.getImages().add(absolutePath);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         } catch (IOException ex) {

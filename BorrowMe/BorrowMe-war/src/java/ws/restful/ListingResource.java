@@ -105,13 +105,9 @@ public class ListingResource {
             try {
 
                 CreateListingReq createListingReq = jaxbCreateListingReq.getValue();
-                System.out.println("Anything coming through?");
                 System.out.println(createListingReq.getListing());
-                System.out.println(">..................>");
                 ListingEntity newListing = listingSessionBeanLocal.createListing(createListingReq.getListing());
-                System.out.println("Anything coming through?");
                 CreateListingRsp result = new CreateListingRsp(newListing);
-                System.out.println("Anything coming through?");
                 return Response.status(Response.Status.OK).entity(result).build();
             } catch (CreateListingException ex) {
                 ws.restful.datamodel.Feedback.ErrorRsp errorRsp = new ws.restful.datamodel.Feedback.ErrorRsp("Error creating Listing");
@@ -135,16 +131,12 @@ public class ListingResource {
                 Boolean isLister = listingSessionBeanLocal.isLister(updateListingReq.getListing(), listerId);
 
                 if (isLister) {
-                    System.out.println("Lsting id: " + updateListingReq.getListing().getListingTitle() + " " + updateListingReq.getListing().getListingId());
-                    
-                    System.out.println("what");
                     System.out.println(updateListingReq.getListing());
                     ListingEntity updated = listingSessionBeanLocal.updateListing(updateListingReq.getListing());
                     
                     UpdateListingRsp result = new UpdateListingRsp(updated);
                     return Response.status(Response.Status.OK).entity(result).build();
                 } else {
-                    System.out.println("LOl");
                     return null;
                 }
             } catch (InvalidListingException ex) {
@@ -164,7 +156,6 @@ public class ListingResource {
     public Response deleteListing(@QueryParam("id") Long id) throws InvalidListingException //@QueryParam used instead of @Path -- identified with a ? in the URI
     {
         listingSessionBeanLocal.deleteListing(id);
-
         return Response.status(Status.OK).build();
     }
 
