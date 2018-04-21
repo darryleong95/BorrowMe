@@ -90,8 +90,20 @@ public class ViewProfileManagedBean implements Serializable {
 
     public void handleFileUpload(FileUploadEvent event) throws InvalidFileTypeException {
         try {
-            String newFilePath = System.getProperty("user.dir").replace("/config", "/docroot/") + event.getFile().getFileName();
-
+              String newFilePath = System.getProperty("user.dir");
+                  System.err.println("********** " + System.getProperty("user.dir"));
+            
+            //IF WINDOWS
+            if (System.getProperty("user.dir").contains("AppData")) {
+                System.out.println("THIS IS A WINDOWS MACHINE!");
+                newFilePath = newFilePath.substring(0,newFilePath.length()-7) + "/docroot/" + event.getFile().getFileName();
+            } else {
+                System.out.println("Its a mac");
+                newFilePath = System.getProperty("user.dir").replace("/config", "/docroot/") + event.getFile().getFileName();
+            }
+            
+            
+            
             if (!newFilePath.endsWith(".jpg") && !newFilePath.endsWith(".jpeg") && !newFilePath.endsWith(".png")) {
                 throw new InvalidFileTypeException("invalid file type uploaded; only accept jpg jpeg png");
             }
