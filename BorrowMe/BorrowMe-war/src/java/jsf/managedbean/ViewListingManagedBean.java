@@ -40,6 +40,7 @@ public class ViewListingManagedBean implements Serializable {
     private long listingIdToView;
     private ListingEntity listingToView;
     private RequestEntity newRequestEntity;
+    private Date currentDate;
     private Date newStartDate;
     private Date newEndDate;
     private int dateDiffValue;
@@ -58,6 +59,7 @@ public class ViewListingManagedBean implements Serializable {
         filteredRequests = new ArrayList<RequestEntity>();
         selectedListingToUpdate = new ListingEntity();
         categories = new ArrayList<>();
+        currentDate = new Date();
 
     }
 
@@ -110,29 +112,32 @@ public class ViewListingManagedBean implements Serializable {
             } catch (Exception ex) {
                 System.out.println("ERROR AT DATE DIFF: " + ex.getMessage());
             }
+        } else {
+            System.out.println("dateDiff method not called for some reason");
+            
         }
     }
 
     public void createRequest(ActionEvent event) {
         try {
-                CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
-                c.getRequestList().add(newRequestEntity);
-                newRequestEntity.setCustomerEntity(c); //borrower
-                listingToView.getRequestList().add(newRequestEntity);
-                newRequestEntity.setListingEntity(listingToView);
-                newStartDate.setHours(12);
-                newEndDate.setHours(12);
-                newRequestEntity.setStartDate(newStartDate);
-                newRequestEntity.setEndDate(newEndDate);
-                newRequestEntity.setNoOfDays(Integer.valueOf(getDateDiffValue()));
-                if (requestSessionBeanLocal.checkItemAvailability(newRequestEntity)) {
+            CustomerEntity c = (CustomerEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
+            c.getRequestList().add(newRequestEntity);
+            newRequestEntity.setCustomerEntity(c); //borrower
+            listingToView.getRequestList().add(newRequestEntity);
+            newRequestEntity.setListingEntity(listingToView);
+            newStartDate.setHours(12);
+            newEndDate.setHours(12);
+            newRequestEntity.setStartDate(newStartDate);
+            newRequestEntity.setEndDate(newEndDate);
+            newRequestEntity.setNoOfDays(Integer.valueOf(getDateDiffValue()));
+            if (requestSessionBeanLocal.checkItemAvailability(newRequestEntity)) {
                 RequestEntity r = requestSessionBeanLocal.createRequest(newRequestEntity);
                 requests.add(r);
                 filteredRequests.add(r);
                 newRequestEntity = new RequestEntity();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New request created successfully (request ID: " + r.getRequestEntityId() + ")", null));
             } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request rejected! The item is rented out for those dates", null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request rejected! The item is rented out for those dates", null));
             }
         } catch (CreateRequestException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new request: " + ex.getMessage(), null));
@@ -292,6 +297,14 @@ public class ViewListingManagedBean implements Serializable {
      */
     public void setCategories(List<String> categories) {
         this.categories = categories;
+    }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
     }
 
 }

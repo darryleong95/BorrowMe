@@ -66,9 +66,8 @@
                                     <h:outputText value="Accepted!"/><br/>
                                     <br/>                     
                                     <h:outputText value="Payment Already Made!" rendered="#{requestEntity.payment}"/><br/>
-                                    <p:commandButton value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" update="@form" >
+                                    <p:commandButton value="Make Payment now!" rendered="#{!requestEntity.payment}" actionListener="#{viewRequestsManagedBean.makePayment}" oncomplete="PF('dialogMakePayment').show()" >
                                         <f:attribute name="requestEntity" value="#{requestEntity}"/>
-
                                     </p:commandButton><br/>
                                     <p:commandButton value='Make Feedback' rendered="#{requestEntity.payment and !requestEntity.borrowerLeftFeedback}" actionListener="#{viewRequestsManagedBean.redirectMakeFeedback}">
                                         <f:attribute name="requestEntity" value="#{requestEntity}" />
@@ -98,7 +97,18 @@
 
                             </p:dataTable>
                         </center>
+
+                        <p:dialog id="dialogMakePayment" widgetVar="dialogMakePayment" header="Payment made" closable="true" >
+
+                            <p:outputLabel value="Payment successfully made!"/>
+                            <br/><br/>
+                            <p:commandButton value="Return" actionListener="#{viewRequestsManagedBean.refreshPage}"/>
+
+                        </p:dialog>
+
                     </h:form>
+
+
                 </h:panelGrid>
 
             </p:tab>

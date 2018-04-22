@@ -108,6 +108,10 @@ public class ViewRequestsManagedBean implements Serializable {
         }
     }
 
+    public void refreshPage(ActionEvent event) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("ViewRequests.xhtml");
+    }
+
     public CustomerEntity getCustomer() {
         return customer;
     }
