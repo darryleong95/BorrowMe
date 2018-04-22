@@ -117,7 +117,7 @@ public class FeedbackResource {
     @Produces(MediaType.APPLICATION_JSON)   
     public Response retrieveByRevieweeId(@PathParam("customerId") Long customerId) {
         try {
-            List<FeedbackEntity> feedbacks = feedbackSessionBean.retrieveFeedbackByRevieweeId(customerId);
+            List<FeedbackEntity> feedbacks = feedbackSessionBean.retrieveFeedbackByListingId(customerId);
             RetrieveByRevieweeIdRsp retrieveFeedbackRsp = new RetrieveByRevieweeIdRsp(feedbacks);
             return Response.status(Response.Status.OK).entity(retrieveFeedbackRsp).build();
         } catch (Exception ex) {

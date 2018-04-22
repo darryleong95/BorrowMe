@@ -129,6 +129,7 @@ public class FeedbackSessionBean implements FeedbackSessionBeanLocal {
                 RequestEntity j = requests.get(i);
                 if(j.getListingEntity().getListingId() == listingId) {
                     request = j; 
+                    request.setBorrowerLeftFeedback(true);
                     feedback.setRequestEntity(request);
                 }
             }
