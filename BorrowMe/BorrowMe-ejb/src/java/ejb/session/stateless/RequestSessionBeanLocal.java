@@ -35,6 +35,11 @@ public interface RequestSessionBeanLocal {
 
     public RequestEntity openedRequest(Long requestId) throws RequestNotFoundException;
 
+    public Boolean deleteRequestAPI(Long requestId) throws RequestNotFoundException;
+
+    public RequestEntity rejectRequest(Long requestId) throws RequestNotFoundException;
+    
     public void deleteRequest(Long requestId) throws RequestNotFoundException, CustomerNotFoundException, InvalidListingException;
+
 
 }

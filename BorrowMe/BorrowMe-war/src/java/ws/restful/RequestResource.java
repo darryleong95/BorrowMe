@@ -35,6 +35,7 @@ import util.exception.RequestNotFoundException;
 import ws.restful.datamodel.Request.CreateRequestReq;
 import ws.restful.datamodel.Request.CreateRequestRsp;
 import ws.restful.datamodel.Listing.ErrorRsp;
+import ws.restful.datamodel.Request.DeleteRequestRsp;
 import ws.restful.datamodel.Request.RequestMadeRsp;
 
 @Path("Request") //demarcate the URI to identify resource
@@ -131,7 +132,6 @@ public class RequestResource {
     public Response acceptRequest(@PathParam("requestId") Long requestId) throws RequestNotFoundException {
         try {
             RequestEntity request = requestSessionBeanLocal.acceptRequest(requestId);
-            System.out.println("gets here");
             CreateRequestRsp result = new CreateRequestRsp(request);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (RequestNotFoundException ex) {
@@ -139,6 +139,23 @@ public class RequestResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
+    
+    @Path("rejectRequest/{requestId}")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response rejectRequest(@PathParam("requestId") Long requestId) throws RequestNotFoundException {
+        try {
+            RequestEntity request = requestSessionBeanLocal.rejectRequest(requestId);
+            CreateRequestRsp result = new CreateRequestRsp(request);
+            return Response.status(Response.Status.OK).entity(result).build();
+        } catch (RequestNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("Unable to accept request");
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+    
+    
 
     @Path("openedRequest/{requestId}")
     @POST
@@ -155,11 +172,19 @@ public class RequestResource {
         }
     }
     
-    @Path("deleteUnacknowledgedRequest/{reqestId}")
+    @Path("deleteRequest/{requestId}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteUnacknowledgedRequest(@PathParam("requestId") Long requestId){
-        return null;
+    public Response deleteRequest(@PathParam("requestId") Long requestId){
+        try {
+            Boolean result = requestSessionBeanLocal.deleteRequestAPI(requestId);
+            System.out.println("Reults: " + result);
+            DeleteRequestRsp deleteRequestRsp = new DeleteRequestRsp(result);
+            return Response.status(Response.Status.OK).entity(deleteRequestRsp).build();
+        } catch (RequestNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("RequestID was not valid");
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
     }
 
     private RequestSessionBeanLocal lookupRequestSessionBeanLocal() {

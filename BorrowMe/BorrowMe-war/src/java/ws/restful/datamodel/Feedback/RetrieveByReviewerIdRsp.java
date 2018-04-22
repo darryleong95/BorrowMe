@@ -10,17 +10,17 @@ import javax.xml.bind.annotation.XmlType;
  * @author josh
  */
 
-@XmlType(name = "retrieveByListingIdRsp", propOrder = {
+@XmlType(name = "retrieveByReviewerIdRsp", propOrder = {
     "feedbacks"
 })
-public class RetrieveByListingIdRsp {
+public class RetrieveByReviewerIdRsp {
     
     private List<FeedbackEntity> feedbacks;
 
-    public RetrieveByListingIdRsp() {
+    public RetrieveByReviewerIdRsp() {
     }
 
-    public RetrieveByListingIdRsp(List<FeedbackEntity> feedbacks) {
+    public RetrieveByReviewerIdRsp(List<FeedbackEntity> feedbacks) {
         this.feedbacks = feedbacks;
     }
 

@@ -108,6 +108,7 @@ public class ViewAllListingsManagedBean implements Serializable {
             inputStream.close();
             String absolutePath = "http://localhost:8080/" + event.getFile().getFileName();
             newListing.getImages().add(absolutePath);
+            System.out.println("Absolute path: " + absolutePath);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         } catch (IOException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
