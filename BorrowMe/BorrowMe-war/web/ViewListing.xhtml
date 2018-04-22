@@ -155,9 +155,10 @@
                                     <p:outputLabel for="startdate" value="Start Date: " />
                                 </p:column>
                                 <p:column>
-                                    <p:calendar id="startdate" value="#{viewListingManagedBean.newStartDate}" >
+                                    <p:calendar id="startdate" value="#{viewListingManagedBean.newStartDate}" mindate="#{viewListingManagedBean.currentDate}">
                                         <p:ajax event="dateSelect" update="noOfDays" listener="#{viewListingManagedBean.dateDiff}" />
                                         <p:ajax event="dateSelect" update="totalCost" listener="#{viewListingManagedBean.dateDiff}" />
+                                   
                                     </p:calendar>
                                 </p:column>
                                 <p:column>
@@ -170,7 +171,7 @@
                                     <p:outputLabel for="enddate" value="End Date: " />
                                 </p:column>
                                 <p:column>
-                                    <p:calendar id="enddate" value="#{viewListingManagedBean.newEndDate}" >
+                                    <p:calendar id="enddate" value="#{viewListingManagedBean.newEndDate}" mindate="#{viewListingManagedBean.currentDate}" >
                                         <p:ajax event="dateSelect" update="noOfDays" listener="#{viewListingManagedBean.dateDiff}" />
                                         <p:ajax event="dateSelect" update="totalCost" listener="#{viewListingManagedBean.dateDiff}" />
                                     </p:calendar>

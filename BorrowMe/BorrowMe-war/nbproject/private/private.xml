@@ -3,14 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewRequests.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewRequestsManagedBean.java</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ApproveRequest.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewProfile.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/MakeFeedbackManagedBean.java</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewAllListingsManagedBean.java</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/MakeFeedback.xhtml</file>
-            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/template/defaultTemplate.xhtml</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/web/ViewListing.xhtml</file>
+            <file>file:/Users/fabian/Documents/GitHub/BorrowMe/BorrowMe/BorrowMe-war/src/java/jsf/managedbean/ViewListingManagedBean.java</file>
         </group>
     </open-files>
 </project-private>
